@@ -28,5 +28,5 @@ add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E 
 # set SCREEPS_TOKEN environment variable to your Screeps API token
 # (https://docs.screeps.com/auth-tokens.html).
 # If you don't want to use this script, please, remove following lines.
-find_package(Python COMPONENTS Interpreter REQUIRED)
-add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${Python_EXECUTABLE} ${screepsxx_SOURCE_DIR}/tools/upload.py ${CMAKE_SOURCE_DIR}/dist $ENV{SCREEPS_TOKEN})
+# find_package(Python COMPONENTS Interpreter REQUIRED)
+# add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${Python_EXECUTABLE} ${screepsxx_SOURCE_DIR}/tools/upload.py ${CMAKE_SOURCE_DIR}/dist $ENV{SCREEPS_TOKEN})

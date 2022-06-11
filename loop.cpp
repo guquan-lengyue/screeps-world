@@ -16,10 +16,17 @@ extern "C" void loop()
 	Screeps::Context::update();
 
 	std::map<std::string, Screeps::Creep> creeps = Screeps::Game.creeps();
+	Screeps::StructureSpawn homeSpawn = Screeps::Game.spawns().find("home")->second;
+	std::vector<std::string> workBodyPart = {Screeps::MOVE, Screeps::CARRY, Screeps::WORK};
+	for (int i = 0; i < 5; i++)
+	{
+		homeSpawn.spawnCreep(workBodyPart, "work_" + std::to_string(i));
+	}
+
 	for (auto &c : creeps)
 	{
 		Screeps::Creep creep = c.second;
-		Screeps::StructureSpawn spawn1 = Screeps::Game.spawns().find("Spawn1")->second;
+
 		Screeps::Room room = creep.room();
 
 		if (creep.store().getFreeCapacity() > 0)
@@ -33,9 +40,9 @@ extern "C" void loop()
 		}
 		else
 		{
-			if (creep.transfer(spawn1, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
+			if (creep.transfer(homeSpawn, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
 			{
-				creep.moveTo(spawn1);
+				creep.moveTo(homeSpawn);
 			}
 		}
 	}

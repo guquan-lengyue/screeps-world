@@ -31,15 +31,15 @@ extern "C" void loop()
 	std::vector<std::string> workBodyPart = {Screeps::MOVE, Screeps::CARRY, Screeps::WORK};
 	auto sources = homeSpawn.room().find(Screeps::FIND_SOURCES);
 	Screeps::StructureController homeController = homeSpawn.room().controller().value();
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		homeSpawn.spawnCreep(workBodyPart, "upgradetor_" + std::to_string(i));
 	}
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		homeSpawn.spawnCreep(workBodyPart, "work_" + std::to_string(i));
 	}
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		homeSpawn.spawnCreep(workBodyPart, "build_" + std::to_string(i));
 	}
@@ -50,7 +50,7 @@ extern "C" void loop()
 		Screeps::Creep creep = c.second;
 		if ((int)creep.name().find("work_") >= 0)
 		{
-			Screeps::Source source(sources[0].get()->value());
+			Screeps::Source source(sources[1].get()->value());
 			miner(creep, source, homeSpawn);
 		}
 		if ((int)creep.name().find("upgradetor_") >= 0)

@@ -13,6 +13,7 @@
 #include <optional>
 #include <Screeps/StructureController.hpp>
 #include <Screeps/ConstructionSite.hpp>
+#include <Screeps/StructureExtension.hpp>
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"
 JSON creepMoveToOpt = {"reusePath", 100};
@@ -31,37 +32,57 @@ extern "C" void loop()
 	std::vector<std::string> workBodyPart = {Screeps::MOVE, Screeps::CARRY, Screeps::WORK};
 	auto sources = homeSpawn.room().find(Screeps::FIND_SOURCES);
 	Screeps::StructureController homeController = homeSpawn.room().controller().value();
-	for (int i = 0; i < 10; i++)
+
+	Screeps::StructureExtension *homeExtension;
+	auto structureList = homeSpawn.room().find(Screeps::FIND_STRUCTURES);
+	for (auto it = structureList.begin(); it != structureList.end(); it++)
+	{
+		auto tmp = new Screeps::StructureExtension(it->get()->value());
+		if (tmp->structureType() == Screeps::STRUCTURE_EXTENSION)
+		{
+			if (tmp->store().getFreeCapacity() > 0)
+			{
+				homeExtension = tmp;
+			}
+		}
+		else
+		{
+			delete tmp;
+		}
+	}
+
+	for (int i = 0; i < 5; i++)
 	{
 		homeSpawn.spawnCreep(workBodyPart, "upgradetor_" + std::to_string(i));
-	}
-	for (int i = 0; i < 10; i++)
-	{
-		homeSpawn.spawnCreep(workBodyPart, "work_" + std::to_string(i));
 	}
 	for (int i = 0; i < 5; i++)
 	{
 		homeSpawn.spawnCreep(workBodyPart, "build_" + std::to_string(i));
 	}
+	for (int i = 0; i < 4; i++)
+	{
+		homeSpawn.spawnCreep(workBodyPart, "work_" + std::to_string(i));
+	}
 	auto constructionSites = homeSpawn.room().find(Screeps::FIND_CONSTRUCTION_SITES);
+	Screeps::ConstructionSite site(constructionSites[0].get()->value());
+
 	for (auto &c : creeps)
 	{
-
 		Screeps::Creep creep = c.second;
 		if ((int)creep.name().find("work_") >= 0)
 		{
 			Screeps::Source source(sources[1].get()->value());
-			miner(creep, source, homeSpawn);
+			miner(creep, source, *homeExtension);
+			delete homeExtension;
 		}
 		if ((int)creep.name().find("upgradetor_") >= 0)
 		{
-			Screeps::Source source(sources[1].get()->value());
+			Screeps::Source source(sources[0].get()->value());
 			upgrade(creep, source, homeController);
 		}
 		if ((int)creep.name().find("build_") >= 0)
 		{
 			Screeps::Source source(sources[0].get()->value());
-			Screeps::ConstructionSite site(constructionSites[0].get()->value());
 			build(creep, source, site);
 		}
 	}

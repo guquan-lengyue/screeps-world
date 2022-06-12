@@ -13,12 +13,14 @@
 #include <optional>
 #include <Screeps/StructureController.hpp>
 #include <Screeps/ConstructionSite.hpp>
-EMSCRIPTEN_KEEPALIVE
+
+JSON creepMoveToOpt = {"reusePath", 100};
 
 void miner(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structure &target);
 void upgrade(Screeps::Creep &upgrade, Screeps::Source &source);
 void build(Screeps::Creep &builder, Screeps::Source &source, Screeps::ConstructionSite &target);
 
+EMSCRIPTEN_KEEPALIVE
 extern "C" void loop()
 {
 	Screeps::Context::update();
@@ -69,14 +71,14 @@ void miner(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structure &t
 	{
 		if (creep.harvest(source) == Screeps::ERR_NOT_IN_RANGE)
 		{
-			creep.moveTo(source);
+			creep.moveTo(source, creepMoveToOpt);
 		}
 	}
 	else
 	{
 		if (creep.transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
 		{
-			creep.moveTo(target);
+			creep.moveTo(target, creepMoveToOpt);
 		}
 	}
 }
@@ -87,7 +89,7 @@ void upgrade(Screeps::Creep &upgrade, Screeps::Source &source)
 	{
 		if (upgrade.harvest(source) == Screeps::ERR_NOT_IN_RANGE)
 		{
-			upgrade.moveTo(source);
+			upgrade.moveTo(source, creepMoveToOpt);
 		}
 	}
 	else
@@ -95,24 +97,40 @@ void upgrade(Screeps::Creep &upgrade, Screeps::Source &source)
 		Screeps::StructureController controller = upgrade.room().controller().value();
 		if (upgrade.upgradeController(controller) == Screeps::ERR_NOT_IN_RANGE)
 		{
-			upgrade.moveTo(controller);
+			upgrade.moveTo(controller, creepMoveToOpt);
 		}
 	}
 }
 void build(Screeps::Creep &builder, Screeps::Source &source, Screeps::ConstructionSite &target)
 {
-	if (builder.store().getFreeCapacity() > 0)
+	JSON builderMemory = builder.memory();
+	bool isBuilding;
+	if (!builderMemory.contains("isBuilding"))
 	{
-		if (builder.harvest(source) == Screeps::ERR_NOT_IN_RANGE)
+		builderMemory["isBuilding"] = true;
+	}
+	builderMemory["isBuilding"].get_to(isBuilding);
+	if (!isBuilding && builder.store().getFreeCapacity() == 0)
+	{
+		isBuilding = true;
+	}
+	if (isBuilding && builder.store().getUsedCapacity() == 0)
+	{
+		isBuilding = false;
+	}
+	builderMemory["isBuilding"] = isBuilding;
+	if (isBuilding)
+	{
+		if (builder.build(target) == Screeps::ERR_NOT_IN_RANGE)
 		{
-			builder.moveTo(source);
+			builder.moveTo(target, creepMoveToOpt);
 		}
 	}
 	else
 	{
-		if (builder.build(target) == Screeps::ERR_NOT_IN_RANGE)
+		if (builder.harvest(source) == Screeps::ERR_NOT_IN_RANGE)
 		{
-			builder.moveTo(target);
+			builder.moveTo(source, creepMoveToOpt);
 		}
 	}
 }

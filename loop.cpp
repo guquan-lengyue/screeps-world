@@ -13,11 +13,12 @@
 #include <optional>
 #include <Screeps/StructureController.hpp>
 #include <Screeps/ConstructionSite.hpp>
-
+#define SAY_HARVEST "🔄"
+#define SAY_BUILD "🚧"
 JSON creepMoveToOpt = {"reusePath", 100};
 
 void miner(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structure &target);
-void upgrade(Screeps::Creep &upgrade, Screeps::Source &source);
+void upgrade(Screeps::Creep &upgrade, Screeps::Source &source, Screeps::StructureController &target);
 void build(Screeps::Creep &builder, Screeps::Source &source, Screeps::ConstructionSite &target);
 
 EMSCRIPTEN_KEEPALIVE
@@ -29,6 +30,7 @@ extern "C" void loop()
 	Screeps::StructureSpawn homeSpawn = Screeps::Game.spawns().find("home")->second;
 	std::vector<std::string> workBodyPart = {Screeps::MOVE, Screeps::CARRY, Screeps::WORK};
 	auto sources = homeSpawn.room().find(Screeps::FIND_SOURCES);
+	Screeps::StructureController homeController = homeSpawn.room().controller().value();
 	for (int i = 0; i < 5; i++)
 	{
 		homeSpawn.spawnCreep(workBodyPart, "upgradetor_" + std::to_string(i));
@@ -54,7 +56,7 @@ extern "C" void loop()
 		if ((int)creep.name().find("upgradetor_") >= 0)
 		{
 			Screeps::Source source(sources[1].get()->value());
-			upgrade(creep, source);
+			upgrade(creep, source, homeController);
 		}
 		if ((int)creep.name().find("build_") >= 0)
 		{
@@ -83,21 +85,40 @@ void miner(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structure &t
 	}
 }
 
-void upgrade(Screeps::Creep &upgrade, Screeps::Source &source)
+void upgrade(Screeps::Creep &upgrade, Screeps::Source &source, Screeps::StructureController &target)
 {
-	if (upgrade.store().getFreeCapacity() > 0)
+	JSON upgradeMemory = upgrade.memory();
+	std::string action = "isUpgradeing";
+	bool isUpgrading;
+	if (!upgradeMemory.contains(action))
 	{
-		if (upgrade.harvest(source) == Screeps::ERR_NOT_IN_RANGE)
+		upgradeMemory[action] = true;
+	}
+	upgradeMemory[action].get_to<bool>(isUpgrading);
+	if (isUpgrading && upgrade.store().getUsedCapacity() == 0)
+	{
+		isUpgrading = false;
+		upgrade.say(SAY_HARVEST);
+	}
+	if (!isUpgrading && upgrade.store().getFreeCapacity() == 0)
+	{
+		isUpgrading = true;
+		upgrade.say(SAY_BUILD);
+	}
+	upgradeMemory[action] = isUpgrading;
+	upgrade.setMemory(upgradeMemory);
+	if (isUpgrading)
+	{
+		if (upgrade.upgradeController(target) == Screeps::ERR_NOT_IN_RANGE)
 		{
-			upgrade.moveTo(source, creepMoveToOpt);
+			upgrade.moveTo(target, creepMoveToOpt);
 		}
 	}
 	else
 	{
-		Screeps::StructureController controller = upgrade.room().controller().value();
-		if (upgrade.upgradeController(controller) == Screeps::ERR_NOT_IN_RANGE)
+		if (upgrade.harvest(source) == Screeps::ERR_NOT_IN_RANGE)
 		{
-			upgrade.moveTo(controller, creepMoveToOpt);
+			upgrade.moveTo(source, creepMoveToOpt);
 		}
 	}
 }
@@ -110,15 +131,19 @@ void build(Screeps::Creep &builder, Screeps::Source &source, Screeps::Constructi
 		builderMemory["isBuilding"] = true;
 	}
 	builderMemory["isBuilding"].get_to(isBuilding);
-	if (!isBuilding && builder.store().getFreeCapacity() == 0)
-	{
-		isBuilding = true;
-	}
 	if (isBuilding && builder.store().getUsedCapacity() == 0)
 	{
 		isBuilding = false;
+		builder.say(SAY_HARVEST);
 	}
+	if (!isBuilding && builder.store().getFreeCapacity() == 0)
+	{
+		isBuilding = true;
+		builder.say(SAY_BUILD);
+	}
+
 	builderMemory["isBuilding"] = isBuilding;
+	builder.setMemory(builderMemory);
 	if (isBuilding)
 	{
 		if (builder.build(target) == Screeps::ERR_NOT_IN_RANGE)

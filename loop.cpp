@@ -6,7 +6,10 @@
 #include <Screeps/Source.hpp>
 #include <Screeps/Store.hpp>
 #include <Screeps/StructureSpawn.hpp>
+#include <Screeps/StructureExtension.hpp>
+#include <Screeps/StructureStorage.hpp>
 #include <Screeps/Constants.hpp>
+#include <Screeps/Structure.hpp>
 #include <emscripten.h>
 #include <emscripten/bind.h>
 #include <iostream>
@@ -27,11 +30,12 @@ extern "C" void loop()
 	Screeps::Context::update();
 
 	std::map<std::string, Screeps::Creep> creeps = Screeps::Game.creeps();
+
 	Screeps::StructureSpawn homeSpawn = Screeps::Game.spawns().find("home")->second;
 	std::vector<std::string> workBodyPart = {Screeps::MOVE, Screeps::CARRY, Screeps::WORK};
 	auto sources = homeSpawn.room().find(Screeps::FIND_SOURCES);
 	Screeps::StructureController homeController = homeSpawn.room().controller().value();
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		homeSpawn.spawnCreep(workBodyPart, "upgradetor_" + std::to_string(i));
 	}
@@ -44,7 +48,11 @@ extern "C" void loop()
 		homeSpawn.spawnCreep(workBodyPart, "work_" + std::to_string(i));
 	}
 	auto constructionSites = homeSpawn.room().find(Screeps::FIND_CONSTRUCTION_SITES);
-	Screeps::ConstructionSite site(constructionSites[0].get()->value());
+	Screeps::ConstructionSite *site = NULL;
+	if (constructionSites.size() > 0)
+	{
+		site = new Screeps::ConstructionSite(constructionSites[0].get()->value());
+	}
 	for (auto &c : creeps)
 	{
 		Screeps::Creep creep = c.second;
@@ -53,22 +61,18 @@ extern "C" void loop()
 			Screeps::Source source(sources[1].get()->value());
 			miner(creep, source, homeSpawn);
 		}
-		else
+		if ((int)creep.name().find("upgradetor_") >= 0)
 		{
 			Screeps::Source source(sources[0].get()->value());
 			upgrade(creep, source, homeController);
 		}
-		// if ((int)creep.name().find("upgradetor_") >= 0)
-		// {
-		// 	Screeps::Source source(sources[0].get()->value());
-		// 	upgrade(creep, source, homeController);
-		// }
-		// if ((int)creep.name().find("build_") >= 0)
-		// {
-		// 	Screeps::Source source(sources[0].get()->value());
-		// 	build(creep, source, site);
-		// }
+		if ((int)creep.name().find("build_") >= 0 && site != NULL)
+		{
+			Screeps::Source source(sources[0].get()->value());
+			build(creep, source, *site);
+		}
 	}
+	delete site;
 }
 
 void miner(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structure &target)

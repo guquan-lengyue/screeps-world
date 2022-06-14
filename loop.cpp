@@ -35,7 +35,7 @@ extern "C" void loop()
 	std::vector<std::string> workBodyPart = {Screeps::MOVE, Screeps::CARRY, Screeps::WORK};
 	auto sources = homeSpawn.room().find(Screeps::FIND_SOURCES);
 	Screeps::StructureController homeController = homeSpawn.room().controller().value();
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		homeSpawn.spawnCreep(workBodyPart, "upgradetor_" + std::to_string(i));
 	}
@@ -129,6 +129,9 @@ void upgrade(Screeps::Creep &upgrade, Screeps::Source &source, Screeps::Structur
 			upgrade.moveTo(source, creepMoveToOpt);
 		}
 	}
+}
+Screeps::StructureExtension getEmptyExtension(Screeps::Room &room){
+
 }
 void build(Screeps::Creep &builder, Screeps::Source &source, Screeps::ConstructionSite &target)
 {

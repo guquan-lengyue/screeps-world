@@ -13,8 +13,6 @@ private:
 public:
     static std::vector<std::string> bodyParts();
 
-    Harvester() = default;
-
     explicit Harvester(JS::Value creep);
 
     ~Harvester() = default;

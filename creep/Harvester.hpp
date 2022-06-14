@@ -39,7 +39,9 @@ std::vector<std::string> Harvester::bodyParts() {
 
 int Harvester::work(Screeps::Source &source, Screeps::Structure &target) {
     if (this->store().getFreeCapacity() > 0) {
-        this->moveTo(source);
+        if (this->harvest(source) == Screeps::ERR_NOT_IN_RANGE) {
+            this->moveTo(source);
+        }
     } else {
         if (this->transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE) {
             this->moveTo(target);

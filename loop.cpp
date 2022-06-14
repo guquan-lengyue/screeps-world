@@ -15,7 +15,7 @@
 #include <optional>
 #include <Screeps/StructureController.hpp>
 #include <Screeps/ConstructionSite.hpp>
-#include "creep/Harvester.h"
+#include "creep/Harvester.hpp"
 
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"

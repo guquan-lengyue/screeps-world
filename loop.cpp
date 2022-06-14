@@ -33,13 +33,13 @@ extern "C" void loop() {
             break;
         }
     }
-
-    for (int i = 0; i < 10; i++) {
-        homeSpawn.spawnCreep(Harvester::bodyParts(), Harvester::namePre() + std::to_string(i));
-    }
     for (int i = 0; i < 5; i++) {
         homeSpawn.spawnCreep(Upgrader::bodyParts(), Upgrader::namePre() + std::to_string(i));
     }
+    for (int i = 0; i < 10; i++) {
+        homeSpawn.spawnCreep(Harvester::bodyParts(), Harvester::namePre() + std::to_string(i));
+    }
+
     for (const auto &creep: creeps) {
         if (creep.second.name().find(Harvester::namePre()) != -1) {
             Harvester harvester(creep.second.value());
@@ -54,41 +54,7 @@ extern "C" void loop() {
 
 
 }
-//
-//
-//void upgrade(Screeps::Creep &upgrade, Screeps::Source &source, Screeps::StructureController &target) {
-//    JSON upgradeMemory = upgrade.memory();
-//    std::string action = "isUpgradeing";
-//    bool isUpgrading;
-//    if (!upgradeMemory.contains(action)) {
-//        upgradeMemory[action] = true;
-//    }
-//    upgradeMemory[action].get_to<bool>(isUpgrading);
-//    if (isUpgrading && upgrade.store().getUsedCapacity() == 0) {
-//        isUpgrading = false;
-//        upgrade.say(SAY_HARVEST);
-//    }
-//    if (!isUpgrading && upgrade.store().getFreeCapacity() == 0) {
-//        isUpgrading = true;
-//        upgrade.say(SAY_BUILD);
-//    }
-//    upgradeMemory[action] = isUpgrading;
-//    upgrade.setMemory(upgradeMemory);
-//    if (isUpgrading) {
-//        if (upgrade.upgradeController(target) == Screeps::ERR_NOT_IN_RANGE) {
-//            upgrade.moveTo(target, creepMoveToOpt);
-//        }
-//    } else {
-//        if (upgrade.harvest(source) == Screeps::ERR_NOT_IN_RANGE) {
-//            upgrade.moveTo(source, creepMoveToOpt);
-//        }
-//    }
-//}
-//
-//Screeps::StructureExtension getEmptyExtension(Screeps::Room &room) {
-//
-//}
-//
+
 //void build(Screeps::Creep &builder, Screeps::Source &source, Screeps::ConstructionSite &target) {
 //    JSON builderMemory = builder.memory();
 //    bool isBuilding;

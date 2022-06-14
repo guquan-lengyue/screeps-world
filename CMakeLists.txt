@@ -16,13 +16,16 @@ add_executable(${TARGET_NAME} loop.cpp)
 target_link_libraries(${TARGET_NAME} screepsxx)
 target_link_options(${TARGET_NAME} PUBLIC -sMODULARIZE=1 --no-entry --bind)
 
+
 # Collect all artifacts in 'dist' directory
 # WASM-module and corresponding JS-module must have different base names in order to use them in Screeps, so we add suffixes.
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${TARGET_NAME}.wasm ${CMAKE_SOURCE_DIR}/dist/${TARGET_NAME}_module.wasm)
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${TARGET_NAME}.js ${CMAKE_SOURCE_DIR}/dist/${TARGET_NAME}_loader.js)
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/js/main.js ${CMAKE_SOURCE_DIR}/dist/main.js)
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/js/wasm_loader.js ${CMAKE_SOURCE_DIR}/dist/wasm_loader.js)
-
+INCLUDE_DIRECTORIES(sysroot/include)
+INCLUDE_DIRECTORIES(screepsxx)
+INCLUDE_DIRECTORIES(creep)
 # Following post-build step will automatically upload artifacts to
 # official Screeps server. If you want to use it, please,
 # set SCREEPS_TOKEN environment variable to your Screeps API token

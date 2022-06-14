@@ -18,7 +18,9 @@ public:
     Upgrader(JS::Value creep);
 
     void work(Screeps::RoomObject &source, Screeps::StructureController &target);
+
     static std::string namePre() { return "Upgrader_"; };
+
     static std::vector<std::string> bodyParts();
 };
 
@@ -45,10 +47,10 @@ void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &t
     if (isActioning) {
         if (this->upgradeController(target) == Screeps::ERR_NOT_IN_RANGE) {
             this->moveTo(target);
-        } else {
-            if (this->withdraw(source, Screeps::RESOURCE_ENERGY)) {
-                this->moveTo(source);
-            }
+        }
+    } else {
+        if (this->withdraw(source, Screeps::RESOURCE_ENERGY)) {
+            this->moveTo(source);
         }
     }
 }

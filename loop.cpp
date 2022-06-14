@@ -25,7 +25,8 @@ extern "C" void loop() {
 
     Screeps::StructureSpawn homeSpawn = Screeps::Game.spawns().find("home")->second;
     auto sources = homeSpawn.room().find(Screeps::FIND_SOURCES);
-    std::unique_ptr<Screeps::Source> source;
+
+
     auto constructionSites = homeSpawn.room().find(Screeps::FIND_CONSTRUCTION_SITES);
     std::unique_ptr<Screeps::ConstructionSite> constructionSite;
 
@@ -35,12 +36,24 @@ extern "C" void loop() {
         constructionSite = std::move(s);
     }
 
+    std::unique_ptr<Screeps::Source> source;
     for (const auto &item: sources) {
         std::unique_ptr<Screeps::Source> s(new Screeps::Source(item->value()));
         if (s->energyCapacity() > 0) {
             source = std::move(s);
             break;
         }
+    }
+    auto structures = homeSpawn.room().find(Screeps::FIND_STRUCTURES, [&](const JS::Value &value) {
+        std::string structureType = value["structureType"].as<std::string>();
+        std::vector<std::string> containers = {Screeps::STRUCTURE_EXTENSION, Screeps::STRUCTURE_CONTAINER};
+        auto rst = std::find(containers.begin(), containers.end(), structureType);
+        return rst == containers.end();
+    });
+    std::unique_ptr<Screeps::Structure> container;
+    if(!structures.empty()){
+        std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(structures.begin()->get()->value()));
+        container = std::move(s);
     }
     for (int i = 0; i < 6; i++) {
         homeSpawn.spawnCreep(Builder::bodyParts(), Builder::namePre() + std::to_string(i));
@@ -56,7 +69,7 @@ extern "C" void loop() {
         std::string creepName = creep.second.name();
         if (creepName.find(Harvester::namePre()) != -1) {
             Harvester harvester(creep.second.value());
-            harvester.work(*source, homeSpawn);
+            harvester.work(*source, *container);
         }
         if (creepName.find(Upgrader::namePre()) != -1) {
             Upgrader upgrader(creep.second.value());

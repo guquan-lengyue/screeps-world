@@ -42,10 +42,10 @@ extern "C" void loop() {
             break;
         }
     }
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 6; i++) {
         homeSpawn.spawnCreep(Builder::bodyParts(), Builder::namePre() + std::to_string(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 2; i++) {
         homeSpawn.spawnCreep(Upgrader::bodyParts(), Upgrader::namePre() + std::to_string(i));
     }
     for (int i = 0; i < 10; i++) {

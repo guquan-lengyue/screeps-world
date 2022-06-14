@@ -4,27 +4,17 @@
 #include <Screeps/RoomObject.hpp>
 #include <Screeps/RoomPosition.hpp>
 #include <Screeps/Source.hpp>
-#include <Screeps/Store.hpp>
 #include <Screeps/StructureSpawn.hpp>
-#include <Screeps/StructureExtension.hpp>
 #include <Screeps/StructureStorage.hpp>
 #include <Screeps/Constants.hpp>
-#include <Screeps/Structure.hpp>
 #include <emscripten.h>
 #include <emscripten/bind.h>
 #include <optional>
 #include <Screeps/StructureController.hpp>
 #include <Screeps/ConstructionSite.hpp>
 #include "creep/Harvester.hpp"
+#include "creep/Upgrader.h"
 
-#define SAY_HARVEST "🔄"
-#define SAY_BUILD "🚧"
-
-void miner(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structure &target);
-
-void upgrade(Screeps::Creep &upgrade, Screeps::Source &source, Screeps::StructureController &target);
-
-void build(Screeps::Creep &builder, Screeps::Source &source, Screeps::ConstructionSite &target);
 
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
@@ -47,10 +37,18 @@ extern "C" void loop() {
     for (int i = 0; i < 10; i++) {
         homeSpawn.spawnCreep(Harvester::bodyParts(), Harvester::namePre() + std::to_string(i));
     }
+    for (int i = 0; i < 5; i++) {
+        homeSpawn.spawnCreep(Upgrader::bodyParts(), Upgrader::namePre() + std::to_string(i));
+    }
     for (const auto &creep: creeps) {
         if (creep.second.name().find(Harvester::namePre()) != -1) {
             Harvester harvester(creep.second.value());
             harvester.work(*source, homeSpawn);
+        }
+        if (creep.second.name().find(Upgrader::namePre()) != -1) {
+            Upgrader upgrader(creep.second.value());
+            Screeps::StructureController homeController = homeSpawn.room().controller().value();
+            upgrader.work(homeSpawn, homeController);
         }
     }
 

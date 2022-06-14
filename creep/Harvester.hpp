@@ -17,7 +17,7 @@ public:
 
     ~Harvester() = default;
 
-    int work(Screeps::Source &source, Screeps::Structure &structure);
+    void work(Screeps::Source &source, Screeps::Structure &target);
 
     static std::string namePre() { return "Harvester_"; };
 };
@@ -35,7 +35,7 @@ std::vector<std::string> Harvester::bodyParts() {
     };
 }
 
-int Harvester::work(Screeps::Source &source, Screeps::Structure &target) {
+void Harvester::work(Screeps::Source &source, Screeps::Structure &target) {
     if (this->store().getFreeCapacity() > 0) {
         if (this->harvest(source) == Screeps::ERR_NOT_IN_RANGE) {
             this->moveTo(source);

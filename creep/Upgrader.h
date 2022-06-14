@@ -17,7 +17,7 @@ class Upgrader : public Screeps::Creep {
 public:
     Upgrader(JS::Value creep);
 
-    int work(Screeps::RoomObject &source, Screeps::StructureController &target);
+    void work(Screeps::RoomObject &source, Screeps::StructureController &target);
     static std::string namePre() { return "Upgrader_"; };
     static std::vector<std::string> bodyParts();
 };
@@ -26,7 +26,7 @@ Upgrader::Upgrader(JS::Value creep) : Screeps::Creep(std::move(creep)) {
 
 }
 
-int Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &target) {
+void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &target) {
     JSON memory = this->memory();
     if (!memory.contains(ACTION)) {
         memory[ACTION] = true;

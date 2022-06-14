@@ -7,13 +7,14 @@
 #include <Screeps/StructureSpawn.hpp>
 #include <Screeps/StructureStorage.hpp>
 #include <Screeps/Constants.hpp>
+#include <Screeps/ConstructionSite.hpp>
 #include <emscripten.h>
 #include <emscripten/bind.h>
 #include <optional>
 #include <Screeps/StructureController.hpp>
-#include <Screeps/ConstructionSite.hpp>
 #include "creep/Harvester.hpp"
 #include "creep/Upgrader.h"
+#include "creep/Builder.h"
 
 
 EMSCRIPTEN_KEEPALIVE
@@ -25,6 +26,14 @@ extern "C" void loop() {
     Screeps::StructureSpawn homeSpawn = Screeps::Game.spawns().find("home")->second;
     auto sources = homeSpawn.room().find(Screeps::FIND_SOURCES);
     std::unique_ptr<Screeps::Source> source;
+    auto constructionSites = homeSpawn.room().find(Screeps::FIND_CONSTRUCTION_SITES);
+    std::unique_ptr<Screeps::ConstructionSite> constructionSite;
+
+    if (!constructionSites.empty()) {
+        std::unique_ptr<Screeps::ConstructionSite> s(
+                new Screeps::ConstructionSite(constructionSites.begin()->get()->value()));
+        constructionSite = std::move(s);
+    }
 
     for (const auto &item: sources) {
         std::unique_ptr<Screeps::Source> s(new Screeps::Source(item->value()));
@@ -32,6 +41,9 @@ extern "C" void loop() {
             source = std::move(s);
             break;
         }
+    }
+    for (int i = 0; i < 3; i++) {
+        homeSpawn.spawnCreep(Builder::bodyParts(), Builder::namePre() + std::to_string(i));
     }
     for (int i = 0; i < 5; i++) {
         homeSpawn.spawnCreep(Upgrader::bodyParts(), Upgrader::namePre() + std::to_string(i));
@@ -41,48 +53,24 @@ extern "C" void loop() {
     }
 
     for (const auto &creep: creeps) {
-        if (creep.second.name().find(Harvester::namePre()) != -1) {
+        std::string creepName = creep.second.name();
+        if (creepName.find(Harvester::namePre()) != -1) {
             Harvester harvester(creep.second.value());
             harvester.work(*source, homeSpawn);
         }
-        if (creep.second.name().find(Upgrader::namePre()) != -1) {
+        if (creepName.find(Upgrader::namePre()) != -1) {
             Upgrader upgrader(creep.second.value());
             Screeps::StructureController homeController = homeSpawn.room().controller().value();
             upgrader.work(homeSpawn, homeController);
+        }
+        if (creepName.find(Builder::namePre()) != -1) {
+            Builder builder(creep.second.value());
+            builder.work(homeSpawn, *constructionSite);
         }
     }
 
 
 }
-
-//void build(Screeps::Creep &builder, Screeps::Source &source, Screeps::ConstructionSite &target) {
-//    JSON builderMemory = builder.memory();
-//    bool isBuilding;
-//    if (!builderMemory.contains("isBuilding")) {
-//        builderMemory["isBuilding"] = true;
-//    }
-//    builderMemory["isBuilding"].get_to(isBuilding);
-//    if (isBuilding && builder.store().getUsedCapacity() == 0) {
-//        isBuilding = false;
-//        builder.say(SAY_HARVEST);
-//    }
-//    if (!isBuilding && builder.store().getFreeCapacity() == 0) {
-//        isBuilding = true;
-//        builder.say(SAY_BUILD);
-//    }
-//
-//    builderMemory["isBuilding"] = isBuilding;
-//    builder.setMemory(builderMemory);
-//    if (isBuilding) {
-//        if (builder.build(target) == Screeps::ERR_NOT_IN_RANGE) {
-//            builder.moveTo(target, creepMoveToOpt);
-//        }
-//    } else {
-//        if (builder.harvest(source) == Screeps::ERR_NOT_IN_RANGE) {
-//            builder.moveTo(source, creepMoveToOpt);
-//        }
-//    }
-//}
 
 EMSCRIPTEN_BINDINGS(loop) {
     emscripten::function("loop", &loop);

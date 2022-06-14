@@ -7,9 +7,8 @@
 
 #include <Screeps/Creep.hpp>
 #include <Screeps/Structure.hpp>
-#include <utility>
 
-#define ACTION  "action"
+#define UPGRADER_ACTION  "action"
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"
 
@@ -30,10 +29,10 @@ Upgrader::Upgrader(JS::Value creep) : Screeps::Creep(std::move(creep)) {
 
 void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &target) {
     JSON memory = this->memory();
-    if (!memory.contains(ACTION)) {
-        memory[ACTION] = true;
+    if (!memory.contains(UPGRADER_ACTION)) {
+        memory[UPGRADER_ACTION] = true;
     }
-    bool isActioning = memory[ACTION].get<bool>();
+    bool isActioning = memory[UPGRADER_ACTION].get<bool>();
     if (isActioning && this->store().getUsedCapacity() == 0) {
         isActioning = false;
         this->say(SAY_HARVEST);
@@ -42,7 +41,7 @@ void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &t
         isActioning = true;
         this->say(SAY_BUILD);
     }
-    memory[ACTION] = isActioning;
+    memory[UPGRADER_ACTION] = isActioning;
     this->setMemory(memory);
     if (isActioning) {
         if (this->upgradeController(target) == Screeps::ERR_NOT_IN_RANGE) {

@@ -75,16 +75,21 @@ extern "C" void loop() {
             Screeps::Source s(sources[harvesterIndex % 2]->value());
             harvester.work(s, homeSpawn);
         }
-        if (creepName.find(Upgrader::namePre()) != -1) {
-            Upgrader upgrader(creep.second.value());
-            Screeps::StructureController homeController = homeSpawn.room().controller().value();
-            upgrader.work(homeSpawn, homeController);
-        }
-        if (creepName.find(Builder::namePre()) != -1) {
-            Builder builder(creep.second.value());
-            builder.work(homeSpawn, *constructionSite);
-        }
+
     }
+    if (harvesterIndex > 15 / 2)
+        for (const auto &creep: creeps) {
+            std::string creepName = creep.second.name();
+            if (creepName.find(Upgrader::namePre()) != -1) {
+                Upgrader upgrader(creep.second.value());
+                Screeps::StructureController homeController = homeSpawn.room().controller().value();
+                upgrader.work(homeSpawn, homeController);
+            }
+            if (creepName.find(Builder::namePre()) != -1) {
+                Builder builder(creep.second.value());
+                builder.work(homeSpawn, *constructionSite);
+            }
+        }
 
 
 }

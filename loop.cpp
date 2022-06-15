@@ -51,6 +51,7 @@ extern "C" void loop() {
     auto structures = homeSpawn.room().find(Screeps::FIND_STRUCTURES, [&](const JS::Value &value) {
         std::string structureType = value["structureType"].as<std::string>();
         std::cout << "structures" <<structureType << std::endl;
+        return false;
     });
     std::unique_ptr<Screeps::Structure> container;
     if (!structures.empty()) {

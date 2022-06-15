@@ -56,13 +56,13 @@ extern "C" void loop() {
         std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(structures.begin()->get()->value()));
         container = std::move(s);
     }
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 5; i++) {
         homeSpawn.spawnCreep(Builder::bodyParts(), Builder::namePre() + std::to_string(i));
     }
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 5; i++) {
         homeSpawn.spawnCreep(Upgrader::bodyParts(), Upgrader::namePre() + std::to_string(i));
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 15; i++) {
         homeSpawn.spawnCreep(Harvester::bodyParts(), Harvester::namePre() + std::to_string(i));
     }
 

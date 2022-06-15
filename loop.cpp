@@ -78,6 +78,9 @@ extern "C" void loop() {
         homeSpawn.spawnCreep(Harvester::bodyParts(), Harvester::namePre() + std::to_string(i));
     }
 
+    if (emptyContainer == nullptr) {
+        std::cout << "emptyContainer is null";
+    }
     int harvesterIndex = 0;
     for (const auto &creep: creeps) {
         std::string creepName = creep.second.name();

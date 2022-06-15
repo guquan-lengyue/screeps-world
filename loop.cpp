@@ -62,7 +62,8 @@ extern "C" void loop() {
         Screeps::StructureStorage store(s->value());
         if (store.store().getFreeCapacity() > 0) {
             emptyContainer = std::move(s);
-        } else {
+        }
+        if (store.store().getUsedCapacity() > 50) {
             fullContainer = std::move(s);
         }
     }

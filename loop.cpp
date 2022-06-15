@@ -66,11 +66,14 @@ extern "C" void loop() {
         homeSpawn.spawnCreep(Harvester::bodyParts(), Harvester::namePre() + std::to_string(i));
     }
 
+    int harvesterIndex = 0;
     for (const auto &creep: creeps) {
         std::string creepName = creep.second.name();
         if (creepName.find(Harvester::namePre()) != -1) {
+            ++harvesterIndex;
             Harvester harvester(creep.second.value());
-            harvester.work(*source, *container);
+            Screeps::Source s(sources[harvesterIndex % 2]->value());
+            harvester.work(s, *container);
         }
         if (creepName.find(Upgrader::namePre()) != -1) {
             Upgrader upgrader(creep.second.value());

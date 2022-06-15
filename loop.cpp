@@ -23,7 +23,7 @@ extern "C" void loop() {
 
     std::map<std::string, Screeps::Creep> creeps = Screeps::Game.creeps();
 
-    Screeps::StructureSpawn homeSpawn = Screeps::Game.spawns().find("guquanlengyue")->second;
+    Screeps::StructureSpawn homeSpawn = Screeps::Game.spawns().find("home")->second;
     auto sources = homeSpawn.room().find(Screeps::FIND_SOURCES);
 
 

@@ -16,6 +16,9 @@
 #include "creep/Upgrader.h"
 #include "creep/Builder.h"
 
+#define HARVESTER_NUM 16
+#define UPGRADER_NUM 5
+#define BUILDER_NUM 5
 
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
@@ -56,13 +59,13 @@ extern "C" void loop() {
         std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(structures.begin()->get()->value()));
         container = std::move(s);
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < BUILDER_NUM; i++) {
         homeSpawn.spawnCreep(Builder::bodyParts(), Builder::namePre() + std::to_string(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < UPGRADER_NUM; i++) {
         homeSpawn.spawnCreep(Upgrader::bodyParts(), Upgrader::namePre() + std::to_string(i));
     }
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < HARVESTER_NUM; i++) {
         homeSpawn.spawnCreep(Harvester::bodyParts(), Harvester::namePre() + std::to_string(i));
     }
 
@@ -77,7 +80,7 @@ extern "C" void loop() {
         }
 
     }
-    if (harvesterIndex > 15 / 2)
+    if (harvesterIndex > HARVESTER_NUM / 2)
         for (const auto &creep: creeps) {
             std::string creepName = creep.second.name();
             if (creepName.find(Upgrader::namePre()) != -1) {

@@ -59,6 +59,8 @@ extern "C" void loop() {
     std::unique_ptr<Screeps::Structure> fullContainer;
     if (!structures.empty()) {
         Screeps::StructureSpawn store(structures.begin()->get()->value());
+        std::cout << store.structureType() << std::endl;
+
         if (store.store().getFreeCapacity() > 0) {
             std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(store.value()));
             emptyContainer = std::move(s);

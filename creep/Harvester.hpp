@@ -6,6 +6,7 @@
 #include <Screeps/Store.hpp>
 #include <Screeps/Source.hpp>
 #include <Screeps/Structure.hpp>
+#include <iostream>
 
 class Harvester : public Screeps::Creep {
 private:
@@ -36,6 +37,8 @@ std::vector<std::string> Harvester::bodyParts() {
 }
 
 void Harvester::work(Screeps::Source &source, Screeps::Structure &target) {
+    std::cout << "harvester" << target.structureType() << std::endl;
+
     if (this->store().getFreeCapacity() > 0) {
         if (this->harvest(source) == Screeps::ERR_NOT_IN_RANGE) {
             this->moveTo(source);

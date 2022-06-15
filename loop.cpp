@@ -73,7 +73,7 @@ extern "C" void loop() {
             ++harvesterIndex;
             Harvester harvester(creep.second.value());
             Screeps::Source s(sources[harvesterIndex % 2]->value());
-            harvester.work(s, homeSpawn);
+            harvester.work(s, *container);
         }
         if (creepName.find(Upgrader::namePre()) != -1) {
             Upgrader upgrader(creep.second.value());

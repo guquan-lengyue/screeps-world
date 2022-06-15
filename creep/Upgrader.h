@@ -29,23 +29,23 @@ Upgrader::Upgrader(JS::Value creep) : Screeps::Creep(std::move(creep)) {
 
 void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &target) {
     JSON memory = this->memory();
-    bool isBuilding;
+    bool isUpgrading;
     if (!memory.contains(UPGRADER_ACTION)) {
         memory[UPGRADER_ACTION] = true;
     }
-    memory[UPGRADER_ACTION].get_to(isBuilding);
-    if (isBuilding && this->store().getUsedCapacity() == 0) {
-        isBuilding = false;
+    memory[UPGRADER_ACTION].get_to(isUpgrading);
+    if (isUpgrading && this->store().getUsedCapacity() == 0) {
+        isUpgrading = false;
         this->say(SAY_HARVEST);
     }
-    if (!isBuilding && this->store().getFreeCapacity() == 0) {
-        isBuilding = true;
+    if (!isUpgrading && this->store().getFreeCapacity() == 0) {
+        isUpgrading = true;
         this->say(SAY_BUILD);
     }
 
-    memory[UPGRADER_ACTION] = isBuilding;
+    memory[UPGRADER_ACTION] = isUpgrading;
     this->setMemory(memory);
-    if (isBuilding) {
+    if (isUpgrading) {
         if (this->upgradeController(target) == Screeps::ERR_NOT_IN_RANGE) {
             this->moveTo(target);
         }

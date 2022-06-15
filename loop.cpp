@@ -69,7 +69,7 @@ extern "C" void loop() {
         std::string creepName = creep.second.name();
         if (creepName.find(Harvester::namePre()) != -1) {
             Harvester harvester(creep.second.value());
-            harvester.work(*source, *container);
+            harvester.work(*source, homeSpawn);
         }
         if (creepName.find(Upgrader::namePre()) != -1) {
             Upgrader upgrader(creep.second.value());

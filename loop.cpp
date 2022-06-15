@@ -55,10 +55,16 @@ extern "C" void loop() {
                structureType == Screeps::STRUCTURE_SPAWN ||
                structureType == Screeps::STRUCTURE_CONTAINER;
     });
-    std::unique_ptr<Screeps::Structure> container;
+    std::unique_ptr<Screeps::Structure> emptyContainer;
+    std::unique_ptr<Screeps::Structure> fullContainer;
     if (!structures.empty()) {
         std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(structures.begin()->get()->value()));
-        container = std::move(s);
+        Screeps::StructureStorage store(s->value());
+        if (store.store().getFreeCapacity() > 0) {
+            emptyContainer = std::move(s);
+        } else {
+            fullContainer = std::move(s);
+        }
     }
     for (int i = 0; i < BUILDER_NUM; i++) {
         homeSpawn.spawnCreep(Builder::bodyParts(), Builder::namePre() + std::to_string(i));
@@ -77,7 +83,7 @@ extern "C" void loop() {
             ++harvesterIndex;
             Harvester harvester(creep.second.value());
             Screeps::Source s(sources[harvesterIndex % 2]->value());
-            harvester.work(s, *container);
+            harvester.work(s, *emptyContainer);
         }
 
     }
@@ -87,11 +93,11 @@ extern "C" void loop() {
             std::string creepName = creep.second.name();
             if (creepName.find(Upgrader::namePre()) != -1) {
                 Upgrader upgrader(creep.second.value());
-                upgrader.work(homeSpawn, homeController);
+                upgrader.work(*fullContainer, homeController);
             }
             if (creepName.find(Builder::namePre()) != -1) {
                 Builder builder(creep.second.value());
-                builder.work(homeSpawn, *constructionSite);
+                builder.work(*fullContainer, *constructionSite);
             }
         }
 

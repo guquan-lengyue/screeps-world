@@ -16,6 +16,7 @@
 #include "creep/Upgrader.h"
 #include "creep/Builder.h"
 #include <iostream>
+
 #define HARVESTER_NUM 16
 #define UPGRADER_NUM 5
 #define BUILDER_NUM 5
@@ -50,12 +51,14 @@ extern "C" void loop() {
     }
     auto structures = homeSpawn.room().find(Screeps::FIND_STRUCTURES, [&](const JS::Value &value) {
         std::string structureType = value["structureType"].as<std::string>();
-        std::cout << "structures" <<structureType << std::endl;
-        return false;
+        return structureType == Screeps::STRUCTURE_EXTENSION ||
+               structureType == Screeps::STRUCTURE_SPAWN ||
+               structureType == Screeps::STRUCTURE_CONTAINER;
     });
     std::unique_ptr<Screeps::Structure> container;
     if (!structures.empty()) {
         std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(structures.begin()->get()->value()));
+        std::cout << s->structureType() << std::endl;
         container = std::move(s);
     }
     for (int i = 0; i < BUILDER_NUM; i++) {

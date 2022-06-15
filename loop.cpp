@@ -81,12 +81,12 @@ extern "C" void loop() {
         }
 
     }
+    Screeps::StructureController homeController = homeSpawn.room().controller().value();
     if (harvesterIndex > HARVESTER_NUM / 2)
         for (const auto &creep: creeps) {
             std::string creepName = creep.second.name();
             if (creepName.find(Upgrader::namePre()) != -1) {
                 Upgrader upgrader(creep.second.value());
-                Screeps::StructureController homeController = homeSpawn.room().controller().value();
                 upgrader.work(homeSpawn, homeController);
             }
             if (creepName.find(Builder::namePre()) != -1) {

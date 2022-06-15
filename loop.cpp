@@ -58,7 +58,6 @@ extern "C" void loop() {
     std::unique_ptr<Screeps::Structure> container;
     if (!structures.empty()) {
         std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(structures.begin()->get()->value()));
-        std::cout << s->structureType() << std::endl;
         container = std::move(s);
     }
     for (int i = 0; i < BUILDER_NUM; i++) {
@@ -78,7 +77,7 @@ extern "C" void loop() {
             ++harvesterIndex;
             Harvester harvester(creep.second.value());
             Screeps::Source s(sources[harvesterIndex % 2]->value());
-            harvester.work(s, homeSpawn);
+            harvester.work(s, *container);
         }
 
     }

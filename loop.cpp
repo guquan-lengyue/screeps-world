@@ -58,12 +58,13 @@ extern "C" void loop() {
     std::unique_ptr<Screeps::Structure> emptyContainer;
     std::unique_ptr<Screeps::Structure> fullContainer;
     if (!structures.empty()) {
-        std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(structures.begin()->get()->value()));
-        Screeps::StructureStorage store(s->value());
+        Screeps::StructureSpawn store(structures.begin()->get()->value());
         if (store.store().getFreeCapacity() > 0) {
+            std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(store.value()));
             emptyContainer = std::move(s);
         }
         if (store.store().getUsedCapacity() > 50) {
+            std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(store.value()));
             fullContainer = std::move(s);
         }
     }

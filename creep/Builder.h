@@ -35,12 +35,12 @@ std::vector<std::string> Builder::bodyParts() {
 }
 
 void Builder::work(Screeps::RoomObject &source, Screeps::ConstructionSite &target) {
-    JSON builderMemory = this->memory();
+    JSON memory = this->memory();
     bool isBuilding;
-    if (!builderMemory.contains(BUILDER_ACTION)) {
-        builderMemory[BUILDER_ACTION] = true;
+    if (!memory.contains(BUILDER_ACTION)) {
+        memory[BUILDER_ACTION] = true;
     }
-    builderMemory[BUILDER_ACTION].get_to(isBuilding);
+    memory[BUILDER_ACTION].get_to(isBuilding);
     if (isBuilding && this->store().getUsedCapacity() == 0) {
         isBuilding = false;
         this->say(SAY_HARVEST);
@@ -50,8 +50,8 @@ void Builder::work(Screeps::RoomObject &source, Screeps::ConstructionSite &targe
         this->say(SAY_BUILD);
     }
 
-    builderMemory[BUILDER_ACTION] = isBuilding;
-    this->setMemory(builderMemory);
+    memory[BUILDER_ACTION] = isBuilding;
+    this->setMemory(memory);
     if (isBuilding) {
         if (this->build(target) == Screeps::ERR_NOT_IN_RANGE) {
             this->moveTo(target);

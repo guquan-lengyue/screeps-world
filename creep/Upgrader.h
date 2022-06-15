@@ -8,7 +8,7 @@
 #include <Screeps/Creep.hpp>
 #include <Screeps/Structure.hpp>
 
-#define UPGRADER_ACTION  "action"
+#define UPGRADER_ACTION  "upgrading"
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"
 
@@ -29,29 +29,31 @@ Upgrader::Upgrader(JS::Value creep) : Screeps::Creep(std::move(creep)) {
 
 void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &target) {
     JSON memory = this->memory();
+    bool isUpgrading;
     if (!memory.contains(UPGRADER_ACTION)) {
         memory[UPGRADER_ACTION] = true;
     }
-    bool isActioning = memory[UPGRADER_ACTION].get<bool>();
-    if (isActioning && this->store().getUsedCapacity() == 0) {
-        isActioning = false;
+    memory[UPGRADER_ACTION].get_to(isUpgrading);
+    if (isUpgrading && this->store().getUsedCapacity() == 0) {
+        isUpgrading = false;
         this->say(SAY_HARVEST);
     }
-    if (!isActioning && this->store().getFreeCapacity() == 0) {
-        isActioning = true;
+    if (!isUpgrading && this->store().getFreeCapacity() == 0) {
+        isUpgrading = true;
         this->say(SAY_BUILD);
     }
-    memory[UPGRADER_ACTION] = isActioning;
+    memory[UPGRADER_ACTION] = isUpgrading;
     this->setMemory(memory);
-    if (isActioning) {
+    if (isUpgrading) {
         if (this->upgradeController(target) == Screeps::ERR_NOT_IN_RANGE) {
             this->moveTo(target);
         }
     } else {
-        if (this->withdraw(source, Screeps::RESOURCE_ENERGY)) {
+        if (this->withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE) {
             this->moveTo(source);
         }
     }
+
 }
 
 std::vector<std::string> Upgrader::bodyParts() {

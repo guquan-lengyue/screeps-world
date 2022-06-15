@@ -23,7 +23,7 @@ extern "C" void loop() {
 
     std::map<std::string, Screeps::Creep> creeps = Screeps::Game.creeps();
 
-    Screeps::StructureSpawn homeSpawn = Screeps::Game.spawns().find("home")->second;
+    Screeps::StructureSpawn homeSpawn = Screeps::Game.spawns().find("guquanlengyue")->second;
     auto sources = homeSpawn.room().find(Screeps::FIND_SOURCES);
 
 
@@ -37,6 +37,7 @@ extern "C" void loop() {
     }
 
     std::unique_ptr<Screeps::Source> source;
+
     for (const auto &item: sources) {
         std::unique_ptr<Screeps::Source> s(new Screeps::Source(item->value()));
         if (s->energyCapacity() > 0) {
@@ -51,11 +52,11 @@ extern "C" void loop() {
         return rst == containers.end();
     });
     std::unique_ptr<Screeps::Structure> container;
-    if(!structures.empty()){
+    if (!structures.empty()) {
         std::unique_ptr<Screeps::Structure> s(new Screeps::Structure(structures.begin()->get()->value()));
         container = std::move(s);
     }
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 3; i++) {
         homeSpawn.spawnCreep(Builder::bodyParts(), Builder::namePre() + std::to_string(i));
     }
     for (int i = 0; i < 2; i++) {

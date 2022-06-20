@@ -36,10 +36,10 @@ std::vector<std::string> Builder::bodyParts() {
 
 void Builder::work(Screeps::RoomObject &source, Screeps::ConstructionSite &target) {
     JSON memory = this->memory();
-    bool isBuilding;
     if (!memory.contains(BUILDER_ACTION)) {
         memory[BUILDER_ACTION] = true;
     }
+    bool isBuilding;
     memory[BUILDER_ACTION].get_to(isBuilding);
     if (isBuilding && this->store().getUsedCapacity() == 0) {
         isBuilding = false;

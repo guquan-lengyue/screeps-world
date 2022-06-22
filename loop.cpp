@@ -21,7 +21,7 @@
 #define HARVESTER_NUM 10
 #define UPGRADER_NUM 5
 #define BUILDER_NUM 5
-#define HOME_SCREEP "home"
+#define HOME_SCREEP "Spawn1"
 
 std::shared_ptr<Screeps::StructureSpawn>
 getHomeSpawn()
@@ -58,17 +58,17 @@ std::optional<Screeps::StructureController> getController(Screeps::Room &room)
 
 void spawnHarvester(Screeps::StructureSpawn &spawn, int number)
 {
-    for (short i = 0; i < number; i++)
+    for (int i = 0; i < number; i++)
     {
-        spawn.spawnCreep(Harvester::bodyParts(), Harvester::namePre());
-    }  
+        spawn.spawnCreep(Harvester::bodyParts(), Harvester::namePre() + std::to_string(i));
+    }
 }
 
 void spawnUpgrader(Screeps::StructureSpawn &spawn, int number)
 {
-    for (short i = 0; i < number; i++)
+    for (int i = 0; i < number; i++)
     {
-        spawn.spawnCreep(Upgrader::bodyParts(), Upgrader::namePre());
+        spawn.spawnCreep(Upgrader::bodyParts(), Upgrader::namePre() + std::to_string(i));
     }
 }
 
@@ -81,25 +81,23 @@ extern "C" void loop()
     auto room = getRoom(home);
     auto sources = getInRoom<Screeps::Source>(room, Screeps::FIND_SOURCES);
     auto controller = getController(*room);
-    // if (controller.has_value())
-    // {
-    //     spawnUpgrader(*home, UPGRADER_NUM);
-    // }
+    spawnUpgrader(*home, UPGRADER_NUM);
     spawnHarvester(*home, HARVESTER_NUM);
 
     for (const auto &item : Screeps::Game.creeps())
     {
         auto creep = item.second;
-        if (item.first.find(Harvester::namePre()) >= 0)
-        {   
+        std::cout << "hello world" << std::endl;
+
+        if ((int)creep.name().find(Harvester::namePre()) >= 0)
+        {
             const auto &source = sources[1];
             Harvester(creep.value()).work(*source, *home);
         }
-        // else if (controller.has_value() && item.first.find(Upgrader::namePre()) >= 0)
-        // {
-        //     const auto &source = sources[0];
-        //     Upgrader(creep.value()).work(*source, controller.value());
-        // }
+        else if ((int)creep.name().find(Upgrader::namePre()) >= 0)
+        {
+            Upgrader(creep.value()).work(*home, *controller);
+        }
     }
 }
 

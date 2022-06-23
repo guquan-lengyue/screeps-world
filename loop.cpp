@@ -18,10 +18,10 @@
 #include "creep/Upgrader.h"
 #include "creep/Builder.h"
 #include <iostream>
-
-#define HARVESTER_NUM 5
-#define UPGRADER_NUM 5
-#define BUILDER_NUM 5
+#include <emscripten.h>
+#define HARVESTER_NUM 10
+#define UPGRADER_NUM 1
+#define BUILDER_NUM 1
 #define HOME_SCREEP "Spawn1"
 
 std::shared_ptr<Screeps::StructureSpawn>
@@ -59,7 +59,7 @@ getController(Screeps::Room &room)
 }
 
 std::shared_ptr<Screeps::Structure>
-getContainer(Screeps::Room &room)
+getContainer(Screeps::Room &room, bool empty)
 {
     auto structures = getInRoom<Screeps::StructureExtension>(room, Screeps::FIND_MY_STRUCTURES);
     for (const auto &item : structures)
@@ -67,10 +67,19 @@ getContainer(Screeps::Room &room)
         if ((int)item->structureType().find(Screeps::STRUCTURE_EXTENSION) >= 0 ||
             (int)item->structureType().find(Screeps::STRUCTURE_CONTAINER) >= 0)
         {
-            if (item->store().getFreeCapacity().value() >= 0)
+            if (empty)
             {
-                std::cout << item->structureType() << ":" << item->store().getUsedCapacity().value() << "/" << item->store().getFreeCapacity().value() << std::endl;
-                return std::shared_ptr<Screeps::Structure>(new Screeps::Structure(item->value()));
+                if (item->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
+                {
+                    return std::shared_ptr<Screeps::Structure>(new Screeps::Structure(item->value()));
+                }
+            }
+            else
+            {
+                if (item->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
+                {
+                    return std::shared_ptr<Screeps::Structure>(new Screeps::Structure(item->value()));
+                }
             }
         }
     }
@@ -108,15 +117,20 @@ extern "C" void loop()
     auto room = getRoom(home);
     auto sources = getInRoom<Screeps::Source>(*room, Screeps::FIND_SOURCES);
     auto controller = getController(*room);
-    auto container = getContainer(*room);
+    auto fullContainer = getContainer(*room, false);
+    auto emptyContainer = getContainer(*room, true);
 
     if (Screeps::Game.time() % 10 == 0)
     {
-        std::cout << "home contain :" << home->store().getUsedCapacity().value() << "/" << home->store().getFreeCapacity().value() << std::endl;
+        std::cout << "home contain :" << home->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(0) << " / " << home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) << std::endl;
     }
-    if (container == nullptr)
+    if (fullContainer == nullptr)
     {
-        container = home;
+        fullContainer = home;
+    }
+    if (emptyContainer == nullptr)
+    {
+        emptyContainer = home;
     }
 
     auto constructionSites = getInRoom<Screeps::ConstructionSite>(*room, Screeps::FIND_CONSTRUCTION_SITES);
@@ -127,26 +141,23 @@ extern "C" void loop()
     spawnUpgrader(*home, UPGRADER_NUM);
     spawnHarvester(*home, HARVESTER_NUM);
 
+    int count = 0;
     for (const auto &item : Screeps::Game.creeps())
     {
         auto creep = item.second;
         if ((int)creep.name().find(Harvester::namePre()) >= 0)
         {
-            const auto &source = sources[1];
-            auto store = container;
-            // if (home->store().getFreeCapacity().value() >= 0)
-            // {
-            //     store = home;
-            // }
+            const auto &source = sources[++count % 2];
+            auto store = home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value() > 0 ? home : emptyContainer;
             Harvester(creep.value()).work(*source, *store);
         }
         else if ((int)creep.name().find(Upgrader::namePre()) >= 0)
         {
-            Upgrader(creep.value()).work(*container, *controller);
+            Upgrader(creep.value()).work(*fullContainer, *controller);
         }
-        else if ((int)creep.name().find(Builder::namePre()) >= 0)
+        if ((int)creep.name().find(Builder::namePre()) >= 0)
         {
-            Builder(creep.value()).work(*container, *(constructionSites[0]));
+            Builder(creep.value()).work(*fullContainer, *(constructionSites[0]));
         }
     }
 }

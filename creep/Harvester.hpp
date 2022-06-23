@@ -8,7 +8,8 @@
 #include <Screeps/Structure.hpp>
 #include <iostream>
 
-class Harvester : public Screeps::Creep {
+class Harvester : public Screeps::Creep
+{
 private:
     /* data */
 public:
@@ -23,30 +24,36 @@ public:
     static std::string namePre() { return "Harvester_"; };
 };
 
-Harvester::Harvester(JS::Value creep) : Screeps::Creep(creep) {
-
+Harvester::Harvester(JS::Value creep) : Screeps::Creep(creep)
+{
 }
 
-
-std::vector<std::string> Harvester::bodyParts() {
+std::vector<std::string> Harvester::bodyParts()
+{
     return std::vector<std::string>{
-            Screeps::WORK,
-            Screeps::CARRY,
-            Screeps::MOVE
-    };
+        Screeps::WORK,
+        Screeps::WORK,
+        Screeps::CARRY,
+        Screeps::MOVE,
+        Screeps::MOVE};
 }
 
-void Harvester::work(Screeps::Source &source, Screeps::Structure &target) {
-    if (this->store().getFreeCapacity() > 0) {
-        if (this->harvest(source) == Screeps::ERR_NOT_IN_RANGE) {
+void Harvester::work(Screeps::Source &source, Screeps::Structure &target)
+{
+    if (this->store().getFreeCapacity() > 0)
+    {
+        if (this->harvest(source) == Screeps::ERR_NOT_IN_RANGE)
+        {
             this->moveTo(source);
         }
-    } else {
-        if (this->transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE) {
+    }
+    else
+    {
+        if (this->transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
+        {
             this->moveTo(target);
         }
     }
 }
-
 
 #endif

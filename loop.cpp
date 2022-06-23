@@ -21,7 +21,7 @@
 #include <emscripten.h>
 #define HARVESTER_NUM 10
 #define UPGRADER_NUM 1
-#define BUILDER_NUM 1
+#define BUILDER_NUM 2
 #define HOME_SCREEP "Spawn1"
 
 std::shared_ptr<Screeps::StructureSpawn>

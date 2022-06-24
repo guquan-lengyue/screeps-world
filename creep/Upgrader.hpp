@@ -62,6 +62,11 @@ std::vector<std::string> Upgrader::bodyParts() {
     return std::vector<std::string>{
             Screeps::WORK,
             Screeps::CARRY,
+            Screeps::CARRY,
+            Screeps::CARRY,
+            Screeps::CARRY,
+            Screeps::MOVE,
+            Screeps::MOVE,
             Screeps::MOVE
     };
 }

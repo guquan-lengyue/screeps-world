@@ -6,6 +6,7 @@
 #include <Screeps/Store.hpp>
 #include <Screeps/Source.hpp>
 #include <Screeps/Structure.hpp>
+#include <Screeps/Resource.hpp>
 #include <iostream>
 
 class Harvester : public Screeps::Creep
@@ -20,6 +21,7 @@ public:
     ~Harvester() = default;
 
     void work(Screeps::Source &source, Screeps::Structure &target);
+    void work(Screeps::Resource &source, Screeps::Structure &target);
 
     static std::string namePre() { return "Harvester_"; };
 };
@@ -43,6 +45,24 @@ void Harvester::work(Screeps::Source &source, Screeps::Structure &target)
     if (this->store().getFreeCapacity() > 0)
     {
         if (this->harvest(source) == Screeps::ERR_NOT_IN_RANGE)
+        {
+            this->moveTo(source);
+        }
+    }
+    else
+    {
+        if (this->transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
+        {
+            this->moveTo(target);
+        }
+    }
+}
+
+void Harvester::work(Screeps::Resource &source, Screeps::Structure &target)
+{
+    if (this->store().getFreeCapacity() > 0)
+    {
+        if (this->pickup(source) == Screeps::ERR_NOT_IN_RANGE)
         {
             this->moveTo(source);
         }

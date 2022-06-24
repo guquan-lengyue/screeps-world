@@ -10,24 +10,28 @@
 #include <Screeps/StructureExtension.hpp>
 #include <Screeps/Constants.hpp>
 #include <Screeps/ConstructionSite.hpp>
+#include <Screeps/StructureTower.hpp>
 #include <emscripten.h>
 #include <emscripten/bind.h>
 #include <optional>
 #include <Screeps/StructureController.hpp>
 #include "creep/Harvester.hpp"
-#include "creep/Upgrader.h"
-#include "creep/Builder.h"
+#include "creep/Upgrader.hpp"
+#include "creep/Builder.hpp"
 #include "creep/Repairer.hpp"
 #include <iostream>
 #include <emscripten.h>
+#include <iterator>
 #define HARVESTER_NUM 10
-#define UPGRADER_NUM 1
+#define UPGRADER_NUM 4
 #define BUILDER_NUM 2
-#define REPAIRER_NUM 1
+#define REPAIRER_NUM 2
 #define HOME_SCREEP "Spawn1"
 
 int HARVESTER_HAVE = 0;
-
+int UPGRADER_HAVE = 0;
+int BUILDER_HAVE = 0;
+int REPAIRER_HAVE = 0;
 std::shared_ptr<Screeps::StructureSpawn>
 getHomeSpawn()
 {
@@ -69,7 +73,9 @@ getContainer(Screeps::Room &room, bool empty)
     for (const auto &item : structures)
     {
         if ((int)item->structureType().find(Screeps::STRUCTURE_EXTENSION) >= 0 ||
-            (int)item->structureType().find(Screeps::STRUCTURE_CONTAINER) >= 0)
+            (int)item->structureType().find(Screeps::STRUCTURE_CONTAINER) >= 0 ||
+            (int)item->structureType().find(Screeps::STRUCTURE_STORAGE) >= 0 ||
+            (int)item->structureType().find(Screeps::STRUCTURE_TOWER) >= 0)
         {
             if (empty)
             {
@@ -80,7 +86,8 @@ getContainer(Screeps::Room &room, bool empty)
             }
             else
             {
-                if (item->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
+                if (item->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0 &&
+                    (int)item->structureType().find(Screeps::STRUCTURE_STORAGE) >= 0)
                 {
                     return std::shared_ptr<Screeps::Structure>(new Screeps::Structure(item->value()));
                 }
@@ -90,11 +97,25 @@ getContainer(Screeps::Room &room, bool empty)
     return nullptr;
 }
 
+std::unique_ptr<Screeps::Creep> getEnemy(Screeps::Room &room)
+{
+    auto creeps = getInRoom<Screeps::Creep>(room, Screeps::FIND_CREEPS);
+
+    for (const auto &creep : creeps)
+    {
+        if (!creep->my())
+        {
+            return std::unique_ptr<Screeps::Creep>(new Screeps::Creep(creep->value()));
+        }
+    }
+    return nullptr;
+}
+
 std::unique_ptr<Screeps::Structure>
 getDamageStructure(Screeps::Room &room)
 {
-    auto structures = getInRoom<Screeps::Structure>(room, Screeps::FIND_MY_STRUCTURES);
-    if (!structures.empty())
+    auto structures = getInRoom<Screeps::Structure>(room, Screeps::FIND_STRUCTURES);
+    if (structures.empty())
     {
         return nullptr;
     }
@@ -157,15 +178,19 @@ extern "C" void loop()
     auto home = getHomeSpawn();
     auto room = getRoom(home);
     auto sources = getInRoom<Screeps::Source>(*room, Screeps::FIND_SOURCES);
+    auto droppedResource = getInRoom<Screeps::Resource>(*room, Screeps::FIND_DROPPED_RESOURCES);
     auto damageStructure = getDamageStructure(*room);
     auto controller = getController(*room);
     auto fullContainer = getContainer(*room, false);
     auto emptyContainer = getContainer(*room, true);
 
-    if (Screeps::Game.time() % 10 == 0)
+    if (Screeps::Game.time() % 50 == 0)
     {
         std::cout << "home contain :  U: " << home->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(0) << " / f: " << home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) << std::endl;
         std::cout << "HARVESTER :" << HARVESTER_HAVE << std::endl;
+        std::cout << "UPGRADER :" << UPGRADER_HAVE << std::endl;
+        std::cout << "BUILDER :" << BUILDER_HAVE << std::endl;
+        std::cout << "REPAIRER :" << REPAIRER_HAVE << std::endl;
     }
     if (fullContainer == nullptr)
     {
@@ -192,26 +217,53 @@ extern "C" void loop()
     spawnHarvester(*home, HARVESTER_NUM);
 
     HARVESTER_HAVE = 0;
+    UPGRADER_HAVE = 0;
+    BUILDER_HAVE = 0;
+    REPAIRER_HAVE = 0;
+
     for (const auto &item : Screeps::Game.creeps())
     {
         auto creep = item.second;
         if ((int)creep.name().find(Harvester::namePre()) >= 0)
         {
             const auto &source = sources[++HARVESTER_HAVE % 2];
+
             auto store = home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value() > 0 ? home : emptyContainer;
-            Harvester(creep.value()).work(*source, *store);
+            if (!droppedResource.empty())
+            {
+                Harvester(creep.value()).work(*(droppedResource[0]), *store);
+            }
+            else
+            {
+                Harvester(creep.value()).work(*source, *store);
+            }
         }
         else if ((int)creep.name().find(Upgrader::namePre()) >= 0)
         {
             Upgrader(creep.value()).work(*fullContainer, *controller);
+            ++UPGRADER_HAVE;
         }
-        else if ((int)creep.name().find(Builder::namePre()) >= 0)
+        else if ((int)creep.name().find(Builder::namePre()) >= 0 && !constructionSites.empty())
         {
             Builder(creep.value()).work(*fullContainer, *(constructionSites[0]));
+            ++BUILDER_HAVE;
         }
         else if ((int)creep.name().find(Repairer::namePre()) >= 0 && damageStructure != nullptr)
         {
             Repairer(creep.value()).work(*fullContainer, *damageStructure);
+            ++REPAIRER_HAVE;
+        }
+    }
+    auto towers = getInRoom<Screeps::StructureTower>(*room, Screeps::FIND_MY_STRUCTURES);
+    auto enemy = getEnemy(*room);
+    for (const auto &item : towers)
+    {
+        if ((int)item->structureType().find(Screeps::STRUCTURE_TOWER) >= 0)
+        {
+            if (enemy != nullptr)
+            {
+                item->attack(*enemy);
+            }
         }
     }
 }

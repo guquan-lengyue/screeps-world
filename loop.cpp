@@ -260,7 +260,7 @@ extern "C" void loop()
             }
             else if (damageStructure != nullptr)
             {
-                item->repair(*damageStructure);
+                item->repair(damageStructure);
             }
         }
     }

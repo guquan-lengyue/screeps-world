@@ -122,9 +122,12 @@ getDamageStructure(Screeps::Room &room)
     std::unique_ptr<Screeps::Structure> maxDamageStructure = std::move(structures[0]);
     for (int i = 1; i < structures.size(); i++)
     {
-        if (maxDamageStructure->hits() > structures[i]->hits() && structures[i]->hits() > 0)
+        if (structures[i]->hits() < structures[i]->hitsMax())
         {
-            maxDamageStructure = std::move(structures[i]);
+            if (maxDamageStructure->hits() > structures[i]->hits() && structures[i]->hits() > 1)
+            {
+                maxDamageStructure = std::move(structures[i]);
+            }
         }
     }
     return maxDamageStructure;
@@ -181,6 +184,7 @@ extern "C" void loop()
         std::cout << "UPGRADER :" << UPGRADER_HAVE << std::endl;
         std::cout << "BUILDER :" << BUILDER_HAVE << std::endl;
         std::cout << "REPAIRER :" << REPAIRER_HAVE << std::endl;
+        std::cout << damageStructure->pos().x() << "," << damageStructure->pos().y() << " hits :" << damageStructure->hits() << std::endl;
     }
     if (fullContainer == nullptr)
     {
@@ -240,7 +244,6 @@ extern "C" void loop()
         }
         else if ((int)creep.name().find(Repairer::namePre()) >= 0 && damageStructure != nullptr)
         {
-            std::cout << damageStructure->pos().x() << "," << damageStructure->pos().y() << " hits :" << damageStructure->hits() << std::endl;
             Repairer(creep.value()).work(*fullContainer, *damageStructure);
             ++REPAIRER_HAVE;
         }
@@ -254,6 +257,10 @@ extern "C" void loop()
             if (enemy != nullptr)
             {
                 item->attack(*enemy);
+            }
+            else if (damageStructure != nullptr)
+            {
+                item->repair(*damageStructure);
             }
         }
     }

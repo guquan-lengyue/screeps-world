@@ -25,7 +25,7 @@
 #define HARVESTER_NUM 10
 #define UPGRADER_NUM 4
 #define BUILDER_NUM 2
-#define REPAIRER_NUM 2
+#define REPAIRER_NUM 4
 #define HOME_SCREEP "Spawn1"
 
 int HARVESTER_HAVE = 0;
@@ -130,14 +130,7 @@ getDamageStructure(Screeps::Room &room)
             }
         }
     }
-    if (maxDamageStructure->hits() < maxDamageStructure->hitsMax())
-    {
-        return maxDamageStructure;
-    }
-    else
-    {
-        return nullptr;
-    }
+    return maxDamageStructure;
 }
 void spawnHarvester(Screeps::StructureSpawn &spawn, int number)
 {
@@ -250,6 +243,7 @@ extern "C" void loop()
         }
         else if ((int)creep.name().find(Repairer::namePre()) >= 0 && damageStructure != nullptr)
         {
+            std::cout << "hits :" << damageStructure->hits() << std::endl;
             Repairer(creep.value()).work(*fullContainer, *damageStructure);
             ++REPAIRER_HAVE;
         }

@@ -17,12 +17,16 @@
 #include "creep/Harvester.hpp"
 #include "creep/Upgrader.h"
 #include "creep/Builder.h"
+#include "creep/Repairer.hpp"
 #include <iostream>
 #include <emscripten.h>
 #define HARVESTER_NUM 10
 #define UPGRADER_NUM 1
 #define BUILDER_NUM 2
+#define REPAIRER_NUM 1
 #define HOME_SCREEP "Spawn1"
+
+int HARVESTER_HAVE = 0;
 
 std::shared_ptr<Screeps::StructureSpawn>
 getHomeSpawn()
@@ -85,6 +89,35 @@ getContainer(Screeps::Room &room, bool empty)
     }
     return nullptr;
 }
+
+std::unique_ptr<Screeps::Structure>
+getDamageStructure(Screeps::Room &room)
+{
+    auto structures = getInRoom<Screeps::Structure>(room, Screeps::FIND_MY_STRUCTURES);
+    if (!structures.empty())
+    {
+        return nullptr;
+    }
+    std::unique_ptr<Screeps::Structure> maxDamageStructure = std::move(structures[0]);
+    for (int i = 1; i < structures.size(); i++)
+    {
+        if (structures[i]->hits() < structures[i]->hitsMax())
+        {
+            if (maxDamageStructure->hits() < structures[i]->hits())
+            {
+                maxDamageStructure = std::move(structures[i]);
+            }
+        }
+    }
+    if (maxDamageStructure->hits() < maxDamageStructure->hitsMax())
+    {
+        return maxDamageStructure;
+    }
+    else
+    {
+        return nullptr;
+    }
+}
 void spawnHarvester(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
@@ -109,6 +142,14 @@ void spawnBuilder(Screeps::StructureSpawn &spawn, int number)
     }
 }
 
+void spawnRepairer(Screeps::StructureSpawn &spawn, int number)
+{
+    for (int i = 0; i < number; i++)
+    {
+        spawn.spawnCreep(Repairer::bodyParts(), Repairer::namePre() + std::to_string(i));
+    }
+}
+
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop()
 {
@@ -116,13 +157,15 @@ extern "C" void loop()
     auto home = getHomeSpawn();
     auto room = getRoom(home);
     auto sources = getInRoom<Screeps::Source>(*room, Screeps::FIND_SOURCES);
+    auto damageStructure = getDamageStructure(*room);
     auto controller = getController(*room);
     auto fullContainer = getContainer(*room, false);
     auto emptyContainer = getContainer(*room, true);
 
     if (Screeps::Game.time() % 10 == 0)
     {
-        std::cout << "home contain :" << home->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(0) << " / " << home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) << std::endl;
+        std::cout << "home contain :  U: " << home->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(0) << " / f: " << home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) << std::endl;
+        std::cout << "HARVESTER :" << HARVESTER_HAVE << std::endl;
     }
     if (fullContainer == nullptr)
     {
@@ -134,20 +177,27 @@ extern "C" void loop()
     }
 
     auto constructionSites = getInRoom<Screeps::ConstructionSite>(*room, Screeps::FIND_CONSTRUCTION_SITES);
-    if (!constructionSites.empty())
+    if (HARVESTER_HAVE > HARVESTER_NUM / 2)
     {
-        spawnBuilder(*home, BUILDER_NUM);
+        if (damageStructure != nullptr)
+        {
+            spawnRepairer(*home, REPAIRER_NUM);
+        }
+        if (!constructionSites.empty())
+        {
+            spawnBuilder(*home, BUILDER_NUM);
+        }
+        spawnUpgrader(*home, UPGRADER_NUM);
     }
-    spawnUpgrader(*home, UPGRADER_NUM);
     spawnHarvester(*home, HARVESTER_NUM);
 
-    int count = 0;
+    HARVESTER_HAVE = 0;
     for (const auto &item : Screeps::Game.creeps())
     {
         auto creep = item.second;
         if ((int)creep.name().find(Harvester::namePre()) >= 0)
         {
-            const auto &source = sources[++count % 2];
+            const auto &source = sources[++HARVESTER_HAVE % 2];
             auto store = home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value() > 0 ? home : emptyContainer;
             Harvester(creep.value()).work(*source, *store);
         }
@@ -155,9 +205,13 @@ extern "C" void loop()
         {
             Upgrader(creep.value()).work(*fullContainer, *controller);
         }
-        if ((int)creep.name().find(Builder::namePre()) >= 0)
+        else if ((int)creep.name().find(Builder::namePre()) >= 0)
         {
             Builder(creep.value()).work(*fullContainer, *(constructionSites[0]));
+        }
+        else if ((int)creep.name().find(Repairer::namePre()) >= 0 && damageStructure != nullptr)
+        {
+            Repairer(creep.value()).work(*fullContainer, *damageStructure);
         }
     }
 }

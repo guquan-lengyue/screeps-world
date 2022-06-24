@@ -22,10 +22,10 @@
 #include <iostream>
 #include <emscripten.h>
 #include <iterator>
-#define HARVESTER_NUM 10
+#define HARVESTER_NUM 12
 #define UPGRADER_NUM 4
 #define BUILDER_NUM 2
-#define REPAIRER_NUM 4
+#define REPAIRER_NUM 0
 #define HOME_SCREEP "Spawn1"
 
 int HARVESTER_HAVE = 0;
@@ -260,7 +260,7 @@ extern "C" void loop()
             }
             else if (damageStructure != nullptr)
             {
-                item->repair(damageStructure);
+                item->repair(*damageStructure);
             }
         }
     }

@@ -122,12 +122,9 @@ getDamageStructure(Screeps::Room &room)
     std::unique_ptr<Screeps::Structure> maxDamageStructure = std::move(structures[0]);
     for (int i = 1; i < structures.size(); i++)
     {
-        if (structures[i]->hits() < structures[i]->hitsMax())
+        if (maxDamageStructure->hits() > structures[i]->hits() && structures[i]->hits() > 0)
         {
-            if (maxDamageStructure->hits() < structures[i]->hits())
-            {
-                maxDamageStructure = std::move(structures[i]);
-            }
+            maxDamageStructure = std::move(structures[i]);
         }
     }
     return maxDamageStructure;
@@ -243,7 +240,7 @@ extern "C" void loop()
         }
         else if ((int)creep.name().find(Repairer::namePre()) >= 0 && damageStructure != nullptr)
         {
-            std::cout << "hits :" << damageStructure->hits() << std::endl;
+            std::cout << damageStructure->pos().x() << "," << damageStructure->pos().y() << " hits :" << damageStructure->hits() << std::endl;
             Repairer(creep.value()).work(*fullContainer, *damageStructure);
             ++REPAIRER_HAVE;
         }

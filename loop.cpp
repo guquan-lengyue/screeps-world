@@ -22,9 +22,10 @@
 #include <iostream>
 #include <emscripten.h>
 #include <iterator>
-#define HARVESTER_NUM 12
+#include <algorithm>
+#define HARVESTER_NUM 10
 #define UPGRADER_NUM 4
-#define BUILDER_NUM 2
+#define BUILDER_NUM 4
 #define REPAIRER_NUM 0
 #define HOME_SCREEP "Spawn1"
 
@@ -32,6 +33,20 @@ int HARVESTER_HAVE = 0;
 int UPGRADER_HAVE = 0;
 int BUILDER_HAVE = 0;
 int REPAIRER_HAVE = 0;
+
+std::map<std::string, int> containerLevel;
+bool containerLevelCmp(const std::unique_ptr<Screeps::StructureExtension> &a, const std::unique_ptr<Screeps::StructureExtension> &b)
+{
+    if (containerLevel.empty())
+    {
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_EXTENSION, 0));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_CONTAINER, 1));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_STORAGE, 2));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_TOWER, 3));
+    }
+    return containerLevel[a->structureType()] < containerLevel[b->structureType()];
+}
+
 std::shared_ptr<Screeps::StructureSpawn>
 getHomeSpawn()
 {
@@ -69,7 +84,9 @@ getController(Screeps::Room &room)
 std::shared_ptr<Screeps::Structure>
 getContainer(Screeps::Room &room, bool empty)
 {
+
     auto structures = getInRoom<Screeps::StructureExtension>(room, Screeps::FIND_MY_STRUCTURES);
+    std::sort(structures.begin(), structures.end(), containerLevelCmp);
     for (const auto &item : structures)
     {
         if ((int)item->structureType().find(Screeps::STRUCTURE_EXTENSION) >= 0 ||
@@ -86,8 +103,7 @@ getContainer(Screeps::Room &room, bool empty)
             }
             else
             {
-                if (item->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0 &&
-                    (int)item->structureType().find(Screeps::STRUCTURE_STORAGE) >= 0)
+                if (item->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
                 {
                     return std::shared_ptr<Screeps::Structure>(new Screeps::Structure(item->value()));
                 }
@@ -185,14 +201,23 @@ extern "C" void loop()
         std::cout << "BUILDER :" << BUILDER_HAVE << std::endl;
         std::cout << "REPAIRER :" << REPAIRER_HAVE << std::endl;
         std::cout << damageStructure->pos().x() << "," << damageStructure->pos().y() << " hits :" << damageStructure->hits() << std::endl;
-    }
-    if (fullContainer == nullptr)
-    {
-        fullContainer = home;
+        auto storage = getInRoom<Screeps::StructureStorage>(
+            *room, Screeps::FIND_MY_STRUCTURES, [](const JS::Value &value)
+            { return (int)value["structureType"].as<std::string>().find(Screeps::STRUCTURE_STORAGE) >= 0; });
+        for (const auto &item : storage)
+        {
+            auto u = item->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1);
+            auto f = item->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1);
+            std::cout << "storage :  U: " << u << " / F: " << f << std::endl;
+        }
     }
     if (emptyContainer == nullptr)
     {
         emptyContainer = home;
+    }
+    if (fullContainer == nullptr)
+    {
+        fullContainer = home;
     }
 
     auto constructionSites = getInRoom<Screeps::ConstructionSite>(*room, Screeps::FIND_CONSTRUCTION_SITES);
@@ -232,6 +257,10 @@ extern "C" void loop()
                 Harvester(creep.value()).work(*source, *store);
             }
         }
+        // if (fullContainer == nullptr)
+        // {
+        //     continue;
+        // }
         else if ((int)creep.name().find(Upgrader::namePre()) >= 0)
         {
             Upgrader(creep.value()).work(*fullContainer, *controller);

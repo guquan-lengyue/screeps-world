@@ -7,12 +7,14 @@
 
 #include <Screeps/Creep.hpp>
 #include <Screeps/Structure.hpp>
+#include <Screeps/Constants.hpp>
 
-#define UPGRADER_ACTION  "upgrading"
+#define UPGRADER_ACTION "upgrading"
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"
 
-class Upgrader : public Screeps::Creep {
+class Upgrader : public Screeps::Creep
+{
 public:
     Upgrader(JS::Value creep);
 
@@ -23,53 +25,55 @@ public:
     static std::vector<std::string> bodyParts();
 };
 
-Upgrader::Upgrader(JS::Value creep) : Screeps::Creep(std::move(creep)) {
-
+Upgrader::Upgrader(JS::Value creep) : Screeps::Creep(std::move(creep))
+{
 }
 
-void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &target) {
+void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &target)
+{
     JSON memory = this->memory();
-    if (!memory.contains(UPGRADER_ACTION)) {
+    if (!memory.contains(UPGRADER_ACTION))
+    {
         memory[UPGRADER_ACTION] = false;
     }
     bool isUpgrading;
     memory[UPGRADER_ACTION].get_to(isUpgrading);
-    if (isUpgrading && this->store().getUsedCapacity() == 0) {
+    if (isUpgrading && this->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) == 0)
+    {
         isUpgrading = false;
         this->say(SAY_HARVEST);
     }
-    if (!isUpgrading && this->store().getFreeCapacity() == 0) {
+    if (!isUpgrading && this->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) == 0)
+    {
         isUpgrading = true;
         this->say(SAY_BUILD);
     }
 
     memory[UPGRADER_ACTION] = isUpgrading;
     this->setMemory(memory);
-    
-    if (isUpgrading) {
-        if (this->upgradeController(target) == Screeps::ERR_NOT_IN_RANGE) {
+
+    if (isUpgrading)
+    {
+        if (this->upgradeController(target) == Screeps::ERR_NOT_IN_RANGE)
+        {
             this->moveTo(target);
         }
-    } else {
-        if (this->withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE) {
+    }
+    else
+    {
+        if (this->withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
+        {
             this->moveTo(source);
         }
     }
-
 }
 
-std::vector<std::string> Upgrader::bodyParts() {
+std::vector<std::string> Upgrader::bodyParts()
+{
     return std::vector<std::string>{
-            Screeps::WORK,
-            Screeps::CARRY,
-            Screeps::CARRY,
-            Screeps::CARRY,
-            Screeps::CARRY,
-            Screeps::MOVE,
-            Screeps::MOVE,
-            Screeps::MOVE
-    };
+        Screeps::WORK,
+        Screeps::CARRY,
+        Screeps::MOVE};
 }
 
-
-#endif //EXAMPLE_UPGRADER_H
+#endif // EXAMPLE_UPGRADER_H

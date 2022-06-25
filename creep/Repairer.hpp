@@ -28,12 +28,12 @@ void Repairer::work(Screeps::RoomObject &source, Screeps::Structure &target)
     }
     bool isUpgrading;
     memory[REPAIRER_ACTION].get_to(isUpgrading);
-    if (isUpgrading && this->store().getUsedCapacity() == 0)
+    if (isUpgrading && this->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) == 0)
     {
         isUpgrading = false;
         this->say(SAY_HARVEST);
     }
-    if (!isUpgrading && this->store().getFreeCapacity() == 0)
+    if (!isUpgrading && this->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) == 0)
     {
         isUpgrading = true;
         this->say(SAY_BUILD);

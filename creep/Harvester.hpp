@@ -34,9 +34,7 @@ std::vector<std::string> Harvester::bodyParts()
 {
     return std::vector<std::string>{
         Screeps::WORK,
-        Screeps::WORK,
         Screeps::CARRY,
-        Screeps::MOVE,
         Screeps::MOVE};
 }
 

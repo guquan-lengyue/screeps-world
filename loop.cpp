@@ -13,6 +13,7 @@
 #include <Screeps/StructureTower.hpp>
 #include <emscripten.h>
 #include <emscripten/bind.h>
+#include <memory>
 #include <optional>
 #include <Screeps/StructureController.hpp>
 #include "creep/Harvester.hpp"
@@ -20,9 +21,9 @@
 #include "creep/Builder.hpp"
 #include "creep/Repairer.hpp"
 #include <iostream>
-#include <emscripten.h>
 #include <iterator>
 #include <algorithm>
+#include "GConfig.hpp"
 #define HARVESTER_NUM 14
 #define UPGRADER_NUM 4
 #define BUILDER_NUM 4
@@ -51,20 +52,20 @@ std::shared_ptr<Screeps::StructureSpawn>
 getHomeSpawn()
 {
     auto home = Screeps::Game.spawns().find(HOME_SCREEP)->second;
-    return std::shared_ptr<Screeps::StructureSpawn>(new Screeps::StructureSpawn(home.value()));
+    return std::make_shared<Screeps::StructureSpawn>(home.value());
 }
 
 std::shared_ptr<Screeps::Room>
-getRoom(std::shared_ptr<Screeps::StructureSpawn> spawn)
+getRoom(const std::shared_ptr<Screeps::StructureSpawn>& spawn)
 {
-    return std::shared_ptr<Screeps::Room>(new Screeps::Room(spawn->room().value()));
+    return std::make_shared<Screeps::Room>(spawn->room().value());
 }
 
 template <typename T>
 std::vector<std::unique_ptr<T>>
 getInRoom(Screeps::Room &room, const int type, std::function<bool(const JS::Value &)> predicate = {})
 {
-    auto roomObjects = room.find(type, predicate);
+    auto roomObjects = room.find(type, std::move(predicate));
 
     std::vector<std::unique_ptr<T>> list;
     for (const auto &item : roomObjects)
@@ -98,14 +99,14 @@ getContainer(Screeps::Room &room, bool empty)
             {
                 if (item->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
                 {
-                    return std::shared_ptr<Screeps::Structure>(new Screeps::Structure(item->value()));
+                    return std::make_shared<Screeps::Structure>(item->value());
                 }
             }
             else
             {
                 if (item->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
                 {
-                    return std::shared_ptr<Screeps::Structure>(new Screeps::Structure(item->value()));
+                    return std::make_shared<Screeps::Structure>(item->value());
                 }
             }
         }
@@ -121,7 +122,7 @@ std::unique_ptr<Screeps::Creep> getEnemy(Screeps::Room &room)
     {
         if (!creep->my())
         {
-            return std::unique_ptr<Screeps::Creep>(new Screeps::Creep(creep->value()));
+            return std::make_unique<Screeps::Creep>(creep->value());
         }
     }
     return nullptr;

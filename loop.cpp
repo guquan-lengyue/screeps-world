@@ -37,9 +37,9 @@ bool containerLevelCmp(const std::unique_ptr<Screeps::StructureExtension> &a, co
     if (containerLevel.empty())
     {
         containerLevel.insert(std::make_pair(Screeps::STRUCTURE_EXTENSION, 0));
-        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_CONTAINER, 2));
-        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_STORAGE, 3));
-        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_TOWER, 1));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_CONTAINER, 1));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_STORAGE, 2));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_TOWER, 3));
     }
     return containerLevel[a->structureType()] < containerLevel[b->structureType()];
 }
@@ -133,12 +133,16 @@ getDamageStructure(Screeps::Room &room)
     {
         return nullptr;
     }
-    std::unique_ptr<Screeps::Structure> maxDamageStructure = std::move(structures[0]);
-    for (int i = 1; i < structures.size(); i++)
+    std::unique_ptr<Screeps::Structure> maxDamageStructure;
+    for (int i = 0; i < structures.size(); i++)
     {
         if (structures[i]->hits() < structures[i]->hitsMax())
         {
-            if (maxDamageStructure->hits() > structures[i]->hits() && structures[i]->hits() > 1)
+            if (maxDamageStructure == nullptr)
+            {
+                maxDamageStructure = std::move(structures[i]);
+            }
+            else if (maxDamageStructure->hits() > structures[i]->hits() && structures[i]->hits() > 1)
             {
                 maxDamageStructure = std::move(structures[i]);
             }
@@ -200,7 +204,10 @@ extern "C" void loop()
         std::cout << "UPGRADER :" << UPGRADER_HAVE << std::endl;
         std::cout << "BUILDER :" << BUILDER_HAVE << std::endl;
         std::cout << "REPAIRER :" << REPAIRER_HAVE << std::endl;
-        std::cout << damageStructure->pos().x() << "," << damageStructure->pos().y() << " hits :" << damageStructure->hits() << std::endl;
+        if (damageStructure != nullptr)
+        {
+            std::cout << damageStructure->pos().x() << "," << damageStructure->pos().y() << " hits :" << damageStructure->hits() << std::endl;
+        }
         auto storage = getInRoom<Screeps::StructureStorage>(
             *room, Screeps::FIND_MY_STRUCTURES, [](const JS::Value &value)
             { return (int)value["structureType"].as<std::string>().find(Screeps::STRUCTURE_STORAGE) >= 0; });
@@ -248,7 +255,7 @@ extern "C" void loop()
             const auto &source = sources[++HARVESTER_HAVE % 2];
 
             auto store = home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value() > 0 ? home : emptyContainer;
-            if (!droppedResource.empty())
+            if (!droppedResource.empty() && false)
             {
                 Harvester(creep.value()).work(*(droppedResource[0]), *store);
             }

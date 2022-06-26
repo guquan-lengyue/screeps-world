@@ -33,7 +33,11 @@ std::vector<std::string> Builder::bodyParts()
     return {
         Screeps::WORK,
         Screeps::CARRY,
+        Screeps::CARRY,
+        Screeps::CARRY,
         Screeps::MOVE,
+        Screeps::MOVE,
+        Screeps::MOVE
     };
 }
 

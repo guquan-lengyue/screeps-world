@@ -37,9 +37,9 @@ bool containerLevelCmp(const std::unique_ptr<Screeps::StructureExtension> &a, co
     if (containerLevel.empty())
     {
         containerLevel.insert(std::make_pair(Screeps::STRUCTURE_EXTENSION, 0));
-        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_CONTAINER, 1));
-        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_STORAGE, 2));
-        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_TOWER, 3));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_CONTAINER, 2));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_STORAGE, 3));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_TOWER, 1));
     }
     return containerLevel[a->structureType()] < containerLevel[b->structureType()];
 }
@@ -98,7 +98,8 @@ getContainer(Screeps::Room &room, bool empty)
                     return std::make_shared<Screeps::Structure>(item->value());
                 }
             }
-            else if ((int)item->structureType().find(Screeps::STRUCTURE_EXTENSION) < 0)
+            else if ((int)item->structureType().find(Screeps::STRUCTURE_EXTENSION) < 0 &&
+                     (int)item->structureType().find(Screeps::STRUCTURE_TOWER) < 0)
             {
                 if (item->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
                 {
@@ -214,13 +215,13 @@ extern "C" void loop()
     {
         emptyContainer = home;
     }
-    if (fullContainer == nullptr)
-    {
-        fullContainer = home;
-    }
+    // if (fullContainer == nullptr)
+    // {
+    //     fullContainer = home;
+    // }
 
     auto constructionSites = getInRoom<Screeps::ConstructionSite>(*room, Screeps::FIND_CONSTRUCTION_SITES);
-    if (HARVESTER_HAVE > GConfig::getHarvesterNum() / 2)
+    if (HARVESTER_HAVE > GConfig::getHarvesterNum() / 2 && fullContainer != nullptr)
     {
         if (damageStructure != nullptr)
         {
@@ -256,21 +257,21 @@ extern "C" void loop()
                 Harvester(creep.value()).work(*source, *store);
             }
         }
-        // if (fullContainer == nullptr)
-        // {
-        //     continue;
-        // }
-        else if ((int)creep.name().find(Upgrader::namePre()) >= 0)
+        if (fullContainer == nullptr || creep.store().getUsedCapacity().value_or(-1) > 0)
+        {
+            continue;
+        }
+        if ((int)creep.name().find(Upgrader::namePre()) >= 0)
         {
             Upgrader(creep.value()).work(*fullContainer, *controller);
             ++UPGRADER_HAVE;
         }
-        else if ((int)creep.name().find(Builder::namePre()) >= 0 && !constructionSites.empty())
+        if ((int)creep.name().find(Builder::namePre()) >= 0 && !constructionSites.empty())
         {
             Builder(creep.value()).work(*fullContainer, *(constructionSites[0]));
             ++BUILDER_HAVE;
         }
-        else if ((int)creep.name().find(Repairer::namePre()) >= 0 && damageStructure != nullptr)
+        if ((int)creep.name().find(Repairer::namePre()) >= 0 && damageStructure != nullptr)
         {
             Repairer(creep.value()).work(*fullContainer, *damageStructure);
             ++REPAIRER_HAVE;

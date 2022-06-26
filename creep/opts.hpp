@@ -7,7 +7,7 @@ static JSON moveToOpt()
 {
 
     auto opts = JS::Value::object();
-    opts.set("reusePath", 100);
+    opts.set("reusePath", 5);
     // opts.set("noPathFinding", true);
     return JS::toJSON(opts);
 }

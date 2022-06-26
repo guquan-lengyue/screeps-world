@@ -98,7 +98,7 @@ getContainer(Screeps::Room &room, bool empty)
                     return std::make_shared<Screeps::Structure>(item->value());
                 }
             }
-            else
+            else if ((int)item->structureType().find(Screeps::STRUCTURE_EXTENSION) < 0)
             {
                 if (item->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
                 {

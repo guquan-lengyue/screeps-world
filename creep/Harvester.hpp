@@ -8,6 +8,7 @@
 #include <Screeps/Structure.hpp>
 #include <Screeps/Resource.hpp>
 #include <iostream>
+#include "opts.hpp"
 
 class Harvester : public Screeps::Creep
 {
@@ -44,14 +45,14 @@ void Harvester::work(Screeps::Source &source, Screeps::Structure &target)
     {
         if (this->harvest(source) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(source);
+            this->moveTo(source,moveToOpt());
         }
     }
     else
     {
         if (this->transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(target);
+            this->moveTo(target,moveToOpt());
         }
     }
 }
@@ -62,14 +63,14 @@ void Harvester::work(Screeps::Resource &source, Screeps::Structure &target)
     {
         if (this->pickup(source) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(source);
+            this->moveTo(source,moveToOpt());
         }
     }
     else
     {
         if (this->transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(target);
+            this->moveTo(target,moveToOpt());
         }
     }
 }

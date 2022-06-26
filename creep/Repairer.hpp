@@ -2,6 +2,7 @@
 #define EXAMPLE_REPAIRER_H
 #include <Screeps/Creep.hpp>
 #include <Screeps/Structure.hpp>
+#include "opts.hpp"
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"
 #define REPAIRER_ACTION "working"
@@ -46,14 +47,14 @@ void Repairer::work(Screeps::RoomObject &source, Screeps::Structure &target)
     {
         if (this->repair(target) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(target);
+            this->moveTo(target, moveToOpt());
         }
     }
     else
     {
         if (this->withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(source);
+            this->moveTo(source, moveToOpt());
         }
     }
 }

@@ -6,7 +6,7 @@
 #include <Screeps/ConstructionSite.hpp>
 #include <Screeps/Structure.hpp>
 #include <Screeps/Constants.hpp>
-
+#include "opts.hpp"
 #ifndef EXAMPLE_BUILDER_H
 #define EXAMPLE_BUILDER_H
 
@@ -63,14 +63,14 @@ void Builder::work(Screeps::RoomObject &source, Screeps::ConstructionSite &targe
     {
         if (this->build(target) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(target);
+            this->moveTo(target, moveToOpt());
         }
     }
     else
     {
         if (this->withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(source);
+            this->moveTo(source, moveToOpt());
         }
     }
 }

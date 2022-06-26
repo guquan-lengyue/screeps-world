@@ -9,6 +9,7 @@
 #include <Screeps/Structure.hpp>
 #include <Screeps/Constants.hpp>
 #include <Screeps/Store.hpp>
+#include "opts.hpp"
 #define UPGRADER_ACTION "upgrading"
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"
@@ -56,14 +57,14 @@ void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &t
     {
         if (this->upgradeController(target) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(target);
+            this->moveTo(target, moveToOpt());
         }
     }
     else
     {
         if (this->withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(source);
+            this->moveTo(source, moveToOpt());
         }
     }
 }

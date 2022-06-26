@@ -7,59 +7,72 @@
 
 #include <Screeps/Memory.hpp>
 #include <Screeps/JS.hpp>
+#include <Screeps/JSON.hpp>
 #include <map>
 #include <string>
 
 using namespace std;
-map<string, map<string, int>> config;
+map<string, int> config;
 
-class GConfig {
+class GConfig
+{
 private:
     static void initConfig();
 
 public:
-    void update();
+    static void update();
 
-    int getHarvesterNum();
+    static int getHarvesterNum();
 
-    int getUpgraderNum();
+    static int getUpgraderNum();
 
-    int getBuilderNum();
+    static int getBuilderNum();
 
-    int getRepairerNum();
-
-
+    static int getRepairerNum();
 };
 
-void GConfig::update() {
-    Screeps::Memory["G_CONFIG"].get_to<map<string, map<string, int>>>(config);
+void GConfig::update()
+{
+
+    if (Screeps::Memory["G_CONFIG"].contains("HARVESTER_NUM"))
+    {
+        Screeps::Memory["G_CONFIG"].get_to<map<string, int>>(config);
+    }
+    else
+    {
+        GConfig::initConfig();
+    }
 }
 
-void GConfig::initConfig() {
+void GConfig::initConfig()
+{
     map<string, int> screepsNum;
     screepsNum["HARVESTER_NUM"] = 12;
     screepsNum["UPGRADER_NUM"] = 4;
     screepsNum["BUILDER_NUM"] = 4;
     screepsNum["REPAIRER_NUM"] = 4;
-    config["G_CONFIG"] = screepsNum;
-    Screeps::Memory.set(JS::mapToJSObject(config));
+    auto config_ = JS::mapToJSObject<std::string, int>(screepsNum);
+    Screeps::Memory.set("G_CONFIG", JS::toJSON(config_));
 }
 
-int GConfig::getHarvesterNum() {
-    return config["G_CONFIG"]["HARVESTER_NUM"];
+int GConfig::getHarvesterNum()
+{
+    return config["HARVESTER_NUM"];
 }
 
-int GConfig::getUpgraderNum(){
-    return config["G_CONFIG"]["UPGRADER_NUM"];
+int GConfig::getUpgraderNum()
+{
+    return config["UPGRADER_NUM"];
 }
 
-int GConfig::getBuilderNum(){
-    return config["G_CONFIG"]["BUILDER_NUM"];
+int GConfig::getBuilderNum()
+{
+    return config["BUILDER_NUM"];
 }
 
-int GConfig::getRepairerNum(){
-    return config["G_CONFIG"]["REPAIRER_NUM"];
+int GConfig::getRepairerNum()
+{
+    return config["REPAIRER_NUM"];
 }
 
-
-#endif //EXAMPLE_GCONFIG_HPP
+#endif // EXAMPLE_GCONFIG_HPP

@@ -24,10 +24,6 @@
 #include <iterator>
 #include <algorithm>
 #include "GConfig.hpp"
-#define HARVESTER_NUM 14
-#define UPGRADER_NUM 4
-#define BUILDER_NUM 4
-#define REPAIRER_NUM 2
 #define HOME_SCREEP "Spawn1"
 
 int HARVESTER_HAVE = 0;
@@ -56,7 +52,7 @@ getHomeSpawn()
 }
 
 std::shared_ptr<Screeps::Room>
-getRoom(const std::shared_ptr<Screeps::StructureSpawn>& spawn)
+getRoom(const std::shared_ptr<Screeps::StructureSpawn> &spawn)
 {
     return std::make_shared<Screeps::Room>(spawn->room().value());
 }
@@ -86,7 +82,7 @@ std::shared_ptr<Screeps::Structure>
 getContainer(Screeps::Room &room, bool empty)
 {
 
-    auto structures = getInRoom<Screeps::StructureExtension>(room, Screeps::FIND_MY_STRUCTURES);
+    auto structures = getInRoom<Screeps::StructureExtension>(room, Screeps::FIND_STRUCTURES);
     std::sort(structures.begin(), structures.end(), containerLevelCmp);
     for (const auto &item : structures)
     {
@@ -185,6 +181,7 @@ EMSCRIPTEN_KEEPALIVE
 extern "C" void loop()
 {
     Screeps::Context::update();
+
     auto home = getHomeSpawn();
     auto room = getRoom(home);
     auto sources = getInRoom<Screeps::Source>(*room, Screeps::FIND_SOURCES);
@@ -196,6 +193,7 @@ extern "C" void loop()
 
     if (Screeps::Game.time() % 50 == 0)
     {
+        GConfig::update();
         std::cout << "home contain :  U: " << home->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(0) << " / f: " << home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) << std::endl;
         std::cout << "HARVESTER :" << HARVESTER_HAVE << std::endl;
         std::cout << "UPGRADER :" << UPGRADER_HAVE << std::endl;
@@ -222,19 +220,19 @@ extern "C" void loop()
     }
 
     auto constructionSites = getInRoom<Screeps::ConstructionSite>(*room, Screeps::FIND_CONSTRUCTION_SITES);
-    if (HARVESTER_HAVE > HARVESTER_NUM / 2)
+    if (HARVESTER_HAVE > GConfig::getHarvesterNum() / 2)
     {
         if (damageStructure != nullptr)
         {
-            spawnRepairer(*home, REPAIRER_NUM);
+            spawnRepairer(*home, GConfig::getRepairerNum());
         }
         if (!constructionSites.empty())
         {
-            spawnBuilder(*home, BUILDER_NUM);
+            spawnBuilder(*home, GConfig::getBuilderNum());
         }
-        spawnUpgrader(*home, UPGRADER_NUM);
+        spawnUpgrader(*home, GConfig::getUpgraderNum());
     }
-    spawnHarvester(*home, HARVESTER_NUM);
+    spawnHarvester(*home, GConfig::getHarvesterNum());
 
     HARVESTER_HAVE = 0;
     UPGRADER_HAVE = 0;

@@ -8,7 +8,7 @@
 #include <Screeps/Creep.hpp>
 #include <Screeps/Structure.hpp>
 #include <Screeps/Constants.hpp>
-
+#include <Screeps/Store.hpp>
 #define UPGRADER_ACTION "upgrading"
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"

@@ -23,7 +23,7 @@
 #include <emscripten.h>
 #include <iterator>
 #include <algorithm>
-#define HARVESTER_NUM 12
+#define HARVESTER_NUM 14
 #define UPGRADER_NUM 4
 #define BUILDER_NUM 4
 #define REPAIRER_NUM 2

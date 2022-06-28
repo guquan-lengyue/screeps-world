@@ -7,8 +7,9 @@
 #include <Screeps/Store.hpp>
 #include <Screeps/Source.hpp>
 #include "GConfig.hpp"
-#include "creep/Worker.hpp"
-#include "creep/Task.hpp"
+#include "creep/header.h"
+#include "creep/Worker.h"
+#include "creep/Task.h"
 #define HOME_SCREEP "Spawn1"
 
 Screeps::StructureSpawn
@@ -40,18 +41,18 @@ extern "C" void loop()
     auto room = home.room();
     auto sources = getInRoom<Screeps::Source>(room, Screeps::FIND_SOURCES);
     auto source = std::move(sources[0]);
-    for (int i = ct::getworkerNum(); i < 15; i++)
+    for (int i = getWorkerNum(); i < 15; i++)
     {
-        home.spawnCreep(ct::Worker::bodyParts(), "worker_" + std::to_string(i));
+        home.spawnCreep(Worker::bodyParts(), "worker_" + std::to_string(i));
     }
-    if (ct::getworkerNum() == 0)
+    if (getWorkerNum() == 0)
     {
-        auto creeps = getInRoom<ct::Worker>(room, Screeps::FIND_CREEPS);
-        ct::initWorkerQueue(creeps);
+        auto creeps = getInRoom<Worker>(room, Screeps::FIND_CREEPS);
+        initWorkerQueue(creeps);
     }
 
     // 收集 energy 到 home
-    auto harvesterAction = [&](ct::Worker &worker)
+    auto harvesterAction = [&](Worker &worker)
     {
         if (worker.store().getFreeCapacity() > 0)
         {
@@ -66,31 +67,25 @@ extern "C" void loop()
             {
                 worker.moveTo(home);
             }
+            else
+            {
+                return true;
+            }
         }
-        return true;
+        return false;
     };
     if (home.store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
     {
         std::string name = "home";
-        ct::Task task(name, 0, harvesterAction);
-        ct::task_queue.push(task);
+        Task task(name, 0, harvesterAction);
+        task_queue.push(task);
     }
-    while (!ct::task_queue.empty())
+    while (!task_queue.empty())
     {
-        auto task = ct::task_queue.top();
-
-        auto &worker = ct::ready_queue.top();
-        worker->setActionStatus(true);
-        ct::working_queue.push_back(std::move(worker));
-        ct::ready_queue.pop();
-
-        task.mission(*worker);
-        
-        ct::working_queue.erase()
-
-        ct::working_queue.pop();
-        ct::task_queue.pop();
+        auto &task = task_queue.top();
+        takeTask(task);
     }
+    runTask();
 }
 
 EMSCRIPTEN_BINDINGS(loop)

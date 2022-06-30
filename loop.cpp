@@ -186,7 +186,6 @@ EMSCRIPTEN_KEEPALIVE
 extern "C" void loop()
 {
     Screeps::Context::update();
-
     auto home = getHomeSpawn();
     auto room = getRoom(home);
     auto sources = getInRoom<Screeps::Source>(*room, Screeps::FIND_SOURCES);
@@ -196,7 +195,7 @@ extern "C" void loop()
     auto fullContainer = getContainer(*room, false);
     auto emptyContainer = getContainer(*room, true);
 
-    if (Screeps::Game.time() % 50 == 0)
+    if (Screeps::Game.time() % 10 == 0)
     {
         GConfig::update();
         std::cout << "home contain :  U: " << home->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(0) << " / f: " << home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) << std::endl;
@@ -222,13 +221,13 @@ extern "C" void loop()
     {
         emptyContainer = home;
     }
-    // if (fullContainer == nullptr)
-    // {
-    //     fullContainer = home;
-    // }
+    if (fullContainer == nullptr)
+    {
+        fullContainer = home;
+    }
 
     auto constructionSites = getInRoom<Screeps::ConstructionSite>(*room, Screeps::FIND_CONSTRUCTION_SITES);
-    if (HARVESTER_HAVE > GConfig::getHarvesterNum() / 2 && fullContainer != nullptr)
+    if (HARVESTER_HAVE > GConfig::getHarvesterNum() / 2)
     {
         if (damageStructure != nullptr)
         {
@@ -241,7 +240,6 @@ extern "C" void loop()
         spawnUpgrader(*home, GConfig::getUpgraderNum());
     }
     spawnHarvester(*home, GConfig::getHarvesterNum());
-
     HARVESTER_HAVE = 0;
     UPGRADER_HAVE = 0;
     BUILDER_HAVE = 0;

@@ -7,6 +7,7 @@
 #include <Screeps/Source.hpp>
 #include <Screeps/Structure.hpp>
 #include <Screeps/Resource.hpp>
+#include <Screeps/StructureContainer.hpp>
 #include <iostream>
 #include "opts.hpp"
 
@@ -35,10 +36,7 @@ std::vector<std::string> Harvester::bodyParts()
 {
     return std::vector<std::string>{
         Screeps::WORK,
-        Screeps::WORK,
         Screeps::CARRY,
-        Screeps::CARRY,
-        Screeps::MOVE,
         Screeps::MOVE};
 }
 
@@ -55,7 +53,10 @@ void Harvester::work(Screeps::Source &source, Screeps::Structure &target)
     {
         if (this->transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(target, moveToOpt());
+            if (Screeps::StructureContainer(target.value()).store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
+            {
+                this->moveTo(target, moveToOpt());
+            }
         }
     }
 }
@@ -73,7 +74,10 @@ void Harvester::work(Screeps::Resource &source, Screeps::Structure &target)
     {
         if (this->transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(target, moveToOpt());
+            if (Screeps::StructureContainer(target.value()).store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0)
+            {
+                this->moveTo(target, moveToOpt());
+            }
         }
     }
 }

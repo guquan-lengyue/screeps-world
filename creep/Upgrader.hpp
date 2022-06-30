@@ -64,7 +64,10 @@ void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &t
     {
         if (this->withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(source, moveToOpt());
+            if (Screeps::StructureContainer(source.value()).store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 40)
+            {
+                this->moveTo(source, moveToOpt());
+            }
         }
     }
 }
@@ -74,10 +77,6 @@ std::vector<std::string> Upgrader::bodyParts()
     return std::vector<std::string>{
         Screeps::WORK,
         Screeps::CARRY,
-        Screeps::CARRY,
-        Screeps::CARRY,
-        Screeps::MOVE,
-        Screeps::MOVE,
         Screeps::MOVE};
 }
 

@@ -54,7 +54,10 @@ void Repairer::work(Screeps::RoomObject &source, Screeps::Structure &target)
     {
         if (this->withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(source, moveToOpt());
+            if (Screeps::StructureContainer(source.value()).store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 40)
+            {
+                this->moveTo(source, moveToOpt());
+            }
         }
     }
 }

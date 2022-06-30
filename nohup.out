@@ -1,0 +1,204 @@
+-- Found Python: /usr/bin/python3.8 (found version "3.8.10") found components: Interpreter 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/kang/workspace/screepscpp/build
+[1/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/cmake_pch.hxx.pch
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[2/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Deposit.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[3/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/ConstructionSite.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[4/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Flag.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[5/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Creep.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[6/35] Building CXX object CMakeFiles/app.dir/loop.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+cache:INFO: generating system headers: sysroot_install.stamp... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot_install.stamp" for subsequent builds)
+cache:INFO:  - ok
+[7/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Game.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[8/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Object.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[9/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/PathFinder.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[10/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/RawMemory.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[11/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Resource.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[12/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Memory.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[13/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/JS.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[14/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/OwnedStructure.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[15/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Ruin.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[16/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/RoomPosition.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[17/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Store.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[18/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Source.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[19/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Structure.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[20/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/RoomObject.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[21/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/Room.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[22/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureContainer.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[23/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureController.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[24/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureExtension.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[25/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureExtractor.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[26/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureLink.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[27/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureRampart.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[28/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureRoad.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[29/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureStorage.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[30/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureTerminal.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[31/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureWall.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[32/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureSpawn.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[33/35] Building CXX object screepsxx/CMakeFiles/screepsxx.dir/src/StructureTower.cpp.o
+em++: warning: linker setting ignored during compilation: 'ASSERTIONS' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ALLOW_MEMORY_GROWTH' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'ENVIRONMENT' [-Wunused-command-line-argument]
+em++: warning: linker setting ignored during compilation: 'MALLOC' [-Wunused-command-line-argument]
+[34/35] Linking CXX static library screepsxx/libscreepsxx.a
+[35/35] Linking CXX executable app.js
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libembind-rtti.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libembind-rtti.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libGL.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libGL.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libal.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libal.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libhtml5.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libhtml5.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libstubs.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libstubs.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libnoexit.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libnoexit.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libc.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libc.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libemmalloc.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libemmalloc.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libcompiler_rt.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libcompiler_rt.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libc++-noexcept.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libc++-noexcept.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libc++abi-noexcept.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libc++abi-noexcept.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system library: sysroot/lib/wasm32-emscripten/libsockets.a... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/libsockets.a" for subsequent builds)
+cache:INFO:  - ok
+cache:INFO: generating system asset: sysroot/lib/wasm32-emscripten/struct_info.json... (this will be cached in "/home/kang/workspace/screepscpp/build/cache/sysroot/lib/wasm32-emscripten/struct_info.json" for subsequent builds)
+cache:INFO:  - ok
+Read 702 Bytes from /home/kang/workspace/screepscpp/dist/wasm_loader.js
+Read 468.1 kB from /home/kang/workspace/screepscpp/dist/app_module.wasm
+Read 279 Bytes from /home/kang/workspace/screepscpp/dist/main.js
+Read 96.5 kB from /home/kang/workspace/screepscpp/dist/app_loader.js
+done

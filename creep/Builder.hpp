@@ -6,6 +6,7 @@
 #include <Screeps/ConstructionSite.hpp>
 #include <Screeps/Structure.hpp>
 #include <Screeps/Constants.hpp>
+#include <Screeps/StructureContainer.hpp>
 #include "opts.hpp"
 #ifndef EXAMPLE_BUILDER_H
 #define EXAMPLE_BUILDER_H
@@ -33,12 +34,7 @@ std::vector<std::string> Builder::bodyParts()
     return {
         Screeps::WORK,
         Screeps::CARRY,
-        Screeps::CARRY,
-        Screeps::CARRY,
-        Screeps::MOVE,
-        Screeps::MOVE,
-        Screeps::MOVE
-    };
+        Screeps::MOVE};
 }
 
 void Builder::work(Screeps::RoomObject &source, Screeps::ConstructionSite &target)
@@ -74,7 +70,10 @@ void Builder::work(Screeps::RoomObject &source, Screeps::ConstructionSite &targe
     {
         if (this->withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
-            this->moveTo(source, moveToOpt());
+            if (Screeps::StructureContainer(source.value()).store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 40)
+            {
+                this->moveTo(source, moveToOpt());
+            }
         }
     }
 }

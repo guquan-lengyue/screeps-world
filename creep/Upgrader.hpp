@@ -72,7 +72,7 @@ void Upgrader::work(Screeps::RoomObject &source, Screeps::StructureController &t
     }
 }
 
-std::vector<std::string> Harvester::bodyParts(int level)
+std::vector<std::string> Upgrader::bodyParts(int level)
 {
     auto lv1 = std::vector<std::string>{
         Screeps::WORK,

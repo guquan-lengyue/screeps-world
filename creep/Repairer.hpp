@@ -61,7 +61,7 @@ void Repairer::work(Screeps::RoomObject &source, Screeps::Structure &target)
         }
     }
 }
-std::vector<std::string> Harvester::bodyParts(int level)
+std::vector<std::string> Repairer::bodyParts(int level)
 {
     auto lv1 = std::vector<std::string>{
         Screeps::WORK,

@@ -29,7 +29,7 @@ Builder::Builder(JS::Value creep) : Screeps::Creep(std::move(creep))
 {
 }
 
-std::vector<std::string> Harvester::bodyParts(int level)
+std::vector<std::string> Builder::bodyParts(int level)
 {
     auto lv1 = std::vector<std::string>{
         Screeps::WORK,

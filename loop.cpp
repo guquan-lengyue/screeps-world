@@ -154,7 +154,14 @@ void spawnHarvester(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        spawn.spawnCreep(Harvester::bodyParts(), Harvester::namePre() + std::to_string(i));
+        for (int j = 1; j >= 0; j--)
+        {
+            int result = spawn.spawnCreep(Harvester::bodyParts(j), Harvester::namePre() + std::to_string(i));
+            if (result > 0)
+            {
+                break;
+            }
+        }
     }
 }
 
@@ -162,7 +169,14 @@ void spawnUpgrader(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        spawn.spawnCreep(Upgrader::bodyParts(), Upgrader::namePre() + std::to_string(i));
+        for (int j = 1; j >= 0; j--)
+        {
+            int result = spawn.spawnCreep(Upgrader::bodyParts(j), Upgrader::namePre() + std::to_string(i));
+            if (result > 0)
+            {
+                break;
+            }
+        }
     }
 }
 
@@ -170,7 +184,14 @@ void spawnBuilder(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        spawn.spawnCreep(Builder::bodyParts(), Builder::namePre() + std::to_string(i));
+        for (int j = 1; j >= 0; j--)
+        {
+            int result = spawn.spawnCreep(Builder::bodyParts(j), Builder::namePre() + std::to_string(i));
+            if (result > 0)
+            {
+                break;
+            }
+        }
     }
 }
 
@@ -178,7 +199,14 @@ void spawnRepairer(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        spawn.spawnCreep(Repairer::bodyParts(), Repairer::namePre() + std::to_string(i));
+        for (int j = 1; j >= 0; j--)
+        {
+            int result = spawn.spawnCreep(Repairer::bodyParts(j), Repairer::namePre() + std::to_string(i));
+            if (result > 0)
+            {
+                break;
+            }
+        }
     }
 }
 
@@ -195,7 +223,7 @@ extern "C" void loop()
     auto fullContainer = getContainer(*room, false);
     auto emptyContainer = getContainer(*room, true);
 
-    if (Screeps::Game.time() % 10 == 0)
+    if (Screeps::Game.time() % 50 == 0)
     {
         GConfig::update();
         std::cout << "home contain :  U: " << home->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(0) << " / f: " << home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) << std::endl;
@@ -221,7 +249,7 @@ extern "C" void loop()
     {
         emptyContainer = home;
     }
-    if (fullContainer == nullptr)
+    if (fullContainer == nullptr && HARVESTER_HAVE > GConfig::getHarvesterNum() / 2)
     {
         fullContainer = home;
     }
@@ -239,6 +267,7 @@ extern "C" void loop()
         }
         spawnUpgrader(*home, GConfig::getUpgraderNum());
     }
+
     spawnHarvester(*home, GConfig::getHarvesterNum());
     HARVESTER_HAVE = 0;
     UPGRADER_HAVE = 0;

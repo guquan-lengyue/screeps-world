@@ -36,7 +36,6 @@ void GConfig::update()
     if (Screeps::Memory["G_CONFIG"].contains("HARVESTER_NUM"))
     {
         Screeps::Memory["G_CONFIG"].get_to<map<string, int>>(config);
-        std::cout << config["HARVESTER_NUM"] << std::endl;
     }
     else
     {

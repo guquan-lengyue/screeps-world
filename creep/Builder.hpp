@@ -20,7 +20,7 @@ public:
 
     static std::string namePre() { return "Builder_"; };
 
-    static std::vector<std::string> bodyParts();
+    static std::vector<std::string> bodyParts(int level);
 
     void work(Screeps::RoomObject &source, Screeps::ConstructionSite &target);
 };
@@ -29,12 +29,20 @@ Builder::Builder(JS::Value creep) : Screeps::Creep(std::move(creep))
 {
 }
 
-std::vector<std::string> Builder::bodyParts()
+std::vector<std::string> Harvester::bodyParts(int level)
 {
-    return {
+    auto lv1 = std::vector<std::string>{
         Screeps::WORK,
         Screeps::CARRY,
         Screeps::MOVE};
+    auto lv2 = std::vector<std::string>{
+        Screeps::WORK,
+        Screeps::CARRY,
+        Screeps::CARRY,
+        Screeps::MOVE};
+    std::vector<std::string>
+        bodyLevel[] = {lv1, lv2};
+    return bodyLevel[level];
 }
 
 void Builder::work(Screeps::RoomObject &source, Screeps::ConstructionSite &target)

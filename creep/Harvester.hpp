@@ -16,7 +16,7 @@ class Harvester : public Screeps::Creep
 private:
     /* data */
 public:
-    static std::vector<std::string> bodyParts();
+    static std::vector<std::string> bodyParts(int level);
 
     explicit Harvester(JS::Value creep);
 
@@ -32,12 +32,20 @@ Harvester::Harvester(JS::Value creep) : Screeps::Creep(creep)
 {
 }
 
-std::vector<std::string> Harvester::bodyParts()
+std::vector<std::string> Harvester::bodyParts(int level)
 {
-    return std::vector<std::string>{
+    auto lv1 = std::vector<std::string>{
         Screeps::WORK,
         Screeps::CARRY,
         Screeps::MOVE};
+    auto lv2 = std::vector<std::string>{
+        Screeps::WORK,
+        Screeps::CARRY,
+        Screeps::CARRY,
+        Screeps::MOVE};
+    std::vector<std::string>
+        bodyLevel[] = {lv1, lv2};
+    return bodyLevel[level];
 }
 
 void Harvester::work(Screeps::Source &source, Screeps::Structure &target)

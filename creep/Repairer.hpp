@@ -15,7 +15,7 @@ public:
 
     static std::string namePre() { return "Repairer_"; };
     void work(Screeps::RoomObject &source, Screeps::Structure &target);
-    static std::vector<std::string> bodyParts();
+    static std::vector<std::string> bodyParts(int level);
 };
 Repairer::Repairer(JS::Value creep) : Screeps::Creep(std::move(creep))
 {
@@ -61,11 +61,19 @@ void Repairer::work(Screeps::RoomObject &source, Screeps::Structure &target)
         }
     }
 }
-std::vector<std::string> Repairer::bodyParts()
+std::vector<std::string> Harvester::bodyParts(int level)
 {
-    return std::vector<std::string>{
+    auto lv1 = std::vector<std::string>{
         Screeps::WORK,
         Screeps::CARRY,
         Screeps::MOVE};
+    auto lv2 = std::vector<std::string>{
+        Screeps::WORK,
+        Screeps::CARRY,
+        Screeps::CARRY,
+        Screeps::MOVE};
+    std::vector<std::string>
+        bodyLevel[] = {lv1, lv2};
+    return bodyLevel[level];
 }
 #endif

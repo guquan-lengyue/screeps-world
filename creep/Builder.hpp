@@ -40,8 +40,15 @@ std::vector<std::string> Builder::bodyParts(int level)
         Screeps::CARRY,
         Screeps::CARRY,
         Screeps::MOVE};
+    auto lv3 = std::vector<std::string>{
+        Screeps::WORK,
+        Screeps::WORK,
+        Screeps::CARRY,
+        Screeps::CARRY,
+        Screeps::MOVE,
+        Screeps::MOVE};
     std::vector<std::string>
-        bodyLevel[] = {lv1, lv2};
+        bodyLevel[] = {lv1, lv2, lv3};
     return bodyLevel[level];
 }
 
@@ -76,6 +83,11 @@ void Builder::work(Screeps::RoomObject &source, Screeps::ConstructionSite &targe
     }
     else
     {
+        if (this->ticksToLive() < 10)
+        {
+            this->suicide();
+            return;
+        }
         if (this->withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE)
         {
             if (Screeps::StructureContainer(source.value()).store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 40)

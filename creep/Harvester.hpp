@@ -43,15 +43,27 @@ std::vector<std::string> Harvester::bodyParts(int level)
         Screeps::CARRY,
         Screeps::CARRY,
         Screeps::MOVE};
+    auto lv3 = std::vector<std::string>{
+        Screeps::WORK,
+        Screeps::WORK,
+        Screeps::CARRY,
+        Screeps::CARRY,
+        Screeps::MOVE,
+        Screeps::MOVE};
     std::vector<std::string>
-        bodyLevel[] = {lv1, lv2};
+        bodyLevel[] = {lv1, lv2, lv3};
     return bodyLevel[level];
 }
 
 void Harvester::work(Screeps::Source &source, Screeps::Structure &target)
 {
-    if (this->store().getFreeCapacity() > 0)
+    if (this->store().getFreeCapacity().value_or(-1) > 0)
     {
+        if (this->ticksToLive() < 10)
+        {
+            this->suicide();
+            return;
+        }
         if (this->harvest(source) == Screeps::ERR_NOT_IN_RANGE)
         {
             this->moveTo(source, moveToOpt());
@@ -71,7 +83,7 @@ void Harvester::work(Screeps::Source &source, Screeps::Structure &target)
 
 void Harvester::work(Screeps::Resource &source, Screeps::Structure &target)
 {
-    if (this->store().getFreeCapacity() > 0)
+    if (this->store().getFreeCapacity().value_or(-1) > 0)
     {
         if (this->pickup(source) == Screeps::ERR_NOT_IN_RANGE)
         {

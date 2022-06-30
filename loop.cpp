@@ -37,9 +37,9 @@ bool containerLevelCmp(const std::unique_ptr<Screeps::StructureExtension> &a, co
     if (containerLevel.empty())
     {
         containerLevel.insert(std::make_pair(Screeps::STRUCTURE_EXTENSION, 0));
-        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_CONTAINER, 1));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_CONTAINER, 3));
         containerLevel.insert(std::make_pair(Screeps::STRUCTURE_STORAGE, 2));
-        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_TOWER, 3));
+        containerLevel.insert(std::make_pair(Screeps::STRUCTURE_TOWER, 1));
     }
     return containerLevel[a->structureType()] < containerLevel[b->structureType()];
 }
@@ -142,7 +142,7 @@ getDamageStructure(Screeps::Room &room)
             {
                 maxDamageStructure = std::move(structures[i]);
             }
-            else if (maxDamageStructure->hits() > structures[i]->hits() && structures[i]->hits() > 1)
+            else if (maxDamageStructure->hits() > structures[i]->hits() && structures[i]->hits() >= 1)
             {
                 maxDamageStructure = std::move(structures[i]);
             }
@@ -154,7 +154,7 @@ void spawnHarvester(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 1; j >= 0; j--)
+        for (int j = 2; j >= 0; j--)
         {
             int result = spawn.spawnCreep(Harvester::bodyParts(j), Harvester::namePre() + std::to_string(i));
             if (result > 0)
@@ -169,7 +169,7 @@ void spawnUpgrader(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 1; j >= 0; j--)
+        for (int j = 2; j >= 0; j--)
         {
             int result = spawn.spawnCreep(Upgrader::bodyParts(j), Upgrader::namePre() + std::to_string(i));
             if (result > 0)
@@ -184,7 +184,7 @@ void spawnBuilder(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 1; j >= 0; j--)
+        for (int j = 2; j >= 0; j--)
         {
             int result = spawn.spawnCreep(Builder::bodyParts(j), Builder::namePre() + std::to_string(i));
             if (result > 0)
@@ -199,7 +199,7 @@ void spawnRepairer(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 1; j >= 0; j--)
+        for (int j = 2; j >= 0; j--)
         {
             int result = spawn.spawnCreep(Repairer::bodyParts(j), Repairer::namePre() + std::to_string(i));
             if (result > 0)
@@ -214,6 +214,7 @@ EMSCRIPTEN_KEEPALIVE
 extern "C" void loop()
 {
     Screeps::Context::update();
+
     auto home = getHomeSpawn();
     auto room = getRoom(home);
     auto sources = getInRoom<Screeps::Source>(*room, Screeps::FIND_SOURCES);
@@ -227,10 +228,10 @@ extern "C" void loop()
     {
         GConfig::update();
         std::cout << "home contain :  U: " << home->store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(0) << " / f: " << home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) << std::endl;
-        std::cout << "HARVESTER :" << HARVESTER_HAVE << std::endl;
-        std::cout << "UPGRADER :" << UPGRADER_HAVE << std::endl;
-        std::cout << "BUILDER :" << BUILDER_HAVE << std::endl;
-        std::cout << "REPAIRER :" << REPAIRER_HAVE << std::endl;
+        std::cout << "HARVESTER :" << HARVESTER_HAVE << " / " << GConfig::getHarvesterNum() << std::endl;
+        std::cout << "UPGRADER :" << UPGRADER_HAVE << " / " << GConfig::getUpgraderNum() << std::endl;
+        std::cout << "BUILDER :" << BUILDER_HAVE << " / " << GConfig::getBuilderNum() << std::endl;
+        std::cout << "REPAIRER :" << REPAIRER_HAVE << " / " << GConfig::getRepairerNum() << std::endl;
         if (damageStructure != nullptr)
         {
             std::cout << damageStructure->pos().x() << "," << damageStructure->pos().y() << " hits :" << damageStructure->hits() << std::endl;
@@ -269,6 +270,7 @@ extern "C" void loop()
     }
 
     spawnHarvester(*home, GConfig::getHarvesterNum());
+
     HARVESTER_HAVE = 0;
     UPGRADER_HAVE = 0;
     BUILDER_HAVE = 0;

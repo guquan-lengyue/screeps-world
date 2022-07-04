@@ -323,7 +323,7 @@ extern "C" void loop()
             {
                 item->attack(*enemy);
             }
-            else if (damageStructure != nullptr)
+            else if (damageStructure != nullptr && false)
             {
                 item->repair(*damageStructure);
             }

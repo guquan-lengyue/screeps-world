@@ -154,7 +154,7 @@ void spawnHarvester(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 2; j >= 0; j--)
+        for (int j = 10; j >= 0; j--)
         {
             int result = spawn.spawnCreep(Harvester::bodyParts(j), Harvester::namePre() + std::to_string(i));
             if (result > 0)
@@ -169,7 +169,7 @@ void spawnUpgrader(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 2; j >= 0; j--)
+        for (int j = 10; j >= 0; j--)
         {
             int result = spawn.spawnCreep(Upgrader::bodyParts(j), Upgrader::namePre() + std::to_string(i));
             if (result > 0)
@@ -184,7 +184,7 @@ void spawnBuilder(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 2; j >= 0; j--)
+        for (int j = 10; j >= 0; j--)
         {
             int result = spawn.spawnCreep(Builder::bodyParts(j), Builder::namePre() + std::to_string(i));
             if (result > 0)
@@ -199,7 +199,7 @@ void spawnRepairer(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 2; j >= 0; j--)
+        for (int j = 10; j >= 0; j--)
         {
             int result = spawn.spawnCreep(Repairer::bodyParts(j), Repairer::namePre() + std::to_string(i));
             if (result > 0)

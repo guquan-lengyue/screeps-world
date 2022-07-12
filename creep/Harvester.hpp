@@ -34,25 +34,15 @@ Harvester::Harvester(JS::Value creep) : Screeps::Creep(creep)
 
 std::vector<std::string> Harvester::bodyParts(int level)
 {
-    auto lv1 = std::vector<std::string>{
-        Screeps::WORK,
-        Screeps::CARRY,
-        Screeps::MOVE};
-    auto lv2 = std::vector<std::string>{
-        Screeps::WORK,
-        Screeps::CARRY,
-        Screeps::CARRY,
-        Screeps::MOVE};
-    auto lv3 = std::vector<std::string>{
-        Screeps::WORK,
-        Screeps::WORK,
-        Screeps::CARRY,
-        Screeps::CARRY,
-        Screeps::MOVE,
-        Screeps::MOVE};
-    std::vector<std::string>
-        bodyLevel[] = {lv1, lv2, lv3};
-    return bodyLevel[level];
+    std::vector<std::string> bodys;
+    for (int i = 0; i < level; ++i)
+    {
+        bodys.push_back(Screeps::WORK);
+        bodys.push_back(Screeps::CARRY);
+        bodys.push_back(Screeps::MOVE);
+        bodys.push_back(Screeps::MOVE);
+    }
+    return bodys;
 }
 
 void Harvester::work(Screeps::Source &source, Screeps::Structure &target)

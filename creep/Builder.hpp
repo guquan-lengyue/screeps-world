@@ -31,25 +31,15 @@ Builder::Builder(JS::Value creep) : Screeps::Creep(std::move(creep))
 
 std::vector<std::string> Builder::bodyParts(int level)
 {
-    auto lv1 = std::vector<std::string>{
-        Screeps::WORK,
-        Screeps::CARRY,
-        Screeps::MOVE};
-    auto lv2 = std::vector<std::string>{
-        Screeps::WORK,
-        Screeps::CARRY,
-        Screeps::CARRY,
-        Screeps::MOVE};
-    auto lv3 = std::vector<std::string>{
-        Screeps::WORK,
-        Screeps::WORK,
-        Screeps::CARRY,
-        Screeps::CARRY,
-        Screeps::MOVE,
-        Screeps::MOVE};
-    std::vector<std::string>
-        bodyLevel[] = {lv1, lv2, lv3};
-    return bodyLevel[level];
+    std::vector<std::string> bodys;
+    for (int i = 0; i < level; ++i)
+    {
+        bodys.push_back(Screeps::WORK);
+        bodys.push_back(Screeps::CARRY);
+        bodys.push_back(Screeps::MOVE);
+        bodys.push_back(Screeps::MOVE);
+    }
+    return bodys;
 }
 
 void Builder::work(Screeps::RoomObject &source, Screeps::ConstructionSite &target)

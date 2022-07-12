@@ -1,5 +1,7 @@
 {
     "files.associations": {
+        "*.gotemplate": "gogo",
+        "*.html": "html",
         "array": "cpp",
         "istream": "cpp",
         "locale": "cpp",
@@ -82,6 +84,11 @@
         "numeric": "cpp",
         "random": "cpp",
         "cinttypes": "cpp",
-        "__memory": "cpp"
+        "__memory": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "stop_token": "cpp"
     }
 }

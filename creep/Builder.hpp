@@ -1,19 +1,20 @@
 //
 // Created by 19278 on 2022/6/14.
 //
-
+#ifndef EXAMPLE_BUILDER_H
+#define EXAMPLE_BUILDER_H
+#include "MyScreeps.hpp"
 #include <Screeps/Creep.hpp>
 #include <Screeps/ConstructionSite.hpp>
 #include <Screeps/Structure.hpp>
 #include <Screeps/Constants.hpp>
 #include <Screeps/StructureContainer.hpp>
 #include "opts.hpp"
-#ifndef EXAMPLE_BUILDER_H
-#define EXAMPLE_BUILDER_H
+
 
 #define BUILDER_ACTION "isBuilding"
 
-class Builder : public Screeps::Creep
+class Builder : public MyScreeps
 {
 public:
     explicit Builder(JS::Value creep);
@@ -25,7 +26,7 @@ public:
     void work(Screeps::RoomObject &source, Screeps::ConstructionSite &target);
 };
 
-Builder::Builder(JS::Value creep) : Screeps::Creep(std::move(creep))
+Builder::Builder(JS::Value creep) : MyScreeps::MyScreeps(std::move(creep))
 {
 }
 

@@ -1,5 +1,6 @@
 #ifndef EXAMPLE_REPAIRER_H
 #define EXAMPLE_REPAIRER_H
+#include "MyScreeps.hpp"
 #include <Screeps/Creep.hpp>
 #include <Screeps/Structure.hpp>
 #include <Screeps/StructureContainer.hpp>
@@ -7,7 +8,7 @@
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"
 #define REPAIRER_ACTION "working"
-class Repairer : public Screeps::Creep
+class Repairer : public MyScreeps
 {
 public:
     Repairer(JS::Value creep);
@@ -18,7 +19,7 @@ public:
     void work(Screeps::RoomObject &source, Screeps::Structure &target);
     static std::vector<std::string> bodyParts(int level);
 };
-Repairer::Repairer(JS::Value creep) : Screeps::Creep(std::move(creep))
+Repairer::Repairer(JS::Value creep) : MyScreeps::MyScreeps(std::move(creep))
 {
 }
 void Repairer::work(Screeps::RoomObject &source, Screeps::Structure &target)

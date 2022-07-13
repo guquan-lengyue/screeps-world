@@ -23,6 +23,7 @@
 #include <iostream>
 #include <iterator>
 #include <algorithm>
+#include "creep/MyScreeps.hpp"
 #include "GConfig.hpp"
 #define HOME_SCREEP "Spawn1"
 
@@ -154,7 +155,7 @@ void spawnHarvester(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 10; j >= 0; j--)
+        for (int j = 10; j >= 2; j--)
         {
             int result = spawn.spawnCreep(Harvester::bodyParts(j), Harvester::namePre() + std::to_string(i));
             if (result > 0)
@@ -169,7 +170,7 @@ void spawnUpgrader(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 10; j >= 0; j--)
+        for (int j = 10; j >= 2; j--)
         {
             int result = spawn.spawnCreep(Upgrader::bodyParts(j), Upgrader::namePre() + std::to_string(i));
             if (result > 0)
@@ -184,7 +185,7 @@ void spawnBuilder(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 10; j >= 0; j--)
+        for (int j = 10; j >= 2; j--)
         {
             int result = spawn.spawnCreep(Builder::bodyParts(j), Builder::namePre() + std::to_string(i));
             if (result > 0)
@@ -199,7 +200,7 @@ void spawnRepairer(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 10; j >= 0; j--)
+        for (int j = 10; j >= 2; j--)
         {
             int result = spawn.spawnCreep(Repairer::bodyParts(j), Repairer::namePre() + std::to_string(i));
             if (result > 0)
@@ -219,6 +220,13 @@ extern "C" void loop()
     auto room = getRoom(home);
     auto sources = getInRoom<Screeps::Source>(*room, Screeps::FIND_SOURCES);
     auto droppedResource = getInRoom<Screeps::Resource>(*room, Screeps::FIND_DROPPED_RESOURCES);
+    for (auto i = droppedResource.begin(); i != droppedResource.begin(); i++)
+    {
+        if ((*i)->amount() < 150)
+        {
+            droppedResource.erase(i);
+        }
+    }
     auto damageStructure = getDamageStructure(*room);
     auto controller = getController(*room);
     auto fullContainer = getContainer(*room, false);
@@ -279,12 +287,18 @@ extern "C" void loop()
     for (const auto &item : Screeps::Game.creeps())
     {
         auto creep = item.second;
+        if (creep.ticksToLive() < 100 && creep.getActiveBodyParts(Screeps::CARRY) >= 2)
+        {
+            MyScreeps(creep.value()).renew(*home);
+            continue;
+        }
+
         if ((int)creep.name().find(Harvester::namePre()) >= 0)
         {
             const auto &source = sources[++HARVESTER_HAVE % 2];
 
             auto store = home->store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value() > 0 ? home : emptyContainer;
-            if (!droppedResource.empty() && false)
+            if (!droppedResource.empty())
             {
                 Harvester(creep.value()).work(*(droppedResource[0]), *store);
             }

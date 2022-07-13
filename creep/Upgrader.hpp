@@ -4,7 +4,7 @@
 
 #ifndef EXAMPLE_UPGRADER_H
 #define EXAMPLE_UPGRADER_H
-
+#include "MyScreeps.hpp"
 #include <Screeps/Creep.hpp>
 #include <Screeps/Structure.hpp>
 #include <Screeps/Constants.hpp>
@@ -16,7 +16,7 @@
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"
 
-class Upgrader : public Screeps::Creep
+class Upgrader : public MyScreeps
 {
 public:
     Upgrader(JS::Value creep);
@@ -28,7 +28,7 @@ public:
     static std::vector<std::string> bodyParts(int level);
 };
 
-Upgrader::Upgrader(JS::Value creep) : Screeps::Creep(std::move(creep))
+Upgrader::Upgrader(JS::Value creep) : MyScreeps::MyScreeps(std::move(creep))
 {
 }
 

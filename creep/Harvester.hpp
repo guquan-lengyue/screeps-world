@@ -1,6 +1,6 @@
 #ifndef CREEP_ROLE_HARVESTER
 #define CREEP_ROLE_HARVESTER
-
+#include "MyScreeps.hpp"
 #include <Screeps/Creep.hpp>
 #include <Screeps/Constants.hpp>
 #include <Screeps/Store.hpp>
@@ -11,7 +11,7 @@
 #include <iostream>
 #include "opts.hpp"
 
-class Harvester : public Screeps::Creep
+class Harvester : public MyScreeps
 {
 private:
     /* data */
@@ -28,7 +28,7 @@ public:
     static std::string namePre() { return "Harvester_"; };
 };
 
-Harvester::Harvester(JS::Value creep) : Screeps::Creep(creep)
+Harvester::Harvester(JS::Value creep) : MyScreeps::MyScreeps(std::move(creep))
 {
 }
 

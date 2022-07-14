@@ -27,7 +27,10 @@ void MyScreeps::renew(Screeps::StructureSpawn &spawn)
 {
     if (spawn.renewCreep(*this) < 0)
     {
-        this->moveTo(spawn);
+        if (Screeps::StructureContainer(spawn.value()).store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 40)
+        {
+            this->moveTo(spawn, moveToOpt());
+        }
     }
 }
 bool MyScreeps::recycleCreep(Screeps::StructureSpawn &spawn)

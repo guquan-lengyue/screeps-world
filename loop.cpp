@@ -284,18 +284,13 @@ extern "C" void loop()
     BUILDER_HAVE = 0;
     REPAIRER_HAVE = 0;
 
-
     for (const auto &item : Screeps::Game.creeps())
     {
-
         auto creep = item.second;
-        if (HARVESTER_HAVE > GConfig::getHarvesterNum() / 2)
+        if (creep.ticksToLive() < 500)
         {
-            if (creep.ticksToLive() < 200)
-            {
-                MyScreeps(creep.value()).renew(*home);
-                continue;
-            }
+            MyScreeps(creep.value()).renew(*home);
+            continue;
         }
 
         if ((int)creep.name().find(Harvester::namePre()) >= 0)

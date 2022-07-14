@@ -155,7 +155,7 @@ void spawnHarvester(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 10; j >= 2; j--)
+        for (int j = 10; j > 0; j--)
         {
             int result = spawn.spawnCreep(Harvester::bodyParts(j), Harvester::namePre() + std::to_string(i));
             if (result > 0)
@@ -170,7 +170,7 @@ void spawnUpgrader(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 10; j >= 2; j--)
+        for (int j = 10; j > 0; j--)
         {
             int result = spawn.spawnCreep(Upgrader::bodyParts(j), Upgrader::namePre() + std::to_string(i));
             if (result > 0)
@@ -185,7 +185,7 @@ void spawnBuilder(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 10; j >= 2; j--)
+        for (int j = 10; j > 0; j--)
         {
             int result = spawn.spawnCreep(Builder::bodyParts(j), Builder::namePre() + std::to_string(i));
             if (result > 0)
@@ -200,7 +200,7 @@ void spawnRepairer(Screeps::StructureSpawn &spawn, int number)
 {
     for (int i = 0; i < number; i++)
     {
-        for (int j = 10; j >= 2; j--)
+        for (int j = 10; j > 0; j--)
         {
             int result = spawn.spawnCreep(Repairer::bodyParts(j), Repairer::namePre() + std::to_string(i));
             if (result > 0)
@@ -222,7 +222,7 @@ extern "C" void loop()
     auto droppedResource = getInRoom<Screeps::Resource>(*room, Screeps::FIND_DROPPED_RESOURCES);
     for (auto i = droppedResource.begin(); i != droppedResource.begin(); i++)
     {
-        if ((*i)->amount() < 150)
+        if ((*i)->amount() < 100)
         {
             droppedResource.erase(i);
         }
@@ -284,13 +284,18 @@ extern "C" void loop()
     BUILDER_HAVE = 0;
     REPAIRER_HAVE = 0;
 
+
     for (const auto &item : Screeps::Game.creeps())
     {
+
         auto creep = item.second;
-        if (creep.ticksToLive() < 100 && creep.getActiveBodyParts(Screeps::CARRY) >= 2)
+        if (HARVESTER_HAVE > GConfig::getHarvesterNum() / 2)
         {
-            MyScreeps(creep.value()).renew(*home);
-            continue;
+            if (creep.ticksToLive() < 200)
+            {
+                MyScreeps(creep.value()).renew(*home);
+                continue;
+            }
         }
 
         if ((int)creep.name().find(Harvester::namePre()) >= 0)

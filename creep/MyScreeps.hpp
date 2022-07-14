@@ -2,6 +2,7 @@
 #define EXAMPLE_MYSCREEPS_H
 #include <Screeps/Creep.hpp>
 #include <Screeps/StructureSpawn.hpp>
+#include <iostream>
 
 class MyScreeps : public Screeps::Creep
 {
@@ -10,6 +11,7 @@ private:
 public:
     MyScreeps(JS::Value creep);
     void renew(Screeps::StructureSpawn &spawn);
+    bool recycleCreep(Screeps::StructureSpawn &spawn);
     ~MyScreeps();
 };
 
@@ -27,5 +29,15 @@ void MyScreeps::renew(Screeps::StructureSpawn &spawn)
     {
         this->moveTo(spawn);
     }
+}
+bool MyScreeps::recycleCreep(Screeps::StructureSpawn &spawn)
+{
+    if (spawn.recycleCreep(*this) < 0)
+    {
+        std::cout << this->name() << " go to recycle" << std::endl;
+        this->moveTo(spawn);
+        return false;
+    }
+    return true;
 }
 #endif // EXAMPLE_BUILDER_H

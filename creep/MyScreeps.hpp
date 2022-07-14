@@ -2,6 +2,7 @@
 #define EXAMPLE_MYSCREEPS_H
 #include <Screeps/Creep.hpp>
 #include <Screeps/StructureSpawn.hpp>
+#include <Screeps/StructureContainer.hpp>
 #include <iostream>
 
 class MyScreeps : public Screeps::Creep

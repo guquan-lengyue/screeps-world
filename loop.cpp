@@ -10,7 +10,7 @@ extern "C"
 
 void initData() {
     std::cout << "initData ??" << std::endl;
-    std::cout << "hello world ??  " << std::endl;
+    std::cout << "hello world ??   " << std::endl;
 }
 
 

@@ -13,6 +13,7 @@ extern "C" void updateData() {
 
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
+    std::cout << "loop" << std::endl;
     Screeps::Context::update();
     scrsys::update_spawn();
     scrsys::source_check();

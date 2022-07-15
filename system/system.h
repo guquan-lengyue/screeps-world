@@ -40,6 +40,7 @@ namespace scrsys {
     }
 
     void spawn_check_creep() {
+        spawns.clear();
         for (auto &spawn: spawns) {
             int countWork = 0;
             int countSoldier = 0;
@@ -79,12 +80,14 @@ namespace scrsys {
     }
 
     void creep_check() {
+        creeps.clear();
         for (const auto &item: Screeps::Game.creeps()) {
             creeps.push_back((Screeps::Creep) item.second);
         }
     }
 
     void source_check() {
+        sources.clear();
         for (const auto &spawn: spawns) {
             for (const auto &item: spawn.second.room().find(Screeps::FIND_SOURCES)) {
                 sources.emplace_back(item->value());

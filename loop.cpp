@@ -6,29 +6,26 @@
 #include "system/system.h"
 
 EMSCRIPTEN_KEEPALIVE
-extern "C" void updateData()
-{
+extern "C" void updateData() {
     std::cout << "loading" << std::endl;
     Screeps::Context::update();
     scrsys::update_spawn();
 }
 
 EMSCRIPTEN_KEEPALIVE
-extern "C" void loop()
-{
+extern "C" void loop() {
+    scrsys::source_check();
+    scrsys::creep_check();
     scrsys::spawn_check_creep();
     scrsys::spawn_creep();
 
-    scrsys::creep_check();
     scrsys::creep_work();
-    scrsys::source_check();
 }
 
-EMSCRIPTEN_BINDINGS(loop)
-{
+EMSCRIPTEN_BINDINGS(loop) {
     emscripten::function("loop", &loop);
 }
-EMSCRIPTEN_BINDINGS(updateData)
-{
+
+EMSCRIPTEN_BINDINGS(updateData) {
     emscripten::function("updateData", &updateData);
 }

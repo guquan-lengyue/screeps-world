@@ -9,6 +9,7 @@ void check() {
     Screeps::Context::update();
     scrsys::update_spawn();
     scrsys::spawn_check_creep();
+    scrsys::source_check();
     scrsys::spawn_creep();
     scrsys::creep_check();
 }

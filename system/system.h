@@ -101,7 +101,7 @@ namespace scrsys {
         sources.clear();
         for (const auto &spawn: spawns) {
             for (const auto &item: spawn.second.room().find(Screeps::FIND_SOURCES)) {
-                sources.emplace_back(item->value());
+                sources.emplace_back(Screeps::Source(item->value()));
             }
         }
     }

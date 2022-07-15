@@ -4,13 +4,15 @@
 #include <emscripten.h>
 #include <emscripten/bind.h>
 #include <iostream>
+#include "system/system.h"
 
 EMSCRIPTEN_KEEPALIVE
 extern "C"
 
 void initData() {
     std::cout << "initData ??" << std::endl;
-    std::cout << "hello world ??    " << std::endl;
+    Screeps::Context::update();
+    system::update_spawn()
 }
 
 
@@ -18,7 +20,9 @@ EMSCRIPTEN_KEEPALIVE
 extern "C"
 
 void loop() {
-    Screeps::Context::update();
+    system::spawn_check_creep();
+    system::spawn_creep()
+
 }
 
 EMSCRIPTEN_BINDINGS(loop)

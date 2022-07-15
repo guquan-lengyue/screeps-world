@@ -100,18 +100,20 @@ namespace sys {
 
     void creep() {
         for (auto &spawn: Screeps::Game.spawns()) {
-            auto s = (Spawn) spawn.second;
+            Spawn s = (Spawn) spawn.second;
             auto room = s.room();
             auto sources = s.room().find(Screeps::FIND_SOURCES);
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
             int i = 0;
             for (const auto &creep: creeps) {
-                auto c = (Creep) (*creep);
+                Creep c = (Creep) (*creep);
                 std::string role = c.getMemory("role");
                 auto source = (Screeps::Source) (*(sources[++i % sources.size()]));
                 if (role == "HARVESTER") {
                     harvester(c, source, s);
                 } else if (role == "UPGRADER") {
+                    auto controller = room.controller().value();
+                    upgrade(c, s, controller);
                 } else if (role == "REPAIRER") {
                 }
             }

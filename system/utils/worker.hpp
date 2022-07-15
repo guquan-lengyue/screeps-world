@@ -43,7 +43,7 @@ void harvester(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structur
     }
 }
 
-void upgrador(Screeps::Creep &creep, Screeps::RoomObject &source, Screeps::StructureController &target) {
+void upgrade(Screeps::Creep &creep, Screeps::RoomObject &source, Screeps::StructureController &target) {
     JSON memory = creep.memory();
     if (!memory.contains("working")) {
         memory["working"] = false;

@@ -10,6 +10,16 @@
 #include <Screeps/Creep.hpp>
 #include <Screeps/Store.hpp>
 
+JSON getMoveToOpt() {
+    auto opt = JS::Value::object();
+    opt.set("fill", "transparent");
+    opt.set("stroke", "#fff");
+    opt.set("lineStyle", "dashed");
+    opt.set("strokeWidth", 0.15);
+    opt.set("opacity", 0.1);
+    return JS::toJSON(opt);
+}
+
 std::vector<std::string> get_worker_body(int level) {
     std::vector<std::string> bodys;
     for (int i = 0; i < level; ++i) {
@@ -106,7 +116,7 @@ namespace scrsys {
                 } else {
                     if (item.transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE) {
                         if (target.store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0) {
-                            item.moveTo(target);
+                            item.moveTo(target, getMoveToOpt());
                         }
                     }
                 }

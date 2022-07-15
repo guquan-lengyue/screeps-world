@@ -5,11 +5,11 @@
 #ifndef EXAMPLE_WORKER_HPP
 #define EXAMPLE_WORKER_HPP
 
-#include <Screeps/Source.hpp>
-#include <Screeps/Structure.hpp>
-#include <Screeps/Creep.hpp>
-#include <Screeps/Store.hpp>
-#include <Screeps/StructureContainer.hpp>
+#include "include/Screeps/Source.hpp"
+#include "include/Screeps/Structure.hpp"
+#include "include/Screeps/Creep.hpp"
+#include "include/Screeps/Store.hpp"
+#include "include/Screeps/StructureContainer.hpp"
 
 void harvester(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structure &target) {
     if (creep.store().getFreeCapacity().value_or(-1) > 0) {

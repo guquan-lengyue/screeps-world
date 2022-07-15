@@ -81,7 +81,8 @@ namespace scrsys {
             std::cout << "spawnTask : " << spawnTask << std::endl;
             if (spawnTask == "Work") {
                 for (int i = 6; i > 0; i--) {
-                    spawn.second.spawnCreep(get_worker_body(i), "Work" + spawn.second.name());
+                    auto rst = spawn.second.spawnCreep(get_worker_body(i), "Work" + spawn.second.name());
+                    std::cout << "spawn rst :" << rst << std::endl;
                 }
             } else if (spawnTask == "Soldier") {
                 for (int i = 6; i > 0; i--) {

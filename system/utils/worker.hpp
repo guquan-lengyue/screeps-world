@@ -10,6 +10,14 @@
 #include "include/Screeps/Creep.hpp"
 #include "include/Screeps/Store.hpp"
 #include "include/Screeps/StructureContainer.hpp"
+#include <Screeps/JS.hpp>
+#include <Screeps/JSON.hpp>
+
+JSON roleHarvester() {
+    auto role = JS::Value::object();
+    role.set("role", "HARVESTER");
+    return JS::toJSON(role);
+}
 
 void harvester(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structure &target) {
     if (creep.store().getFreeCapacity().value_or(-1) > 0) {

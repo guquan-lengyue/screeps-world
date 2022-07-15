@@ -83,7 +83,9 @@ namespace sys {
                 role = "REPAIRER";
             }
             for (int i = 6; i > 0 && !role.empty(); --i) {
-                s.spawnCreep(get_worker_body(i), s.name() + role + std::to_string(Screeps::Game.time()));
+                s.spawnCreep(get_worker_body(i),
+                             s.name() + role + std::to_string(Screeps::Game.time()),
+                             roleHarvester());
             }
         }
     }

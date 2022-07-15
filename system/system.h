@@ -105,8 +105,9 @@ namespace sys {
             for (const auto &creep: creeps) {
                 auto c = (Creep) (*creep);
                 std::string role = c.getMemory("role");
+                auto source = (Screeps::Source) (*(sources[0]));
                 if (role == "HARVESTER") {
-                    harvester(c, reinterpret_cast<Screeps::Source &>(sources[0]), s);
+                    harvester(c, source, s);
                 } else if (role == "UPGRADER") {
                 } else if (role == "REPAIRER") {
                 }

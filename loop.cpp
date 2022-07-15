@@ -18,6 +18,10 @@ extern "C" void loop()
 {
     scrsys::spawn_check_creep();
     scrsys::spawn_creep();
+
+    scrsys::creep_check();
+    scrsys::creep_work();
+    scrsys::source_check();
 }
 
 EMSCRIPTEN_BINDINGS(loop)

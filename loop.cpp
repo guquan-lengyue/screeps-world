@@ -25,6 +25,7 @@ extern "C" void loop() {
     if (Screeps::Game.time() % 10 == 0) {
         check();
     }
+    std::cout << "loop" << std::endl;
     scrsys::creep_work();
 }
 

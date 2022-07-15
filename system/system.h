@@ -109,6 +109,7 @@ namespace scrsys {
     void creep_work() {
         auto target = spawns.begin()->second;
         const auto &source = sources[0];
+        std::cout << creeps.size() << "creeps num" << std::endl;
         for (auto &item: creeps) {
             if (item.name().find("Work") >= 0) {
                 if (item.store().getFreeCapacity().value_or(-1) > 0) {

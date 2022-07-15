@@ -23,10 +23,10 @@ JSON getMoveToOpt() {
 std::vector<std::string> get_worker_body(int level) {
     std::vector<std::string> bodys;
     for (int i = 0; i < level; ++i) {
-        bodys.push_back(Screeps::WORK);
-        bodys.push_back(Screeps::CARRY);
-        bodys.push_back(Screeps::MOVE);
-        bodys.push_back(Screeps::MOVE);
+        bodys.emplace_back(Screeps::WORK);
+        bodys.emplace_back(Screeps::CARRY);
+        bodys.emplace_back(Screeps::MOVE);
+        bodys.emplace_back(Screeps::MOVE);
     }
     return bodys;
 }
@@ -34,10 +34,10 @@ std::vector<std::string> get_worker_body(int level) {
 std::vector<std::string> get_soldier_body(int level) {
     std::vector<std::string> bodys;
     for (int i = 0; i < level; ++i) {
-        bodys.push_back(Screeps::ATTACK);
-        bodys.push_back(Screeps::CARRY);
-        bodys.push_back(Screeps::MOVE);
-        bodys.push_back(Screeps::MOVE);
+        bodys.emplace_back(Screeps::ATTACK);
+        bodys.emplace_back(Screeps::CARRY);
+        bodys.emplace_back(Screeps::MOVE);
+        bodys.emplace_back(Screeps::MOVE);
     }
     return bodys;
 }

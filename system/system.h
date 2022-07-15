@@ -78,6 +78,7 @@ namespace scrsys {
     void spawn_creep() {
         for (auto &spawn: spawns) {
             std::string spawnTask = spawn.second.getMemory("spawn");
+            std::cout << "spawnTask : " << spawnTask << std::endl;
             if (spawnTask == "Work") {
                 for (int i = 6; i > 0; i--) {
                     spawn.second.spawnCreep(get_worker_body(i), "Work" + spawn.second.name());

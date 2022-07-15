@@ -5,20 +5,24 @@
 #include <iostream>
 #include "system/system.h"
 
+void check() {
+    Screeps::Context::update();
+    scrsys::update_spawn();
+    scrsys::spawn_check_creep();
+    scrsys::spawn_creep();
+    scrsys::creep_check();
+}
+
 EMSCRIPTEN_KEEPALIVE
 extern "C" void updateData() {
     std::cout << "loading" << std::endl;
+    check();
 }
 
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
     if (Screeps::Game.time() % 10 == 0) {
-        Screeps::Context::update();
-        scrsys::update_spawn();
-        scrsys::spawn_check_creep();
-        scrsys::spawn_creep();
-        scrsys::creep_check();
-        scrsys::source_check();
+        check();
     }
     scrsys::creep_work();
 }

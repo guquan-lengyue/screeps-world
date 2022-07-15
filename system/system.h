@@ -3,7 +3,7 @@
 #include "../component/component.h"
 #include <Screeps/Room.hpp>
 #include <Screeps/RoomObject.hpp>
-#include <Game.hpp>
+#include <Screeps/Game.hpp>
 #include <Screeps/Constants.hpp>
 #include <Screeps/Creep.hpp>
 std::vector<std::string> get_worker_body(int level)

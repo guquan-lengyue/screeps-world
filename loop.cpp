@@ -9,8 +9,8 @@
 EMSCRIPTEN_KEEPALIVE
 extern "C"
 
-void initData() {
-    std::cout << "initData ??" << std::endl;
+void updateData() {
+    std::cout << "updateData ??" << std::endl;
     Screeps::Context::update();
     sys::update_spawn();
 }
@@ -28,5 +28,5 @@ void loop() {
 EMSCRIPTEN_BINDINGS(loop)
 {
     emscripten::function("loop", &loop);
-    emscripten::function("initData", &initData);
+    emscripten::function("updateData", &updateData);
 }

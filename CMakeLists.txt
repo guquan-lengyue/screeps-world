@@ -23,7 +23,7 @@ add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E 
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${TARGET_NAME}.js ${CMAKE_SOURCE_DIR}/dist/${TARGET_NAME}_loader.js)
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/js/main.js ${CMAKE_SOURCE_DIR}/dist/main.js)
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/js/wasm_loader.js ${CMAKE_SOURCE_DIR}/dist/wasm_loader.js)
-INCLUDE_DIRECTORIES(sysroot/include)
+# INCLUDE_DIRECTORIES(sysroot/include)
 INCLUDE_DIRECTORIES(screepsxx)
 # Following post-build step will automatically upload artifacts to
 # official Screeps server. If you want to use it, please,

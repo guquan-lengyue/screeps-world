@@ -6,7 +6,7 @@ var mod;
 wasm_loader('app_loader', 'app_module').then((instance) => {
     console.log("WASM module loaded.");
     mod = instance;
-    mod.initData();
+    mod.updateData();
 });
 
 module.exports.loop = function () {

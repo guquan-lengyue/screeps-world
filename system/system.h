@@ -53,7 +53,6 @@ namespace scrsys {
                     ++countSoldier;
                 }
             }
-
             if (countWork < 16) {
                 spawn.second.setMemory("spawn", "Work");
             } else if (countSoldier < 4) {

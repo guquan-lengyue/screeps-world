@@ -91,7 +91,9 @@ namespace sys {
                 auto rst = s.spawnCreep(get_worker_body(i),
                                         s.name() + role + std::to_string(Screeps::Game.time()),
                                         roleOpt(role));
-                std::cout << rst << std::endl;
+                if (rst >= 0) {
+                    break;
+                }
             }
         }
     }

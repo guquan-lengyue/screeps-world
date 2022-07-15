@@ -12,10 +12,11 @@
 #include "include/Screeps/StructureContainer.hpp"
 #include <Screeps/JS.hpp>
 #include <Screeps/JSON.hpp>
+#include <string>
 
-JSON roleHarvester() {
+JSON roleOpt(std::string str) {
     auto role = JS::Value::object();
-    role.set("role", "HARVESTER");
+    role.set("role", str.c_str());
     return JS::toJSON(role);
 }
 

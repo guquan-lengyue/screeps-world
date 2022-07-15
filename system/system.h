@@ -88,7 +88,7 @@ namespace sys {
             for (int i = 6; i > 0 && !role.empty(); --i) {
                 auto rst = s.spawnCreep(get_worker_body(i),
                                         s.name() + role + std::to_string(Screeps::Game.time()),
-                                        roleHarvester());
+                                        roleOpt(role));
                 std::cout << rst << std::endl;
             }
         }

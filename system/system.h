@@ -118,7 +118,7 @@ namespace scrsys {
             if (item.name().find("Work") >= 0) {
                 if (item.store().getFreeCapacity().value_or(-1) > 0) {
                     if (item.harvest(source) == Screeps::ERR_NOT_IN_RANGE) {
-                        item.moveTo(source);
+                        item.moveTo(source, getMoveToOpt());
                     }
                 } else {
                     if (item.transfer(target, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE) {

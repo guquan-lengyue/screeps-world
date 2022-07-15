@@ -8,7 +8,7 @@
 #include <vector>
 #include <Screeps/Source.hpp>
 
-std::map<std::string, Spawn> spawns;
-std::vector<Screeps::Creep> creeps;
-std::vector<Screeps::Source> sources;
+int HARVESTER_NUM = 0;
+int UPGRADER_NUM = 0;
+int REPAIRER_NUM = 0;
 #endif

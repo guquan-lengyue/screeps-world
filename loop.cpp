@@ -8,20 +8,20 @@
 EMSCRIPTEN_KEEPALIVE
 extern "C" void updateData() {
     std::cout << "loading" << std::endl;
-
+    Screeps::Context::update();
 }
 
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
     std::cout << "loop" << std::endl;
-    Screeps::Context::update();
     scrsys::update_spawn();
-    scrsys::source_check();
-    scrsys::creep_check();
-    scrsys::spawn_creep();
-
     scrsys::spawn_check_creep();
-    scrsys::creep_work();
+
+//    scrsys::source_check();
+//    scrsys::creep_check();
+//    scrsys::spawn_creep();
+//
+//    scrsys::creep_work();
 }
 
 EMSCRIPTEN_BINDINGS(loop) {

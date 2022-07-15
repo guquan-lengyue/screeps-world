@@ -1,5 +1,4 @@
 #include <Screeps/Context.hpp>
-#include <Screeps/Creep.hpp>
 
 #include <emscripten.h>
 #include <emscripten/bind.h>

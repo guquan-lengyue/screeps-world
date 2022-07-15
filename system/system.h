@@ -57,9 +57,9 @@ namespace scrsys {
             auto creeps = spawn.second.room().find(Screeps::FIND_MY_CREEPS);
             for (auto &creep: creeps) {
                 std::string name = ((Screeps::Creep) (*creep)).name();
-                if (name.find("Work") >= 0) {
+                if ((int) name.find("Work") >= 0) {
                     ++countWork;
-                } else if (name.find("Soldier")) {
+                } else if ((int) name.find("Soldier") >= 0) {
                     ++countSoldier;
                 }
             }

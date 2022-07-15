@@ -9,6 +9,7 @@
 #include <Screeps/Constants.hpp>
 #include <Screeps/Creep.hpp>
 #include <Screeps/Store.hpp>
+#include <random>
 
 JSON getMoveToOpt() {
     auto opt = JS::Value::object();
@@ -86,7 +87,8 @@ namespace scrsys {
                 }
             } else if (spawnTask == "Soldier") {
                 for (int i = 6; i > 0; i--) {
-                    spawn.second.spawnCreep(get_soldier_body(i), "Soldier" + spawn.second.name());
+                    spawn.second.spawnCreep(get_soldier_body(i),
+                                            "Soldier" + spawn.second.name() + std::to_string(random()));
                 }
             }
         }

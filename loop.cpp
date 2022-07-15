@@ -12,7 +12,7 @@ extern "C"
 void initData() {
     std::cout << "initData ??" << std::endl;
     Screeps::Context::update();
-    system::update_spawn()
+    sys::update_spawn();
 }
 
 
@@ -20,8 +20,8 @@ EMSCRIPTEN_KEEPALIVE
 extern "C"
 
 void loop() {
-    system::spawn_check_creep();
-    system::spawn_creep()
+    sys::spawn_check_creep();
+    sys::spawn_creep();
 
 }
 

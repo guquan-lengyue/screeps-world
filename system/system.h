@@ -31,7 +31,7 @@ std::vector<std::string> get_soldier_body(int level)
     return bodys;
 }
 
-namespace system
+namespace sys
 {
     void update_spawn()
     {

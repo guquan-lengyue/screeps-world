@@ -1,7 +1,6 @@
 #ifndef OBJECT_SPAWN_HPP
 #define OBJECT_SPAWN_HPP
 #include <Screeps/StructureSpawn.hpp>
-#include <JSON.hpp>
 #include <string>
 class Spawn : public Screeps::StructureSpawn
 {

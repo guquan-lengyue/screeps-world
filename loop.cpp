@@ -21,6 +21,7 @@ extern "C" void updateData() {
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
     Screeps::Context::update();
+    std::cout << Screeps::Game.time() << std::endl;
     if (Screeps::Game.time() % 10 == 0) {
         check();
     }

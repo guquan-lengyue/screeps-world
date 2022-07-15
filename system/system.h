@@ -10,6 +10,7 @@
 #include <Screeps/Creep.hpp>
 #include "component/object/Creep.hpp"
 #include <Screeps/Store.hpp>
+#include <Screeps/RoomPosition.hpp>
 #include <string>
 #include "utils/worker.hpp"
 
@@ -72,8 +73,10 @@ namespace sys {
     }
 
     void spawns_spawn_creep() {
+        std::cout << "spawns_spawn_creep" << std::endl;
         for (auto &spawn: Screeps::Game.spawns()) {
             auto s = (Spawn) spawn.second;
+            std::cout << s.pos().roomName() << std::endl;
             std::string role;
             if (std::stoi(s.getMemory("harvester_num")) < 10) {
                 role = "HARVESTER";

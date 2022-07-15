@@ -34,13 +34,13 @@ std::vector<std::string> get_soldier_body(int level) {
 
 namespace scrsys {
     void update_spawn() {
+        spawns.clear();
         for (const auto &item: Screeps::Game.spawns()) {
             spawns.insert(std::pair<std::string, Spawn>(item.first, (Spawn) item.second));
         }
     }
 
     void spawn_check_creep() {
-        spawns.clear();
         for (auto &spawn: spawns) {
             int countWork = 0;
             int countSoldier = 0;

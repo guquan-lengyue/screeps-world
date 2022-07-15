@@ -13,10 +13,10 @@
 
 JSON getMoveToOpt() {
     auto opt = JS::Value::object();
-    opt.set("fill", "transparent");
+    opt.set("fill", "red");
     opt.set("stroke", "#fff");
     opt.set("lineStyle", "dashed");
-    opt.set("strokeWidth", 0.15);
+    opt.set("strokeWidth", 0.5);
     opt.set("opacity", 0.1);
     return JS::toJSON(opt);
 }

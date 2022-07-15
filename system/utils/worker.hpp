@@ -15,9 +15,11 @@
 #include <string>
 
 JSON roleOpt(std::string str) {
+    auto memory = JS::Value::object();
     auto role = JS::Value::object();
     role.set("role", str.c_str());
-    return JS::toJSON(role);
+    memory.set("memory", role);
+    return JS::toJSON(memory);
 }
 
 void harvester(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structure &target) {

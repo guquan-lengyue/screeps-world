@@ -41,7 +41,6 @@ namespace scrsys {
     }
 
     void spawn_check_creep() {
-        std::cout << "hello world" << spawns.size() << std::endl;
         for (auto &spawn: spawns) {
             int countWork = 0;
             int countSoldier = 0;

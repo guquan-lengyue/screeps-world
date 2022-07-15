@@ -104,10 +104,11 @@ namespace sys {
             auto room = s.room();
             auto sources = s.room().find(Screeps::FIND_SOURCES);
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
+            int i = 0;
             for (const auto &creep: creeps) {
                 auto c = (Creep) (*creep);
                 std::string role = c.getMemory("role");
-                auto source = (Screeps::Source) (*(sources[0]));
+                auto source = (Screeps::Source) (*(sources[++i % sources.size()]));
                 if (role == "HARVESTER") {
                     harvester(c, source, s);
                 } else if (role == "UPGRADER") {

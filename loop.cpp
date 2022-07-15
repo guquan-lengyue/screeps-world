@@ -14,8 +14,9 @@ extern "C" void updateData() {
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
     Screeps::Context::update();
-
-
+    sys::check_creep();
+    sys::spawns_spawn_creep();
+    sys::creep();
 }
 
 EMSCRIPTEN_BINDINGS(loop) {

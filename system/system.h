@@ -82,7 +82,7 @@ namespace scrsys {
     void creep_check() {
         creeps.clear();
         for (const auto &item: Screeps::Game.creeps()) {
-            creeps.push_back((Screeps::Creep) item.second);
+            creeps.push_back(item.second);
         }
     }
 

@@ -15,7 +15,7 @@ extern "C" void updateData() {
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
 //    scrsys::source_check();
-//    scrsys::creep_check();
+    scrsys::creep_check();
 //    scrsys::spawn_check_creep();
     scrsys::spawn_creep();
 

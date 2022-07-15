@@ -10,7 +10,6 @@ void check() {
     scrsys::update_spawn();
     scrsys::spawn_check_creep();
     scrsys::source_check();
-    scrsys::spawn_creep();
     scrsys::creep_check();
 }
 
@@ -26,6 +25,7 @@ extern "C" void loop() {
         check();
     }
     std::cout << "loop" << std::endl;
+    scrsys::spawn_creep();
     scrsys::creep_work();
 }
 

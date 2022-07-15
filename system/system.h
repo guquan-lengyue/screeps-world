@@ -37,7 +37,7 @@ namespace sys
     {
         for (const auto &item : Screeps::Game.spawns())
         {
-            spawns[item.first] = (Spawn)item.second;
+            spawns.insert(std::pair<std::string,Spawn>(item.first,(Spawn)item.second));
         }
     }
 

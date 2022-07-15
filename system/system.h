@@ -63,6 +63,8 @@ namespace scrsys {
                     ++countSoldier;
                 }
             }
+            std::cout << countWork << std::endl;
+            std::cout << countSoldier << std::endl;
             if (countWork < 16) {
                 spawn.second.setMemory("spawn", "Work");
             } else if (countSoldier < 4) {

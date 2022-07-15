@@ -19,5 +19,12 @@ std::string Spawn::getMemory(std::string key)
     memory[key].get_to(value);
     return value;
 }
+bool Spawn::setMemory(std::string key, std::string value)
+{
+    JSON memory = this->memory();
+    memory[key] = value;
+    Screeps::StructureSpawn::setMemory(memory);
+    return true;
+}
 
 #endif

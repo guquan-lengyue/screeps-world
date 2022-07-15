@@ -1,6 +1,6 @@
 #ifndef SYSTEM_HPP
 #define SYSTEM_HPP
-#include "../component/component.h"
+#include "component/component.h"
 #include <Screeps/Room.hpp>
 #include <Screeps/RoomObject.hpp>
 #include <Screeps/Game.hpp>
@@ -31,13 +31,13 @@ std::vector<std::string> get_soldier_body(int level)
     return bodys;
 }
 
-namespace sys
+namespace scrsys
 {
     void update_spawn()
     {
         for (const auto &item : Screeps::Game.spawns())
         {
-            spawns.insert(std::pair<std::string,Spawn>(item.first,(Spawn)item.second));
+            spawns.insert(std::pair<std::string, Spawn>(item.first, (Spawn)item.second));
         }
     }
 
@@ -48,7 +48,7 @@ namespace sys
             int countWork = 0;
             int countSoldier = 0;
             auto creeps = spawn.second.room().find(Screeps::FIND_MY_CREEPS);
-            for (const auto &creep : creeps)
+            for (auto &creep : creeps)
             {
                 std::string name = ((Screeps::Creep)(*creep)).name();
                 if (name.find("Work") >= 0)
@@ -60,6 +60,7 @@ namespace sys
                     ++countSoldier;
                 }
             }
+
             if (countWork < 16)
             {
                 spawn.second.setMemory("spawn", "Work");
@@ -95,6 +96,11 @@ namespace sys
                 }
             }
         }
+    }
+
+    void creep_work()
+    {
+        
     }
 }
 

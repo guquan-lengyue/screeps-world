@@ -48,7 +48,6 @@ std::vector<std::string> get_soldier_body(int level) {
 
 namespace sys {
     void check_creep() {
-        std::cout << "check_creep" << std::endl;
         for (auto &spawn: Screeps::Game.spawns()) {
             int harvester_num = 0;
             int upgrader_num = 0;
@@ -68,7 +67,11 @@ namespace sys {
                     auto role = c.getMemory("role");
                     c.setMemory("beforeRole", role);
                     c.setMemory("role", "HARVESTER");
+                    if (c.getMemory("beforeRole") == "HARVESTER") {
+                        ++before_harvester_num;
+                    }
                 }
+                s.setMemory("before_harvester_num", std::to_string(before_harvester_num));
                 continue;
             } else {
                 for (const auto &creep: creeps) {
@@ -78,6 +81,8 @@ namespace sys {
                     c.setMemory("beforeRole", "HARVESTER");
                 }
             }
+
+
             for (const auto &creep: creeps) {
                 auto c = ((Creep) *creep);
                 std::string role = c.getMemory("role");

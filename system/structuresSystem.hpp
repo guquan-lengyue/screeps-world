@@ -13,13 +13,11 @@
 
 namespace sys {
     void check_structures() {
-        comp::spawn2container.clear();
         comp::emptyContainer.clear();
         for (auto &spawn: Screeps::Game.spawns()) {
             auto s = (Spawn) spawn.second;
             auto room = s.room();
             auto structures = room.find(Screeps::FIND_MY_STRUCTURES);
-            std::vector<std::unique_ptr<Screeps::StructureContainer>> container;
             for (auto &structure: structures) {
                 auto stru = (Screeps::StructureContainer) (*structure);
                 std::string structureType = stru.structureType();
@@ -27,20 +25,14 @@ namespace sys {
                     (int) structureType.find(Screeps::STRUCTURE_CONTAINER) >= 0 ||
                     (int) structureType.find(Screeps::STRUCTURE_STORAGE) >= 0 ||
                     (int) structureType.find(Screeps::STRUCTURE_SPAWN) >= 0) {
-//                    container.push_back(
-//                            std::move(std::make_unique<Screeps::StructureContainer>(structure->value())));
-//                    std::cout << stru.structureType() << stru.store().getFreeCapacity().value_or(-1) << std::endl;
-//                    if (stru.store().getFreeCapacity().value_or(-1) >= 0) {
-//                        comp::emptyContainer[s.name()] = std::move(
-//                                std::make_unique<Screeps::StructureContainer>(structure->value()));
-//                    }
+
+                    std::cout << stru.structureType() << stru.store().getFreeCapacity().value_or(-1) << std::endl;
+                    if (stru.store().getFreeCapacity().value_or(-1) >= 0) {
+                        comp::emptyContainer[s.name()] = std::move(
+                                std::make_unique<Screeps::StructureContainer>(structure->value()));
+                    }
                 }
             }
-//            std::pair<std::string, std::vector<std::unique_ptr<Screeps::StructureContainer>>>
-//                    content(s.name(), container);
-//
-//
-//            comp::spawn2container.insert(content);
         }
     }
 }

@@ -48,7 +48,8 @@ namespace util {
     }
 
     void renew(Screeps::Creep &creep, Screeps::StructureSpawn &spawn) {
-        if (spawn.renewCreep(creep) == Screeps::ERR_NOT_IN_RANGE) {
+        if (creep.transfer(spawn, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE &&
+            spawn.renewCreep(creep) == Screeps::ERR_NOT_IN_RANGE) {
             if (((Screeps::StructureContainer) spawn)
                         .store()
                         .getFreeCapacity(Screeps::RESOURCE_ENERGY)

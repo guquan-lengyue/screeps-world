@@ -16,7 +16,7 @@ extern "C" void loop() {
     Screeps::Context::update();
     sys::check_creep();
     sys::check_structures();
-//    sys::spawns_spawn_creep();
+    sys::spawns_spawn_creep();
 //    sys::creep();
 }
 

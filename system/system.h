@@ -161,8 +161,8 @@ namespace sys {
             if (!comp::fullContainer.empty()) {
                 fullContainer = *(comp::fullContainer[s.name()]);
             }
-            std::cout << "emptyContainer" << emptyContainer.structureType() << std::endl;
-            std::cout << "fullContainer" << fullContainer.structureType() << std::endl;
+            std::cout << "emptyContainer `" << emptyContainer.structureType() << "`" << std::endl;
+            std::cout << "fullContainer `" << fullContainer.structureType() << "`" << std::endl;
             for (const auto &creep: creeps) {
                 Creep c = (Creep) (*creep);
                 std::string role = c.getMemory("role");

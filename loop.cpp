@@ -16,9 +16,9 @@ extern "C" void loop() {
     Screeps::Context::update();
     sys::check_structures();
     sys::spawns_spawn_creep();
-    std::cout << "loop" << std::endl;
     sys::creep();
     sys::check_creep();
+    std::cout << "loop" << std::endl;
 }
 
 EMSCRIPTEN_BINDINGS(loop) {

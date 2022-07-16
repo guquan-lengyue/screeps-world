@@ -135,8 +135,6 @@ namespace sys {
                                         roleOpt(role));
                 if (rst >= 0) {
                     break;
-                } else {
-                    std::cout << rst << std::endl;
                 }
             }
         }

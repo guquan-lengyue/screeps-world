@@ -17,6 +17,7 @@ extern "C" void loop() {
     sys::check_structures();
     sys::spawns_spawn_creep();
     sys::check_creep();
+    std::cout << "loop" << std::endl;
     sys::creep();
 }
 

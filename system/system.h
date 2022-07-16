@@ -54,6 +54,7 @@ namespace sys {
             int harvester_num = 0;
             int upgrader_num = 0;
             int repairer_num = 0;
+            int builder_num = 0;
             auto s = (Spawn) spawn.second;
             auto room = (Screeps::Room) s.room();
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
@@ -66,11 +67,14 @@ namespace sys {
                     ++upgrader_num;
                 } else if (role == "REPAIRER") {
                     ++repairer_num;
+                } else if (role == "BUILDER") {
+                    ++builder_num;
                 }
             }
             s.setMemory("harvester_num", std::to_string(harvester_num));
             s.setMemory("upgrader_num", std::to_string(upgrader_num));
             s.setMemory("repairer_num", std::to_string(repairer_num));
+            s.setMemory("builder_num", std::to_string(builder_num));
         }
     }
 
@@ -78,7 +82,7 @@ namespace sys {
         std::cout << "spawns_spawn_creep" << std::endl;
         for (auto &spawn: Screeps::Game.spawns()) {
             auto s = (Spawn) spawn.second;
-            std::cout << s.pos().roomName() << std::endl;
+            auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
             std::string role;
             if (std::stoi(s.getMemory("harvester_num")) < 10) {
                 role = "HARVESTER";
@@ -86,6 +90,8 @@ namespace sys {
                 role = "UPGRADER";
             } else if (std::stoi(s.getMemory("repairer_num")) < 2) {
                 role = "REPAIRER";
+            } else if (!construction_sizes.empty() && std::stoi(s.getMemory("builder_num")) < 4) {
+                role = "BUILDER";
             }
             for (int i = 6; i > 0 && !role.empty(); --i) {
                 auto rst = s.spawnCreep(get_worker_body(i),
@@ -104,6 +110,7 @@ namespace sys {
             auto room = s.room();
             auto sources = s.room().find(Screeps::FIND_SOURCES);
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
+            auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
             int i = 0;
             for (const auto &creep: creeps) {
                 Creep c = (Creep) (*creep);
@@ -115,6 +122,9 @@ namespace sys {
                     auto controller = room.controller().value();
                     upgrade(c, s, controller);
                 } else if (role == "REPAIRER") {
+                } else if (role == "BUILDER") {
+                    auto constructionSize = (Screeps::ConstructionSite) (*construction_sizes[0]);
+                    build(c, s, constructionSize);
                 }
             }
         }

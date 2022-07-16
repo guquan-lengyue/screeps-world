@@ -11,6 +11,7 @@
 #include "include/Screeps/Store.hpp"
 #include "include/Screeps/StructureContainer.hpp"
 #include <Screeps/StructureController.hpp>
+#include <Screeps/ConstructionSite.hpp>
 #include <Screeps/JS.hpp>
 #include <Screeps/JSON.hpp>
 #include <string>
@@ -74,6 +75,43 @@ void upgrade(Screeps::Creep &creep, Screeps::RoomObject &source, Screeps::Struct
         if (creep.withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE) {
             if (Screeps::StructureContainer(source.value()).store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(
                     -1) > 40) {
+                creep.moveTo(source);
+            }
+        }
+    }
+}
+
+void build(Screeps::Creep &creep, Screeps::RoomObject &source, Screeps::ConstructionSite &target) {
+    JSON memory = creep.memory();
+    if (!memory.contains("working")) {
+        memory["working"] = true;
+    }
+    bool isBuilding;
+    memory["working"].get_to(isBuilding);
+    if (isBuilding && creep.store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) == 0) {
+        isBuilding = false;
+        creep.say(SAY_HARVEST);
+    }
+    if (!isBuilding && creep.store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) == 0) {
+        isBuilding = true;
+        creep.say(SAY_BUILD);
+    }
+
+    memory["working"] = isBuilding;
+    creep.setMemory(memory);
+    if (isBuilding) {
+        if (creep.build(target) == Screeps::ERR_NOT_IN_RANGE) {
+            creep.moveTo(target);
+        }
+    } else {
+        if (creep.ticksToLive() < 10) {
+            creep.suicide();
+            return;
+        }
+        if (creep.withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE) {
+            if (Screeps::StructureContainer(source.value())
+                        .store()
+                        .getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 40) {
                 creep.moveTo(source);
             }
         }

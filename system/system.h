@@ -68,13 +68,13 @@ namespace sys {
                     c.setMemory("beforeRole", role);
                     c.setMemory("role", "HARVESTER");
                 }
+                continue;
             } else {
                 for (const auto &creep: creeps) {
                     auto c = ((Creep) *creep);
                     auto beforeRole = c.getMemory("role");
                     c.setMemory("role", beforeRole);
                     c.setMemory("beforeRole", "HARVESTER");
-
                 }
             }
             for (const auto &creep: creeps) {

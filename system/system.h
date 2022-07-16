@@ -61,6 +61,7 @@ namespace sys {
             auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
                 return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
             });
+            std::cout << s.getMemory("before_harvester_num") << std::endl;
             if (std::stoi(s.getMemory("before_harvester_num")) < 5) {
                 for (const auto &creep: creeps) {
                     auto c = ((Creep) *creep);

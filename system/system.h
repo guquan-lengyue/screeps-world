@@ -108,7 +108,7 @@ namespace sys {
             auto sources = s.room().find(Screeps::FIND_SOURCES);
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
-            auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value value) {
+            auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
                 return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
             });
             int i = 0;

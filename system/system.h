@@ -151,24 +151,26 @@ namespace sys {
             for (const auto &creep: creeps) {
                 Creep c = (Creep) (*creep);
                 std::string role = c.getMemory("role");
+                std::string renew = c.getMemoryOr("RENEW", "false");
                 auto source = (Screeps::Source) (*(sources[++i % sources.size()]));
+                if (renew == "true") {
+                    util::renew(c, s);
+                }
                 if (role == "HARVESTER") {
-                    harvester(c, source, emptyContainer);
+                    util::harvester(c, source, emptyContainer);
                 } else if (role == "UPGRADER") {
                     auto controller = room.controller().value();
-                    upgrade(c, fullContainer, controller);
+                    util::upgrade(c, fullContainer, controller);
                 } else if (role == "REPAIRER") {
                     if (!damageRoomObject.empty()) {
                         auto damage = (Screeps::Structure) (*damageRoomObject[0]);
-                        repairer(c, fullContainer, damage);
+                        util::repairer(c, fullContainer, damage);
                     }
                 } else if (role == "BUILDER") {
                     if (!construction_sizes.empty()) {
                         auto constructionSize = (Screeps::ConstructionSite) (*construction_sizes[0]);
-                        build(c, fullContainer, constructionSize);
+                        util::build(c, fullContainer, constructionSize);
                     }
-                } else if (role == "RENEW") {
-                    renew(c, s);
                 }
             }
         }

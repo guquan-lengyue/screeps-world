@@ -30,14 +30,12 @@ namespace sys {
                     container.emplace_back(std::make_unique<Screeps::StructureContainer>(stru));
                     std::cout << stru.structureType() << stru.store().getFreeCapacity().value_or(-1) << std::endl;
                     if (stru.store().getFreeCapacity().value_or(-1) >= 0) {
-                        std::pair<std::string, std::unique_ptr<Screeps::StructureContainer>>
-                                emptyContainer(s.name(), std::make_unique<Screeps::StructureContainer>(stru));
-                        comp::emptyContainer.insert(emptyContainer);
+                        comp::emptyContainer[s.name()] = std::make_unique<Screeps::StructureContainer>(stru);
                     }
                 }
             }
-            std::pair<std::string, std::vector<std::unique_ptr<Screeps::StructureContainer>>> content(s.name(),
-                                                                                                      container);
+            std::pair<std::string, std::vector<std::unique_ptr<Screeps::StructureContainer>>>
+                    content(s.name(), container);
             comp::spawn2container.insert(content);
         }
     }

@@ -27,13 +27,13 @@ namespace sys {
                     (int) structureType.find(Screeps::STRUCTURE_CONTAINER) >= 0 ||
                     (int) structureType.find(Screeps::STRUCTURE_STORAGE) >= 0 ||
                     (int) structureType.find(Screeps::STRUCTURE_SPAWN) >= 0) {
-                    container.push_back(
-                            std::move(std::make_unique<Screeps::StructureContainer>(structure->value())));
-                    std::cout << stru.structureType() << stru.store().getFreeCapacity().value_or(-1) << std::endl;
-                    if (stru.store().getFreeCapacity().value_or(-1) >= 0) {
-                        comp::emptyContainer[s.name()] = std::move(
-                                std::make_unique<Screeps::StructureContainer>(structure->value()));
-                    }
+//                    container.push_back(
+//                            std::move(std::make_unique<Screeps::StructureContainer>(structure->value())));
+//                    std::cout << stru.structureType() << stru.store().getFreeCapacity().value_or(-1) << std::endl;
+//                    if (stru.store().getFreeCapacity().value_or(-1) >= 0) {
+//                        comp::emptyContainer[s.name()] = std::move(
+//                                std::make_unique<Screeps::StructureContainer>(structure->value()));
+//                    }
                 }
             }
             std::pair<std::string, std::vector<std::unique_ptr<Screeps::StructureContainer>>>

@@ -29,7 +29,7 @@ namespace sys {
                         comp::emptyContainer[s.name()] = std::move(
                                 std::make_unique<Screeps::StructureContainer>(structure->value()));
                     }
-                    if (stru.store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 300) {
+                    if (stru.store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 300) {
                         comp::fullContainer[s.name()] = std::move(
                                 std::make_unique<Screeps::StructureContainer>(structure->value()));
                     }

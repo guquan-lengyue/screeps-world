@@ -48,15 +48,17 @@ namespace util {
     }
 
     void renew(Screeps::Creep &creep, Screeps::StructureSpawn &spawn) {
-        if (creep.store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0) {
-            creep.transfer(spawn, Screeps::RESOURCE_ENERGY);
-        }
+
         if (spawn.renewCreep(creep) == Screeps::ERR_NOT_IN_RANGE) {
             if (((Screeps::StructureContainer) spawn)
                         .store()
                         .getFreeCapacity(Screeps::RESOURCE_ENERGY)
                         .value_or(-1) > 0) {
                 creep.moveTo(spawn);
+            }
+        } else {
+            if (creep.store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0) {
+                creep.transfer(spawn, Screeps::RESOURCE_ENERGY);
             }
         }
     }

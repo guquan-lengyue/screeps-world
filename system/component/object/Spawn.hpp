@@ -13,26 +13,28 @@ public:
     std::string getMemory(const std::string &key);
 
     bool setMemory(const std::string &key, const std::string &value);
+
+    std::string getMemoryOr(const std::string &key, const std::string &defaultValue);
 };
 
 Spawn::Spawn(JS::Value creep) : Screeps::StructureSpawn(std::move(creep)) {};
-
-std::string Spawn::getMemory(const std::string &key) {
-    JSON memory = this->memory();
-    if (!memory.contains(key)) {
-        std::cout << "error" << this->name() << "memory not contains key :" << key << std::endl;
-        return "";
-    }
-    std::string value;
-    memory[key].get_to(value);
-    return value;
-}
 
 bool Spawn::setMemory(const std::string &key, const std::string &value) {
     JSON memory = this->memory();
     memory[key] = value;
     Screeps::StructureSpawn::setMemory(memory);
     return true;
+}
+
+
+std::string Spawn::getMemoryOr(const std::string &key, const std::string &defaultValue) {
+    JSON memory = this->memory();
+    if (!memory.contains(key)) {
+        return defaultValue;
+    }
+    std::string value;
+    memory[key].get_to(value);
+    return value;
 }
 
 

@@ -61,7 +61,7 @@ namespace sys {
             auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
                 return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
             });
-            if (s.getMemory("before_harvester_num").empty() || std::stoi(s.getMemory("before_harvester_num")) < 5) {
+            if (std::stoi(s.getMemoryOr("before_harvester_num", "0")) < 5) {
                 for (const auto &creep: creeps) {
                     auto c = ((Creep) *creep);
                     auto role = c.getMemory("role");
@@ -72,6 +72,10 @@ namespace sys {
                     }
                 }
                 s.setMemory("before_harvester_num", std::to_string(before_harvester_num));
+                s.setMemory("harvester_num", std::to_string(harvester_num));
+                s.setMemory("upgrader_num", std::to_string(upgrader_num));
+                s.setMemory("repairer_num", std::to_string(repairer_num));
+                s.setMemory("builder_num", std::to_string(builder_num));
                 continue;
             } else {
                 for (const auto &creep: creeps) {

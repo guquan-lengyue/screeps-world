@@ -27,7 +27,7 @@ JSON roleOpt(std::string str) {
     return JS::toJSON(memory);
 }
 
-void harvester(Screeps::Creep &creep, Screeps::Source &source, Screeps::Structure &target) {
+void harvester(Screeps::Creep &creep, Screeps::Source &source, Screeps::StructureContainer &target) {
     if (creep.store().getFreeCapacity().value_or(-1) > 0) {
         if (creep.harvest(source) == Screeps::ERR_NOT_IN_RANGE) {
             creep.moveTo(source);

@@ -135,7 +135,9 @@ namespace sys {
                 if (role == "HARVESTER") {
                     std::string spawnName = s.name();
                     auto &emptyContainer = comp::emptyContainer[s.name()];
-                    harvester(c, source, *emptyContainer);
+                    std::cout << emptyContainer->structureType() << std::endl;
+                    auto container = ((Screeps::StructureContainer) s);
+                    harvester(c, source, container);
                 } else if (role == "UPGRADER") {
                     auto controller = room.controller().value();
                     upgrade(c, s, controller);

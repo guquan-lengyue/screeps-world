@@ -129,6 +129,7 @@ namespace sys {
             } else if (!construction_sizes.empty() && std::stoi(s.getMemory("builder_num")) < 4) {
                 role = "BUILDER";
             }
+            std::cout << "spawn role" << role << std::endl;
             for (int i = 6; i > 0 && !role.empty(); --i) {
                 auto rst = s.spawnCreep(get_worker_body(i),
                                         s.name() + role + std::to_string(Screeps::Game.time()),

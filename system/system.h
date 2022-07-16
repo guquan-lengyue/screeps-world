@@ -53,6 +53,7 @@ namespace sys {
             int upgrader_num = 0;
             int repairer_num = 0;
             int builder_num = 0;
+            int before_harvester_num = 0;
             auto s = (Spawn) spawn.second;
             auto room = (Screeps::Room) s.room();
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
@@ -60,9 +61,30 @@ namespace sys {
             auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
                 return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
             });
+            if (std::stoi(s.getMemory("before_harvester_num")) < 5) {
+                for (const auto &creep: creeps) {
+                    auto c = ((Creep) *creep);
+                    auto role = c.getMemory("role");
+                    c.setMemory("beforeRole", role);
+                    c.setMemory("role", "HARVESTER");
+                }
+                continue;
+            } else {
+                for (const auto &creep: creeps) {
+                    auto c = ((Creep) *creep);
+                    auto beforeRole = c.getMemory("role");
+                    c.setMemory("role", beforeRole);
+                    c.setMemory("beforeRole", "HARVESTER");
+
+                }
+            }
             for (const auto &creep: creeps) {
                 auto c = ((Creep) *creep);
                 std::string role = c.getMemory("role");
+                std::string before_role = c.getMemory("beforeRole");
+                if (before_role == "HARVESTER") {
+                    ++before_harvester_num;
+                }
                 if (role == "HARVESTER") {
                     ++harvester_num;
                 } else if (role == "UPGRADER") {
@@ -85,10 +107,12 @@ namespace sys {
                     }
                 }
             }
+
             s.setMemory("harvester_num", std::to_string(harvester_num));
             s.setMemory("upgrader_num", std::to_string(upgrader_num));
             s.setMemory("repairer_num", std::to_string(repairer_num));
             s.setMemory("builder_num", std::to_string(builder_num));
+            s.setMemory("before_harvester_num", std::to_string(before_harvester_num));
         }
     }
 
@@ -128,31 +152,34 @@ namespace sys {
                 return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
             });
             int i = 0;
+
+            Screeps::StructureContainer emptyContainer = ((Screeps::StructureContainer) s);
+            Screeps::StructureContainer fullContainer = ((Screeps::StructureContainer) s);
+            if (!comp::emptyContainer.empty()) {
+                emptyContainer = *(comp::emptyContainer[s.name()]);
+            }
+            if (!comp::fullContainer.empty()) {
+                fullContainer = *(comp::fullContainer[s.name()]);
+            }
             for (const auto &creep: creeps) {
                 Creep c = (Creep) (*creep);
                 std::string role = c.getMemory("role");
                 auto source = (Screeps::Source) (*(sources[++i % sources.size()]));
                 if (role == "HARVESTER") {
                     std::string spawnName = s.name();
-                    Screeps::StructureContainer container = ((Screeps::StructureContainer) s);
-                    if (!comp::emptyContainer.empty()) {
-                        auto &emptyContainer = comp::emptyContainer[s.name()];
-                        std::cout << emptyContainer->structureType() << std::endl;
-                        container = *emptyContainer;
-                    }
-                    harvester(c, source, container);
+                    harvester(c, source, emptyContainer);
                 } else if (role == "UPGRADER") {
                     auto controller = room.controller().value();
-                    upgrade(c, s, controller);
+                    upgrade(c, fullContainer, controller);
                 } else if (role == "REPAIRER") {
                     if (!damageRoomObject.empty()) {
                         auto damage = (Screeps::Structure) (*damageRoomObject[0]);
-                        repairer(c, s, damage);
+                        repairer(c, fullContainer, damage);
                     }
                 } else if (role == "BUILDER") {
                     if (!construction_sizes.empty()) {
                         auto constructionSize = (Screeps::ConstructionSite) (*construction_sizes[0]);
-                        build(c, s, constructionSize);
+                        build(c, fullContainer, constructionSize);
                     }
                 }
             }

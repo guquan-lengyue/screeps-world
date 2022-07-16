@@ -19,11 +19,12 @@
 #define SAY_HARVEST "🔄"
 #define SAY_BUILD "🚧"
 
-JSON roleOpt(std::string str) {
+JSON roleOpt(const std::string &str) {
     auto memory = JS::Value::object();
     auto role = JS::Value::object();
     role.set("role", str.c_str());
     memory.set("memory", role);
+    memory.set("beforeRole", role);
     return JS::toJSON(memory);
 }
 

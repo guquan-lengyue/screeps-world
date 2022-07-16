@@ -114,7 +114,7 @@ namespace sys {
                 role = "UPGRADER";
             } else if (std::stoi(s.getMemory("repairer_num")) < 2) {
                 role = "REPAIRER";
-            } else if (std::stoi(s.getMemory("builder_num")) < 4) {
+            } else if (std::stoi(s.getMemory("builder_num")) < 4 && !construction_sizes.empty()) {
                 role = "BUILDER";
             }
             for (int i = 6; i > 0 && !role.empty(); --i) {

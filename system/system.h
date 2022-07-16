@@ -107,16 +107,12 @@ namespace sys {
                     ++upgrader_num;
                 } else if (role == "REPAIRER") {
                     if (!construction_sizes.empty()) {
-                        c.setMemory("role", "BUILDER");
-                        c.setMemory("beforeRole", "REPAIRER");
                         ++builder_num;
                     } else {
                         ++repairer_num;
                     }
                 } else if (role == "BUILDER") {
                     if (construction_sizes.empty()) {
-                        c.setMemory("role", "REPAIRER");
-                        c.setMemory("beforeRole", "BUILDER");
                         ++repairer_num;
                     } else {
                         ++builder_num;
@@ -177,8 +173,6 @@ namespace sys {
             if (!comp::fullContainer.empty()) {
                 fullContainer = *(comp::fullContainer[s.name()]);
             }
-
-
             for (const auto &creep: creeps) {
                 Creep c = (Creep) (*creep);
                 std::string role = c.getMemory("role");

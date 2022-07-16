@@ -48,6 +48,7 @@ std::vector<std::string> get_soldier_body(int level) {
 
 namespace sys {
     void check_creep() {
+
         for (auto &spawn: Screeps::Game.spawns()) {
             int harvester_num = 0;
             int upgrader_num = 0;
@@ -55,6 +56,8 @@ namespace sys {
             int builder_num = 0;
             int before_harvester_num = 0;
             auto s = (Spawn) spawn.second;
+            std::cout << s.getMemory("before_harvester_num") << std::endl;
+
             auto room = (Screeps::Room) s.room();
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
@@ -181,8 +184,7 @@ namespace sys {
                 std::string role = c.getMemory("role");
                 auto source = (Screeps::Source) (*(sources[++i % sources.size()]));
                 if (role == "HARVESTER") {
-                    auto a = (Screeps::StructureContainer) s;
-                    harvester(c, source, a);
+                    harvester(c, source, emptyContainer);
                 } else if (role == "UPGRADER") {
                     auto controller = room.controller().value();
                     upgrade(c, fullContainer, controller);

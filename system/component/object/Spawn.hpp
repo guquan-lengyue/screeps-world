@@ -18,6 +18,9 @@ Spawn::Spawn(JS::Value creep) : Screeps::StructureSpawn(creep) {};
 
 std::string Spawn::getMemory(std::string key) {
     JSON memory = this->memory();
+    if (!memory.contains(key)) {
+        return "";
+    }
     std::string value;
     memory[key].get_to(value);
     return value;

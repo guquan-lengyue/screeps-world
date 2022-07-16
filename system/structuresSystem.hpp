@@ -36,6 +36,8 @@ namespace sys {
             }
             std::pair<std::string, std::vector<std::unique_ptr<Screeps::StructureContainer>>>
                     content(s.name(), container);
+
+
             comp::spawn2container.insert(content);
         }
     }

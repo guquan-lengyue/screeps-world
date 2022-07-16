@@ -75,23 +75,14 @@ namespace sys {
                 if (renew == "true" && c.ticksToLive() > 1400) {
                     c.setMemory("RENEW", "false");
                 }
-
                 if (role == "HARVESTER") {
                     ++harvester_num;
                 } else if (role == "UPGRADER") {
                     ++upgrader_num;
                 } else if (role == "REPAIRER") {
-                    if (!construction_sizes.empty()) {
-                        ++builder_num;
-                    } else {
-                        ++repairer_num;
-                    }
+                    ++repairer_num;
                 } else if (role == "BUILDER") {
-                    if (construction_sizes.empty()) {
-                        ++repairer_num;
-                    } else {
-                        ++builder_num;
-                    }
+                    ++builder_num;
                 }
             }
 

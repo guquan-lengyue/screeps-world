@@ -6,9 +6,10 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <Screeps/Source.hpp>
+#include <Screeps/StructureContainer.hpp>
 
-int HARVESTER_NUM = 0;
-int UPGRADER_NUM = 0;
-int REPAIRER_NUM = 0;
+namespace comp {
+    std::map<std::string, std::vector<Screeps::StructureContainer>> spawn2container;
+    std::unique_ptr<Screeps::StructureContainer> emptyContainer;
+}
 #endif

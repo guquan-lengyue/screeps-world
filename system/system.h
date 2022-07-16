@@ -133,7 +133,7 @@ namespace sys {
                 std::string role = c.getMemory("role");
                 auto source = (Screeps::Source) (*(sources[++i % sources.size()]));
                 if (role == "HARVESTER") {
-                    harvester(c, source, s);
+                    harvester(c, source, *comp::emptyContainer);
                 } else if (role == "UPGRADER") {
                     auto controller = room.controller().value();
                     upgrade(c, s, controller);

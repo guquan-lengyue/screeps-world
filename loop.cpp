@@ -4,7 +4,7 @@
 #include <emscripten/bind.h>
 #include <iostream>
 #include "system/system.h"
-
+#include "system/structuresSystem.hpp"
 
 EMSCRIPTEN_KEEPALIVE
 extern "C" void updateData() {
@@ -14,6 +14,7 @@ extern "C" void updateData() {
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
     Screeps::Context::update();
+    sys::check_structures();
     sys::check_creep();
     sys::spawns_spawn_creep();
     sys::creep();

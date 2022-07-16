@@ -116,7 +116,6 @@ namespace sys {
     }
 
     void spawns_spawn_creep() {
-        std::cout << "spawns_spawn_creep" << std::endl;
         for (auto &spawn: Screeps::Game.spawns()) {
             auto s = (Spawn) spawn.second;
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
@@ -130,7 +129,6 @@ namespace sys {
             } else if (!construction_sizes.empty() && std::stoi(s.getMemory("builder_num")) < 4) {
                 role = "BUILDER";
             }
-            std::cout << s.name() << "spawn role" << role << std::endl;
             for (int i = 6; i > 0 && !role.empty(); --i) {
                 auto rst = s.spawnCreep(get_worker_body(i),
                                         s.name() + role + std::to_string(Screeps::Game.time()),
@@ -145,6 +143,7 @@ namespace sys {
     }
 
     void creep() {
+        std::cout << "creep" << std::endl;
         for (auto &spawn: Screeps::Game.spawns()) {
             Spawn s = (Spawn) spawn.second;
             auto room = s.room();

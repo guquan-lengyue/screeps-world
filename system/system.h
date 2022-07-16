@@ -134,11 +134,12 @@ namespace sys {
                 auto source = (Screeps::Source) (*(sources[++i % sources.size()]));
                 if (role == "HARVESTER") {
                     std::string spawnName = s.name();
+                    Screeps::StructureContainer container = ((Screeps::StructureContainer) s);
                     if (!comp::emptyContainer.empty()) {
                         auto &emptyContainer = comp::emptyContainer[s.name()];
                         std::cout << emptyContainer->structureType() << std::endl;
+                        container = *emptyContainer;
                     }
-                    auto container = ((Screeps::StructureContainer) s);
                     harvester(c, source, container);
                 } else if (role == "UPGRADER") {
                     auto controller = room.controller().value();

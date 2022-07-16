@@ -21,9 +21,7 @@ extern "C" void updateData() {
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
     Screeps::Context::update();
-    if (Screeps::Game.time() % 10 == 0) {
-        check();
-    }
+    check();
     sys::spawns_spawn_creep();
     sys::creep();
 }

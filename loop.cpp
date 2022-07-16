@@ -6,16 +6,24 @@
 #include "system/system.h"
 #include "system/structuresSystem.hpp"
 
+void check() {
+    sys::check_creep();
+    sys::check_structures();
+}
+
+
 EMSCRIPTEN_KEEPALIVE
 extern "C" void updateData() {
     std::cout << "loading" << std::endl;
+    check();
 }
 
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
     Screeps::Context::update();
-    sys::check_creep();
-    sys::check_structures();
+    if (Screeps::Game.time() % 10 == 0) {
+        check();
+    }
     sys::spawns_spawn_creep();
     sys::creep();
 }

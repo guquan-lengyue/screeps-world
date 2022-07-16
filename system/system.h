@@ -140,7 +140,7 @@ namespace sys {
         }
     }
 
-    void creep() {
+    bool creep() {
         std::cout << "creep" << std::endl;
         for (auto &spawn: Screeps::Game.spawns()) {
             Spawn s = (Spawn) spawn.second;
@@ -186,6 +186,7 @@ namespace sys {
                 }
             }
         }
+        return true;
     }
 }
 

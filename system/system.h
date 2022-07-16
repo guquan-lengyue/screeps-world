@@ -72,7 +72,7 @@ namespace sys {
                 if (before_role == "HARVESTER") {
                     ++before_harvester_num;
                 }
-                if (renew == "false" && c.ticksToLive() < 500) {
+                if (renew == "false" && c.ticksToLive() < 800) {
                     c.setMemory("RENEW", "true");
                 }
                 if (renew == "true" && c.ticksToLive() > 1400) {

@@ -20,6 +20,10 @@ Creep::Creep(JS::Value creep) : Screeps::Creep(creep) {};
 
 std::string Creep::getMemory(std::string key) {
     JSON memory = this->memory();
+    if (!memory.contains(key)) {
+        std::cout << "error" << this->name() << "memory not contains key :" << key << std::endl;
+        return "";
+    }
     std::string value;
     memory[key].get_to(value);
     return value;

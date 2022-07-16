@@ -9,16 +9,17 @@ class Spawn : public Screeps::StructureSpawn {
 public:
     Spawn(JS::Value creep);
 
-    std::string getMemory(std::string key);
+    std::string getMemory(const std::string &key);
 
     bool setMemory(std::string key, std::string value);
 };
 
 Spawn::Spawn(JS::Value creep) : Screeps::StructureSpawn(creep) {};
 
-std::string Spawn::getMemory(std::string key) {
+std::string Spawn::getMemory(const std::string &key) {
     JSON memory = this->memory();
     if (!memory.contains(key)) {
+        std::cout << "error" << this->name() << "memory not contains key :" << key << std::endl;
         return "";
     }
     std::string value;

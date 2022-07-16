@@ -160,13 +160,15 @@ namespace sys {
             if (!comp::fullContainer.empty()) {
                 fullContainer = *(comp::fullContainer[s.name()]);
             }
+            std::cout << "emptyContainer" << emptyContainer.structureType() << std::endl;
+            std::cout << "fullContainer" << fullContainer.structureType() << std::endl;
             for (const auto &creep: creeps) {
                 Creep c = (Creep) (*creep);
                 std::string role = c.getMemory("role");
                 auto source = (Screeps::Source) (*(sources[++i % sources.size()]));
                 if (role == "HARVESTER") {
-                    std::string spawnName = s.name();
-                    harvester(c, source, emptyContainer);
+                    auto a = (Screeps::StructureContainer) s;
+                    harvester(c, source, a);
                 } else if (role == "UPGRADER") {
                     auto controller = room.controller().value();
                     upgrade(c, fullContainer, controller);

@@ -17,7 +17,7 @@ extern "C" void loop() {
     sys::check_creep();
     sys::check_structures();
     sys::spawns_spawn_creep();
-//    sys::creep();
+    sys::creep();
 }
 
 EMSCRIPTEN_BINDINGS(loop) {

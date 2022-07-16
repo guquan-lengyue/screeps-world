@@ -64,16 +64,16 @@ namespace sys {
             for (const auto &creep: creeps) {
                 auto c = ((Creep) *creep);
                 std::string role = c.getMemory("role");
+                std::string renew = c.getMemoryOr("RENEW", "false");
                 std::string before_role = c.getMemory("beforeRole");
                 if (before_role == "HARVESTER") {
                     ++before_harvester_num;
                 }
-                if (role != "RENEW" && c.ticksToLive() < 500) {
-                    c.setMemory("beforeRole", c.getMemory("role"));
-                    c.setMemory("role", "RENEW");
+                if (renew == "false" && c.ticksToLive() < 500) {
+                    c.setMemory("RENEW", "true");
                 }
-                if (role == "RENEW" && c.ticksToLive() > 1400) {
-                    c.setMemory("role", c.getMemory("before_role"));
+                if (renew == "true" && c.ticksToLive() > 1400) {
+                    c.setMemory("RENEW", "false");
                 }
 
                 if (role == "HARVESTER") {

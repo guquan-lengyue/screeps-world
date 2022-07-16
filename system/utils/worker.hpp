@@ -118,4 +118,41 @@ void build(Screeps::Creep &creep, Screeps::RoomObject &source, Screeps::Construc
     }
 }
 
+void repairer(Screeps::Creep &creep, Screeps::RoomObject &source, Screeps::Structure &target) {
+    JSON memory = creep.memory();
+    if (!memory.contains("working")) {
+        memory["working"] = false;
+    }
+    bool working;
+    memory["working"].get_to(working);
+    if (working && creep.store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) == 0) {
+        working = false;
+        creep.say(SAY_HARVEST);
+    }
+    if (!working && creep.store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) == 0) {
+        working = true;
+        creep.say(SAY_BUILD);
+    }
+
+    memory["working"] = working;
+    creep.setMemory(memory);
+
+    if (working) {
+        if (creep.repair(target) == Screeps::ERR_NOT_IN_RANGE) {
+            creep.moveTo(target);
+        }
+    } else {
+        if (creep.ticksToLive() < 10) {
+            creep.suicide();
+            return;
+        }
+        if (creep.withdraw(source, Screeps::RESOURCE_ENERGY) == Screeps::ERR_NOT_IN_RANGE) {
+            if (Screeps::StructureContainer(source.value())
+                        .store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 40) {
+                creep.moveTo(source);
+            }
+        }
+    }
+}
+
 #endif //EXAMPLE_WORKER_HPP

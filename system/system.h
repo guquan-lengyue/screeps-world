@@ -82,7 +82,6 @@ namespace sys {
                 }
             }
 
-
             for (const auto &creep: creeps) {
                 auto c = ((Creep) *creep);
                 std::string role = c.getMemory("role");
@@ -90,6 +89,14 @@ namespace sys {
                 if (before_role == "HARVESTER") {
                     ++before_harvester_num;
                 }
+                if (role != "RENEW" && c.hits() < 500) {
+                    c.setMemory("beforeRole", c.getMemory("role"));
+                    c.setMemory("role", "RENEW");
+                }
+                if (role == "RENEW" && c.hits() > 1400) {
+                    c.setMemory("role", c.getMemory("before_role"));
+                }
+
                 if (role == "HARVESTER") {
                     ++harvester_num;
                 } else if (role == "UPGRADER") {
@@ -188,6 +195,8 @@ namespace sys {
                         auto constructionSize = (Screeps::ConstructionSite) (*construction_sizes[0]);
                         build(c, fullContainer, constructionSize);
                     }
+                } else if (role == "RENEW") {
+                    renew(c, s);
                 }
             }
         }

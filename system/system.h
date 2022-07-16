@@ -93,7 +93,6 @@ namespace sys {
                 if (before_role == "HARVESTER") {
                     ++before_harvester_num;
                 }
-                std::cout << c.hits() << std::endl;
                 if (role != "RENEW" && c.ticksToLive() < 500) {
                     c.setMemory("beforeRole", c.getMemory("role"));
                     c.setMemory("role", "RENEW");

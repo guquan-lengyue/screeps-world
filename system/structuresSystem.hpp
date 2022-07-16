@@ -17,7 +17,7 @@ namespace sys {
         for (auto &spawn: Screeps::Game.spawns()) {
             auto s = (Spawn) spawn.second;
             auto room = s.room();
-            auto structures = room.find(Screeps::FIND_MY_STRUCTURES);
+            auto structures = room.find(Screeps::FIND_STRUCTURES);
             for (auto &structure: structures) {
                 auto stru = (Screeps::StructureContainer) (*structure);
                 std::string structureType = stru.structureType();

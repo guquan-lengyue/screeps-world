@@ -20,17 +20,19 @@ namespace sys {
             auto room = s.room();
             auto structures = room.find(Screeps::FIND_MY_STRUCTURES);
             std::vector<std::unique_ptr<Screeps::StructureContainer>> container;
-            for (const auto &structure: structures) {
+            for (auto &structure: structures) {
                 auto stru = (Screeps::StructureContainer) (*structure);
                 std::string structureType = stru.structureType();
                 if ((int) structureType.find(Screeps::STRUCTURE_EXTENSION) >= 0 ||
                     (int) structureType.find(Screeps::STRUCTURE_CONTAINER) >= 0 ||
                     (int) structureType.find(Screeps::STRUCTURE_STORAGE) >= 0 ||
                     (int) structureType.find(Screeps::STRUCTURE_SPAWN) >= 0) {
-                    container.emplace_back(std::make_unique<Screeps::StructureContainer>(stru));
+                    container.push_back(
+                            std::move(std::make_unique<Screeps::StructureContainer>(structure->value())));
                     std::cout << stru.structureType() << stru.store().getFreeCapacity().value_or(-1) << std::endl;
                     if (stru.store().getFreeCapacity().value_or(-1) >= 0) {
-                        comp::emptyContainer[s.name()] = std::make_unique<Screeps::StructureContainer>(stru);
+                        comp::emptyContainer[s.name()] = std::move(
+                                std::make_unique<Screeps::StructureContainer>(structure->value()));
                     }
                 }
             }

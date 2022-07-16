@@ -6,6 +6,7 @@
 #define EXAMPLE_CREEP_HPP
 
 #include <Screeps/Creep.hpp>
+#include <utility>
 
 class Creep : public Screeps::Creep {
 public:
@@ -15,10 +16,10 @@ public:
 
     std::string getMemoryOr(const std::string &key, const std::string &defaultValue);
 
-    bool setMemory(std::string key, const std::string &value);
+    bool setMemory(const std::string &key, const std::string &value);
 };
 
-Creep::Creep(JS::Value creep) : Screeps::Creep(creep) {};
+Creep::Creep(JS::Value creep) : Screeps::Creep(std::move(creep)) {};
 
 std::string Creep::getMemory(const std::string &key) {
     JSON memory = this->memory();
@@ -31,7 +32,7 @@ std::string Creep::getMemory(const std::string &key) {
     return value;
 }
 
-bool Creep::setMemory(std::string key, const std::string &value) {
+bool Creep::setMemory(const std::string &key, const std::string &value) {
     JSON memory = this->memory();
     memory[key] = value;
     Screeps::Creep::setMemory(memory);

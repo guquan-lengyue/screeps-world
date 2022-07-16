@@ -37,5 +37,16 @@ std::string Spawn::getMemoryOr(const std::string &key, const std::string &defaul
     return value;
 }
 
+std::string Spawn::getMemory(const std::string &key) {
+    JSON memory = this->memory();
+    if (!memory.contains(key)) {
+        std::cout << "error" << this->name() << "memory not contains key :" << key << std::endl;
+        return "";
+    }
+    std::string value;
+    memory[key].get_to(value);
+    return value;
+}
+
 
 #endif

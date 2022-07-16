@@ -56,16 +56,13 @@ namespace sys {
             int builder_num = 0;
             int before_harvester_num = 0;
             auto s = (Spawn) spawn.second;
-            std::cout << s.getMemory("before_harvester_num") << std::endl;
-
             auto room = (Screeps::Room) s.room();
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
             auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
                 return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
             });
-            std::cout << s.getMemory("before_harvester_num") << std::endl;
-            if (std::stoi(s.getMemory("before_harvester_num")) < 5) {
+            if (s.getMemory("before_harvester_num").empty() || std::stoi(s.getMemory("before_harvester_num")) < 5) {
                 for (const auto &creep: creeps) {
                     auto c = ((Creep) *creep);
                     auto role = c.getMemory("role");

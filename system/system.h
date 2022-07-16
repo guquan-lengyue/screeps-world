@@ -101,12 +101,15 @@ namespace sys {
             std::string role;
             if (std::stoi(s.getMemory("harvester_num")) < 10) {
                 role = "HARVESTER";
-            } else if (std::stoi(s.getMemory("upgrader_num")) < 4) {
-                role = "UPGRADER";
-            } else if (std::stoi(s.getMemory("repairer_num")) < 2) {
-                role = "REPAIRER";
-            } else if (std::stoi(s.getMemory("builder_num")) < 4 && !construction_sizes.empty()) {
-                role = "BUILDER";
+            }
+            if (std::stoi(s.getMemoryOr("harvester_num", "0")) < 5) {
+                if (std::stoi(s.getMemory("upgrader_num")) < 4) {
+                    role = "UPGRADER";
+                } else if (std::stoi(s.getMemory("repairer_num")) < 2) {
+                    role = "REPAIRER";
+                } else if (std::stoi(s.getMemory("builder_num")) < 4 && !construction_sizes.empty()) {
+                    role = "BUILDER";
+                }
             }
             for (int i = 6; i > 0 && !role.empty(); --i) {
                 auto rst = s.spawnCreep(get_worker_body(i),

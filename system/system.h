@@ -56,6 +56,10 @@ namespace sys {
             auto s = (Spawn) spawn.second;
             auto room = (Screeps::Room) s.room();
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
+            auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
+            auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
+                return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
+            });
             for (const auto &creep: creeps) {
                 auto c = ((Creep) *creep);
                 std::string role = c.getMemory("role");
@@ -64,9 +68,21 @@ namespace sys {
                 } else if (role == "UPGRADER") {
                     ++upgrader_num;
                 } else if (role == "REPAIRER") {
-                    ++repairer_num;
+                    if (!construction_sizes.empty()) {
+                        c.setMemory("role", "BUILDER");
+                        c.setMemory("beforeRole", "REPAIRER");
+                        ++builder_num;
+                    } else {
+                        ++repairer_num;
+                    }
                 } else if (role == "BUILDER") {
-                    ++builder_num;
+                    if (construction_sizes.empty()) {
+                        c.setMemory("role", "REPAIRER");
+                        c.setMemory("beforeRole", "BUILDER");
+                        ++repairer_num;
+                    } else {
+                        ++builder_num;
+                    }
                 }
             }
             s.setMemory("harvester_num", std::to_string(harvester_num));
@@ -96,35 +112,6 @@ namespace sys {
                                         roleOpt(role));
                 if (rst >= 0) {
                     break;
-                }
-            }
-        }
-    }
-
-    void checkCreep() {
-        for (auto &spawn: Screeps::Game.spawns()) {
-            Spawn s = (Spawn) spawn.second;
-            auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
-            auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
-                return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
-            });
-            auto room = s.room();
-            auto creeps = room.find(Screeps::FIND_MY_CREEPS);
-            for (const auto &creep: creeps) {
-                Creep c = (Creep) (*creep);
-                std::string role = c.getMemory("role");
-                if (role == "HARVESTER") {
-                } else if (role == "UPGRADER") {
-                } else if (role == "REPAIRER") {
-                    if (!construction_sizes.empty()) {
-                        c.setMemory("role", "BUILDER");
-                        c.setMemory("beforeRole", "REPAIRER");
-                    }
-                } else if (role == "BUILDER") {
-                    if (construction_sizes.empty()) {
-                        c.setMemory("role", "REPAIRER");
-                        c.setMemory("beforeRole", "BUILDER");
-                    }
                 }
             }
         }

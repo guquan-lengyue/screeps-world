@@ -174,6 +174,8 @@ namespace sys {
             if (!comp::fullContainer.empty()) {
                 fullContainer = *(comp::fullContainer[s.name()]);
             }
+
+
             for (const auto &creep: creeps) {
                 Creep c = (Creep) (*creep);
                 std::string role = c.getMemory("role");

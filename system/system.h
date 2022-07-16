@@ -63,7 +63,10 @@ namespace sys {
             });
             for (const auto &creep: creeps) {
                 auto c = ((Creep) *creep);
-                std::string role = c.getMemory("role");
+                std::string role = c.getMemoryOr("role", "");
+                if (role.empty()) {
+                    c.setMemory("RECYCLE", "true");
+                }
                 std::string renew = c.getMemoryOr("RENEW", "false");
                 std::string before_role = c.getMemory("beforeRole");
                 if (before_role == "HARVESTER") {
@@ -146,9 +149,15 @@ namespace sys {
                 Creep c = (Creep) (*creep);
                 std::string role = c.getMemory("role");
                 std::string renew = c.getMemoryOr("RENEW", "false");
+                std::string recycle = c.getMemoryOr("RECYCLE", "false");
                 auto source = (Screeps::Source) (*(sources[++i % sources.size()]));
                 if (renew == "true") {
                     util::renew(c, s);
+                    continue;
+                }
+                if (recycle == "true") {
+                    util::recycle(c, s);
+                    continue;
                 }
                 if (role == "HARVESTER") {
                     util::harvester(c, source, emptyContainer);

@@ -58,6 +58,17 @@ namespace util {
         }
     }
 
+    void recycle(Screeps::Creep &creep, Screeps::StructureSpawn &spawn) {
+        if (spawn.recycleCreep(creep) == Screeps::ERR_NOT_IN_RANGE) {
+            if (((Screeps::StructureContainer) spawn)
+                        .store()
+                        .getFreeCapacity(Screeps::RESOURCE_ENERGY)
+                        .value_or(-1) > 0) {
+                creep.moveTo(spawn);
+            }
+        }
+    }
+
     void upgrade(Screeps::Creep &creep, Screeps::RoomObject &source, Screeps::StructureController &target) {
         JSON memory = creep.memory();
         if (!memory.contains("working")) {

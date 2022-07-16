@@ -61,6 +61,7 @@ namespace sys {
             auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
                 return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
             });
+            int renewNum = 0;
             for (const auto &creep: creeps) {
                 auto c = ((Creep) *creep);
                 std::string role = c.getMemoryOr("role", "");
@@ -72,7 +73,10 @@ namespace sys {
                 if (before_role == "HARVESTER") {
                     ++before_harvester_num;
                 }
-                if (renew == "false" && c.ticksToLive() < 800) {
+                if (renew == "true") {
+                    ++renewNum;
+                }
+                if (renew == "false" && c.ticksToLive() < 800 && renewNum < 6) {
                     c.setMemory("RENEW", "true");
                 }
                 if (renew == "true" && c.ticksToLive() > 1400) {

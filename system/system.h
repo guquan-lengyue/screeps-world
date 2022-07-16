@@ -106,7 +106,7 @@ namespace sys {
                 role = "HARVESTER";
             }
             if (std::stoi(s.getMemoryOr("harvester_num", "0")) > 6) {
-                if (std::stoi(s.getMemory("upgrader_num")) < 4) {
+                if (std::stoi(s.getMemory("upgrader_num")) < 6) {
                     role = "UPGRADER";
                 } else if (std::stoi(s.getMemory("repairer_num")) < 2) {
                     role = "REPAIRER";

@@ -4,6 +4,7 @@
 #include <Screeps/StructureSpawn.hpp>
 #include <Screeps/JSON.hpp>
 #include <string>
+#include <utility>
 
 class Spawn : public Screeps::StructureSpawn {
 public:
@@ -11,10 +12,10 @@ public:
 
     std::string getMemory(const std::string &key);
 
-    bool setMemory(std::string key, std::string value);
+    bool setMemory(const std::string &key, const std::string &value);
 };
 
-Spawn::Spawn(JS::Value creep) : Screeps::StructureSpawn(creep) {};
+Spawn::Spawn(JS::Value creep) : Screeps::StructureSpawn(std::move(creep)) {};
 
 std::string Spawn::getMemory(const std::string &key) {
     JSON memory = this->memory();
@@ -27,7 +28,7 @@ std::string Spawn::getMemory(const std::string &key) {
     return value;
 }
 
-bool Spawn::setMemory(std::string key, std::string value) {
+bool Spawn::setMemory(const std::string &key, const std::string &value) {
     JSON memory = this->memory();
     memory[key] = value;
     Screeps::StructureSpawn::setMemory(memory);

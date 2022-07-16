@@ -68,7 +68,6 @@ namespace sys {
                     c.setMemory("beforeRole", role);
                     c.setMemory("role", "HARVESTER");
                 }
-                continue;
             } else {
                 for (const auto &creep: creeps) {
                     auto c = ((Creep) *creep);

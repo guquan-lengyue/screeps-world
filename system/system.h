@@ -101,6 +101,35 @@ namespace sys {
         }
     }
 
+    void checkCreep() {
+        for (auto &spawn: Screeps::Game.spawns()) {
+            Spawn s = (Spawn) spawn.second;
+            auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
+            auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
+                return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
+            });
+            auto room = s.room();
+            auto creeps = room.find(Screeps::FIND_MY_CREEPS);
+            for (const auto &creep: creeps) {
+                Creep c = (Creep) (*creep);
+                std::string role = c.getMemory("role");
+                if (role == "HARVESTER") {
+                } else if (role == "UPGRADER") {
+                } else if (role == "REPAIRER") {
+                    if (!construction_sizes.empty()) {
+                        c.setMemory("role", "BUILDER");
+                        c.setMemory("beforeRole", "REPAIRER");
+                    }
+                } else if (role == "BUILDER") {
+                    if (construction_sizes.empty()) {
+                        c.setMemory("role", "REPAIRER");
+                        c.setMemory("beforeRole", "BUILDER");
+                    }
+                }
+            }
+        }
+    }
+
     void creep() {
         for (auto &spawn: Screeps::Game.spawns()) {
             Spawn s = (Spawn) spawn.second;
@@ -127,12 +156,10 @@ namespace sys {
                         repairer(c, s, damage);
                     }
                 } else if (role == "BUILDER") {
-                    if (construction_sizes.empty()) {
-                        c.setMemory("role", "REPAIRER");
-                        continue;
+                    if (!construction_sizes.empty()) {
+                        auto constructionSize = (Screeps::ConstructionSite) (*construction_sizes[0]);
+                        build(c, s, constructionSize);
                     }
-                    auto constructionSize = (Screeps::ConstructionSite) (*construction_sizes[0]);
-                    build(c, s, constructionSize);
                 }
             }
         }

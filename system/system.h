@@ -48,8 +48,6 @@ std::vector<std::string> get_soldier_body(int level) {
 
 namespace sys {
     void check_creep() {
-        std::cout << "check_creep" << std::endl;
-
         for (auto &spawn: Screeps::Game.spawns()) {
             int harvester_num = 0;
             int upgrader_num = 0;
@@ -79,7 +77,6 @@ namespace sys {
     }
 
     void spawns_spawn_creep() {
-        std::cout << "spawns_spawn_creep" << std::endl;
         for (auto &spawn: Screeps::Game.spawns()) {
             auto s = (Spawn) spawn.second;
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);

@@ -14,7 +14,6 @@ extern "C" void updateData() {
 EMSCRIPTEN_KEEPALIVE
 extern "C" void loop() {
     Screeps::Context::update();
-    std::cout << "loop" << std::endl;
     sys::check_creep();
     sys::spawns_spawn_creep();
     sys::creep();

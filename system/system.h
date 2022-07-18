@@ -48,13 +48,6 @@ std::vector<std::string> get_soldier_body(int level) {
 }
 
 namespace sys {
-    void recycle_memory() {
-        std::vector<std::string> creeps;
-        Screeps::Memory["creeps"].get_to(creeps);
-        for (const auto &item: creeps) {
-            std::cout << item << std::endl;
-        }
-    }
 
     void check_creep() {
         for (auto &spawn: Screeps::Game.spawns()) {
@@ -114,25 +107,43 @@ namespace sys {
         for (auto &spawn: Screeps::Game.spawns()) {
             auto s = (Spawn) spawn.second;
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
-            std::string role;
-            if (std::stoi(s.getMemory("harvester_num")) < 14) {
-                role = "HARVESTER";
-            }
-            if (std::stoi(s.getMemoryOr("harvester_num", "0")) > 6) {
-                if (std::stoi(s.getMemory("upgrader_num")) < 6) {
-                    role = "UPGRADER";
-                } else if (std::stoi(s.getMemory("repairer_num")) < 2) {
-                    role = "REPAIRER";
-                } else if (std::stoi(s.getMemory("builder_num")) < 2 && !construction_sizes.empty()) {
-                    role = "BUILDER";
+
+            auto spawnCreep = [&](const std::string &role, int num) {
+                for (int i = 6; i > 0 && !role.empty(); --i) {
+                    auto rst = s.spawnCreep(get_worker_body(i),
+                                            s.name() + "_" + role + "_" + std::to_string(num),
+                                            roleOpt(role));
+                    if (rst >= 0) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            for (int i = 0; i < 14; ++i) {
+                if (spawnCreep("HARVESTER", i)) {
+                    break;
                 }
             }
-            for (int i = 6; i > 0 && !role.empty(); --i) {
-                auto rst = s.spawnCreep(get_worker_body(i),
-                                        s.name() + role + std::to_string(Screeps::Game.time()),
-                                        roleOpt(role));
-                if (rst >= 0) {
-                    break;
+            if (std::stoi(s.getMemoryOr("harvester_num", "0")) > 6) {
+                for (int i = 0; i < 6; ++i) {
+                    if (spawnCreep("UPGRADER", i)) {
+                        break;
+                    }
+                }
+                for (int i = 0; i < 6; ++i) {
+                    if (spawnCreep("UPGRADER", i)) {
+                        break;
+                    }
+                }
+                for (int i = 0; i < 2; ++i) {
+                    if (spawnCreep("REPAIRER", i)) {
+                        break;
+                    }
+                }
+                for (int i = 0; i < 2; ++i) {
+                    if (spawnCreep("BUILDER", i)) {
+                        break;
+                    }
                 }
             }
         }

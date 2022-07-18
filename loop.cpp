@@ -7,7 +7,6 @@
 #include "system/structuresSystem.hpp"
 
 void check() {
-//    sys::recycle_memory();
     sys::check_creep();
     sys::check_structures();
 }

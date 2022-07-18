@@ -92,7 +92,7 @@ namespace sys {
                     if (damageRoomObject.empty()) {
                         if (damageRoomObject.empty()) {
                             c.setMemory("beforeRole", c.getMemory("role"));
-                            c.setMemory("role", c.getMemory("BUILDER"));
+                            c.setMemory("role", "BUILDER");
                             ++builder_num;
                             continue;
                         }
@@ -101,7 +101,7 @@ namespace sys {
                 } else if (role == "BUILDER") {
                     if (construction_sizes.empty()) {
                         c.setMemory("beforeRole", c.getMemory("role"));
-                        c.setMemory("role", c.getMemory("REPAIRER"));
+                        c.setMemory("role", "REPAIRER");
                         ++repairer_num;
                         continue;
                     }

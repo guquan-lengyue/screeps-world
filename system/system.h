@@ -127,9 +127,16 @@ namespace sys {
 
             auto spawnCreep = [&](const std::string &role, int num) {
                 for (int i = 6; i > 0 && !role.empty(); --i) {
-                    auto rst = s.spawnCreep(get_worker_body(i),
-                                            s.name() + "_" + role + "_" + std::to_string(num),
-                                            roleOpt(role));
+                    int rst = -1;
+                    if (role == "soldier") {
+                        rst = s.spawnCreep(get_soldier_body(i),
+                                           s.name() + "_" + role + "_" + std::to_string(num),
+                                           roleOpt(role));
+                    } else {
+                        rst = s.spawnCreep(get_worker_body(i),
+                                           s.name() + "_" + role + "_" + std::to_string(num),
+                                           roleOpt(role));
+                    }
                     if (rst >= 0) {
                         return true;
                     }
@@ -174,6 +181,17 @@ namespace sys {
                     if (spawnFlag = spawnCreep("BUILDER", i), spawnFlag) {
                         break;
                     }
+                }
+                if (spawnFlag) {
+                    return;
+                }
+                for (int i = 0; i < 2; ++i) {
+                    if (spawnFlag = spawnCreep("SOLDIER", i), spawnFlag) {
+                        break;
+                    }
+                }
+                if (spawnFlag) {
+                    return;
                 }
             }
         }
@@ -233,6 +251,24 @@ namespace sys {
             }
         }
         return true;
+    }
+
+    bool soldier() {
+        for (auto &spawn: Screeps::Game.spawns()) {
+            Spawn s = (Spawn) spawn.second;
+            auto room = s.room();
+            auto creeps = room.find(Screeps::FIND_CREEPS);
+            std::unique_ptr<Screeps::RoomObject> enermy;
+            for (auto &creep: creeps) {
+                Creep c = (Creep) (*creep);
+                if (!c.my()) {
+                    enermy = std::move(creep);
+                }
+                if (enermy) {
+                    c.attack(*enermy);
+                }
+            }
+        }
     }
 }
 

@@ -24,6 +24,7 @@ extern "C" void loop() {
     check();
     sys::spawns_spawn_creep();
     sys::creep();
+    sys::soldier();
 }
 
 EMSCRIPTEN_BINDINGS(loop) {

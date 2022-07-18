@@ -11,6 +11,7 @@
 #include "component/object/Creep.hpp"
 #include <Screeps/Store.hpp>
 #include <Screeps/RoomPosition.hpp>
+#include <Screeps/Memory.hpp>
 #include <string>
 #include "utils/worker.hpp"
 
@@ -47,6 +48,14 @@ std::vector<std::string> get_soldier_body(int level) {
 }
 
 namespace sys {
+    void recycle_memory() {
+        std::vector<std::string> creeps;
+        Screeps::Memory["creeps"].get_to(creeps);
+        for (const auto &item: creeps) {
+            std::cout << item << std::endl;
+        }
+    }
+
     void check_creep() {
         for (auto &spawn: Screeps::Game.spawns()) {
             int harvester_num = 0;

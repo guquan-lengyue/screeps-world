@@ -76,7 +76,7 @@ namespace sys {
                 if (renew == "true") {
                     ++renewNum;
                 }
-                if (renew == "false" && c.ticksToLive() < 800 && renewNum < 6) {
+                if (renew == "false" && c.ticksToLive() < 300 && renewNum <= 1) {
                     c.setMemory("RENEW", "true");
                 }
                 if (renew == "true" && c.ticksToLive() > 1400) {

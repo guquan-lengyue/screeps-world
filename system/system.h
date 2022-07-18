@@ -139,22 +139,23 @@ namespace sys {
             auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
                 return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
             });
-            int i = 0;
 
             Screeps::StructureContainer emptyContainer = ((Screeps::StructureContainer) s);
             Screeps::StructureContainer fullContainer = ((Screeps::StructureContainer) s);
-            if (comp::emptyContainer[s.name()] != nullptr) {
-                emptyContainer = *(comp::emptyContainer[s.name()]);
-            }
-            if (comp::fullContainer[s.name()] != nullptr) {
-                fullContainer = *(comp::fullContainer[s.name()]);
-            }
-            for (const auto &creep: creeps) {
-                Creep c = (Creep) (*creep);
+            auto &emptyContainers = comp::emptyContainers[s.name()];
+            auto &fullContainers = comp::fullContainers[s.name()];
+            for (int i = 0; i < creeps.size(); ++i) {
+                Creep c = (Creep) (*creeps[i]);
                 std::string role = c.getMemory("role");
                 std::string renew = c.getMemoryOr("RENEW", "false");
                 std::string recycle = c.getMemoryOr("RECYCLE", "false");
-                auto source = (Screeps::Source) (*(sources[++i % sources.size()]));
+                auto source = (Screeps::Source) (*(sources[i % sources.size()]));
+                if (!emptyContainers.empty()) {
+                    emptyContainer = *emptyContainers[i % emptyContainers.size()];
+                }
+                if (!fullContainers.empty()) {
+                    fullContainer = *fullContainers[i % fullContainers.size()];
+                }
                 if (renew == "true") {
                     util::renew(c, s);
                     continue;

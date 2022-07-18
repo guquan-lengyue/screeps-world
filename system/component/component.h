@@ -10,7 +10,7 @@
 
 namespace comp {
     std::map<std::string, std::vector<std::unique_ptr<Screeps::StructureContainer>>> spawn2container;
-    std::map<std::string, std::unique_ptr<Screeps::StructureContainer>> emptyContainer;
-    std::map<std::string, std::unique_ptr<Screeps::StructureContainer>> fullContainer;
+    std::map<std::string, std::vector<std::unique_ptr<Screeps::StructureContainer>>> emptyContainers;
+    std::map<std::string, std::vector<std::unique_ptr<Screeps::StructureContainer>>> fullContainers;
 }
 #endif

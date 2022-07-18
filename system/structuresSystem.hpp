@@ -13,7 +13,8 @@
 
 namespace sys {
     void check_structures() {
-        comp::emptyContainer.clear();
+        comp::emptyContainers.clear();
+        comp::fullContainers.clear();
         for (auto &spawn: Screeps::Game.spawns()) {
             auto s = (Spawn) spawn.second;
             auto room = s.room();
@@ -26,12 +27,14 @@ namespace sys {
                     (int) structureType.find(Screeps::STRUCTURE_STORAGE) >= 0 ||
                     (int) structureType.find(Screeps::STRUCTURE_SPAWN) >= 0) {
                     if (stru.store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0) {
-                        comp::emptyContainer[s.name()] = std::move(
-                                std::make_unique<Screeps::StructureContainer>(structure->value()));
+                        comp::emptyContainers[s.name()]
+                                .push_back(
+                                        std::move(std::make_unique<Screeps::StructureContainer>(structure->value())));
                     }
                     if (stru.store().getUsedCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 300) {
-                        comp::fullContainer[s.name()] = std::move(
-                                std::make_unique<Screeps::StructureContainer>(structure->value()));
+                        comp::fullContainers[s.name()]
+                                .push_back(
+                                        std::move(std::make_unique<Screeps::StructureContainer>(structure->value())));
                     }
                 }
             }

@@ -128,7 +128,7 @@ namespace sys {
             auto spawnCreep = [&](const std::string &role, int num) {
                 for (int i = 6; i > 0 && !role.empty(); --i) {
                     int rst = -1;
-                    if (role == "SOLDIER") {
+                    if (role == std::string("SOLDIER")) {
                         rst = s.spawnCreep(get_soldier_body(i),
                                            s.name() + "_" + role + "_" + std::to_string(num),
                                            roleOpt(role));

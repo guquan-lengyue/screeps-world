@@ -122,29 +122,42 @@ namespace sys {
                 }
                 return false;
             };
+            bool spawnFlag = false;
             for (int i = 0; i < 14; ++i) {
-                if (spawnCreep("HARVESTER", i)) {
+                if (spawnFlag = spawnCreep("HARVESTER", i), spawnFlag) {
                     break;
                 }
             }
+            if (spawnFlag) {
+                return;
+            }
             if (std::stoi(s.getMemoryOr("harvester_num", "0")) > 6) {
                 for (int i = 0; i < 6; ++i) {
-                    if (spawnCreep("UPGRADER", i)) {
+                    if (spawnFlag = spawnCreep("UPGRADER", i), spawnFlag) {
                         break;
                     }
+                }
+                if (spawnFlag) {
+                    return;
                 }
                 for (int i = 0; i < 6; ++i) {
-                    if (spawnCreep("UPGRADER", i)) {
+                    if (spawnFlag = spawnCreep("UPGRADER", i), spawnFlag) {
                         break;
                     }
                 }
+                if (spawnFlag) {
+                    return;
+                }
                 for (int i = 0; i < 2; ++i) {
-                    if (spawnCreep("REPAIRER", i)) {
+                    if (spawnFlag = spawnCreep("REPAIRER", i), spawnFlag) {
                         break;
                     }
                 }
+                if (spawnFlag) {
+                    return;
+                }
                 for (int i = 0; i < 2; ++i) {
-                    if (spawnCreep("BUILDER", i)) {
+                    if (spawnFlag = spawnCreep("BUILDER", i), spawnFlag) {
                         break;
                     }
                 }

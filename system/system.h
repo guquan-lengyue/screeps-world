@@ -60,9 +60,9 @@ namespace sys {
             auto room = (Screeps::Room) s.room();
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
-//            auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
-//                return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
-//            });
+            auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
+                return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
+            });
             int renewNum = 0;
             for (const auto &creep: creeps) {
                 auto c = ((Creep) *creep);
@@ -89,8 +89,22 @@ namespace sys {
                 } else if (role == "UPGRADER") {
                     ++upgrader_num;
                 } else if (role == "REPAIRER") {
+                    if (damageRoomObject.empty()) {
+                        if (damageRoomObject.empty()) {
+                            c.setMemory("beforeRole", c.getMemory("role"));
+                            c.setMemory("role", c.getMemory("BUILDER"));
+                            ++builder_num;
+                            continue;
+                        }
+                    }
                     ++repairer_num;
                 } else if (role == "BUILDER") {
+                    if (construction_sizes.empty()) {
+                        c.setMemory("beforeRole", c.getMemory("role"));
+                        c.setMemory("role", c.getMemory("REPAIRER"));
+                        ++repairer_num;
+                        continue;
+                    }
                     ++builder_num;
                 }
             }

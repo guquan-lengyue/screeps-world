@@ -104,6 +104,9 @@ namespace sys {
     }
 
     void spawns_spawn_creep() {
+        if (Screeps::Game.time() % 50 != 0) {
+            return;
+        }
         for (auto &spawn: Screeps::Game.spawns()) {
             auto s = (Spawn) spawn.second;
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
@@ -156,9 +159,9 @@ namespace sys {
             auto sources = s.room().find(Screeps::FIND_SOURCES);
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
-//            auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
-//                return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
-//            });
+            auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
+                return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
+            });
 
             Screeps::StructureContainer emptyContainer = ((Screeps::StructureContainer) s);
             Screeps::StructureContainer fullContainer = ((Screeps::StructureContainer) s);
@@ -190,10 +193,10 @@ namespace sys {
                     auto controller = room.controller().value();
                     util::upgrade(c, fullContainer, controller);
                 } else if (role == "REPAIRER") {
-//                    if (!damageRoomObject.empty()) {
-//                        auto damage = (Screeps::Structure) (*damageRoomObject[0]);
-//                        util::repairer(c, fullContainer, damage);
-//                    }
+                    if (!damageRoomObject.empty()) {
+                        auto damage = (Screeps::Structure) (*damageRoomObject[0]);
+                        util::repairer(c, fullContainer, damage);
+                    }
                 } else if (role == "BUILDER") {
                     if (!construction_sizes.empty()) {
                         auto constructionSize = (Screeps::ConstructionSite) (*construction_sizes[0]);

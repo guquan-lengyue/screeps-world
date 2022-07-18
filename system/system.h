@@ -106,7 +106,7 @@ namespace sys {
             auto s = (Spawn) spawn.second;
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
             std::string role;
-            if (std::stoi(s.getMemory("harvester_num")) < 10) {
+            if (std::stoi(s.getMemory("harvester_num")) < 14) {
                 role = "HARVESTER";
             }
             if (std::stoi(s.getMemoryOr("harvester_num", "0")) > 6) {

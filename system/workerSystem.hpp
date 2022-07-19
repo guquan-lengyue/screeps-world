@@ -36,7 +36,7 @@ namespace sys
             {
                 auto c = ((Creep)*creep);
                 std::string role = c.getMemoryOr("role", "");
-                if (role.empty())
+                if (role.empty() || c.ticksToLive() < 300)
                 {
                     c.setMemory("RECYCLE", "true");
                 }
@@ -50,7 +50,7 @@ namespace sys
                 {
                     ++renewNum;
                 }
-                if (renew == "false" && c.ticksToLive() < 300 && renewNum <= 1)
+                if (renew == "false" && c.ticksToLive() < 800 && renewNum <= 1)
                 {
                     c.setMemory("RENEW", "true");
                 }

@@ -5,9 +5,11 @@
 #include <iostream>
 #include "system/system.h"
 #include "system/structuresSystem.hpp"
+#include "system/warSystem.hpp"
+#include "system/workerSystem.hpp"
 
 void check() {
-    sys::check_creep();
+    sys::check_worker();
     sys::check_structures();
 }
 
@@ -23,7 +25,7 @@ extern "C" void loop() {
     Screeps::Context::update();
     check();
     sys::spawns_spawn_creep();
-    sys::creep();
+    sys::worker();
     sys::soldier();
 }
 

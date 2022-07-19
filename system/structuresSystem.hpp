@@ -25,7 +25,8 @@ namespace sys {
                 if ((int) structureType.find(Screeps::STRUCTURE_EXTENSION) >= 0 ||
                     (int) structureType.find(Screeps::STRUCTURE_CONTAINER) >= 0 ||
                     (int) structureType.find(Screeps::STRUCTURE_STORAGE) >= 0 ||
-                    (int) structureType.find(Screeps::STRUCTURE_SPAWN) >= 0) {
+                    (int) structureType.find(Screeps::STRUCTURE_SPAWN) >= 0 ||
+                    (int) structureType.find(Screeps::STRUCTURE_TOWER) >= 0) {
                     if (stru.store().getFreeCapacity(Screeps::RESOURCE_ENERGY).value_or(-1) > 0) {
                         comp::emptyContainers[s.name()]
                                 .push_back(

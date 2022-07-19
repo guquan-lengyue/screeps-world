@@ -7,6 +7,7 @@
 #include "system/structuresSystem.hpp"
 #include "system/warSystem.hpp"
 #include "system/workerSystem.hpp"
+#include "system/towerSystem.hpp"
 
 void check() {
     sys::check_worker();
@@ -27,6 +28,7 @@ extern "C" void loop() {
     sys::spawns_spawn_creep();
     sys::worker();
     sys::soldier();
+    sys::tower();
 }
 
 EMSCRIPTEN_BINDINGS(loop) {

@@ -19,29 +19,31 @@
 #include <string>
 #include "utils/worker.hpp"
 
-void check_tower() {
+namespace sys {
+    void check_tower() {
 
-}
-
-void tower() {
-    for (auto &spawn: Screeps::Game.spawns()) {
-        auto structure = spawn.second.room().find(Screeps::FIND_MY_STRUCTURES);
-        auto creeps = spawn.second.room().find(Screeps::FIND_CREEPS);
-        for (const auto &item: structure) {
-            auto tower = (Screeps::StructureTower) *item;
-            if (tower.structureType() != Screeps::STRUCTURE_TOWER) {
-                continue;
-            }
-            for (const auto &creep: creeps) {
-                auto c = (Screeps::Creep) *creep;
-                if (c.my()) {
-                    continue;
-                }
-                tower.attack(c);
-            }
-        }
     }
 
+    void tower() {
+        for (auto &spawn: Screeps::Game.spawns()) {
+            auto structure = spawn.second.room().find(Screeps::FIND_MY_STRUCTURES);
+            auto creeps = spawn.second.room().find(Screeps::FIND_CREEPS);
+            for (const auto &item: structure) {
+                auto tower = (Screeps::StructureTower) *item;
+                if (tower.structureType() != Screeps::STRUCTURE_TOWER) {
+                    continue;
+                }
+                for (const auto &creep: creeps) {
+                    auto c = (Screeps::Creep) *creep;
+                    if (c.my()) {
+                        continue;
+                    }
+                    tower.attack(c);
+                }
+            }
+        }
+
+    }
 }
 
 #endif //EXAMPLE_TOWERSYSTEM_HPP

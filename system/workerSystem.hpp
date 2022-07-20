@@ -90,10 +90,6 @@ namespace sys {
             Spawn s = (Spawn) spawn.second;
             auto room = s.room();
             auto sources = s.room().find(Screeps::FIND_SOURCES);
-            auto resource = (Screeps::Resource) (*sources[0]);
-            resource.amount();
-
-
             auto creeps = room.find(Screeps::FIND_MY_CREEPS);
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
             auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {

@@ -69,7 +69,7 @@ namespace sys
             });
             auto spawnCreep = [&](const std::string &role, int num)
             {
-                for (int i = 6; i > 0 && !role.empty(); --i)
+                for (int i = 4; i > 0 && !role.empty(); --i)
                 {
                     int rst = -1;
                     if (role == std::string("SOLDIER"))

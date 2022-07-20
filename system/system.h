@@ -64,7 +64,9 @@ namespace sys
         {
             auto s = (Spawn)spawn.second;
             auto construction_sizes = s.room().find(Screeps::FIND_CONSTRUCTION_SITES);
-
+            auto damageRoomObject = s.room().find(Screeps::FIND_STRUCTURES, [](const JS::Value &value) {
+                return value["hits"].as<float>() / value["hitsMax"].as<float>() < 0.7f;
+            });
             auto spawnCreep = [&](const std::string &role, int num)
             {
                 for (int i = 6; i > 0 && !role.empty(); --i)
@@ -125,7 +127,7 @@ namespace sys
                 {
                     return;
                 }
-                for (int i = 0; i < 2; ++i)
+                for (int i = 0; i < 2 && !damageRoomObject.empty(); ++i)
                 {
                     if (spawnFlag = spawnCreep("REPAIRER", i), spawnFlag)
                     {
@@ -136,7 +138,7 @@ namespace sys
                 {
                     return;
                 }
-                for (int i = 0; i < 2; ++i)
+                for (int i = 0; i < 2 && !construction_sizes.empty(); ++i)
                 {
                     if (spawnFlag = spawnCreep("BUILDER", i), spawnFlag)
                     {
